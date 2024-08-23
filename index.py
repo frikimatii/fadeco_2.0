@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from mycode.add import add_piezas
 from mycode.mecanizado import mecanizado
+from mycode.porvedores import provedores
 root = tk.Tk()
 root.title("FadeCo Stok")
 root.geometry("1000x800") #wxh
@@ -12,6 +13,6 @@ ventana.grid(row=0, column=0)
 
 add_piezas(ventana)
 mecanizado(ventana)
-
+provedores(ventana)
 
 root.mainloop() 

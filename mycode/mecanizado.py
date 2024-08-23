@@ -1,6 +1,6 @@
 import tkinter as tk 
 from tkinter import ttk
-from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte
+from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin
 
 macanizado = ["plasma", "plegadora", "soldador", ""]
 
@@ -25,6 +25,8 @@ querty_piezas_cortadas = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE O
 query_mostrar_piezas_balancin_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'balancin'"
 
 query_mostrar_piezas_balancin_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MECANIZADO = 'balancin'"
+
+
 
 def mecanizado(ventana):
     pestania = ttk.Frame(ventana)
@@ -78,7 +80,7 @@ def mecanizado(ventana):
     cantidad_ingresada_plegado.grid(row=2, column=1)
     tk.Button(
         plegadora,
-        text="Tornear",
+        text="Plegar",
         background="green",
         foreground="white",
         padx=4,
@@ -216,8 +218,8 @@ def mecanizado(ventana):
         foreground="white",
         padx=4,
         pady=1,
-        font=('Helvetica', 8, "bold")
-        
+        font=('Helvetica', 8, "bold"),
+        command=lambda: accion_balancin(cantidad_ingresada_balancin, piezas_a_balancin, tabla_principal, historial)
     ).grid(row=3, column=1, padx=2, pady=2)
     ttk.Separator(balancin, orient="horizontal").grid(
         row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2

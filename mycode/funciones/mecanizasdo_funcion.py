@@ -161,3 +161,47 @@ def accion_corte(cantidad_ingresada, pieza_seleccionada, treeview, historial):
     finally:
         conn.close()
 
+def accion_balancin(cantidad_ingresada, pieza_seleccionar, treeview, historial):
+    cantidad_og = cantidad_ingresada.get()
+    piezas_og = pieza_seleccionar.get()
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+    
+    try:
+        # Validar que la cantidad ingresada sea un número positivo
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0:
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+        
+        # Confirmar la acción con el usuario
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {piezas_og}?")
+        
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
+            resultado = cursor.fetchone()
+            
+            if resultado is not None:
+                cantidad_actual = resultado[0]
+                if cantidad_actual >= cantidad_og:
+                    # Actualizar las cantidades en la base de datos
+                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                    cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                    historial.insert(0, f"Se pasaron {cantidad_og} unidades de {piezas_og} por el balancín")    
+                    limpiar_tabla(treeview)
+                else:
+                    historial.insert(0, f"No hay suficientes unidades de {piezas_og} en stock")
+            else:
+                historial.insert(0, f"La pieza {piezas_og} no está registrada")
+            
+            conn.commit()
+            cantidad_ingresada.delete(0, "end")
+        else:
+            historial.insert(0, "Acción cancelada")
+    
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    
+    finally: 
+        conn.close()

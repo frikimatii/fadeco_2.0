@@ -58,7 +58,6 @@ def agregar_piezas(pieza , cant_entry, tabla, accion):
     
     pieza_nombre =  pieza.cget("text").strip()
     cantidad_str = cant_entry.get().strip()
-
     if cantidad_str.isdigit():
         cantidad = int(cantidad_str)
 
