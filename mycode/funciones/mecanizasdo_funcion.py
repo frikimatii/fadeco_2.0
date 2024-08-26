@@ -10,6 +10,10 @@ laterales=["lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecl
 piezas_corte = ["planchuela_250","planchuela_300","planchuela_330","varilla_300","varilla_330","varilla_250", "portaeje"]
 
 
+piezas_torno_1 = ["carros", "carros_250", "movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300" ]
+
+piezas_torno_2 = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia"]
+
 def limpiar_tabla(tabla):
     for item in tabla.get_children():
         tabla.delete(item)
@@ -205,3 +209,69 @@ def accion_balancin(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     
     finally: 
         conn.close()
+
+def accion_torno(cantidad_ingresada, pieza_seleccionada, treeview, historial):
+    cantidad_og = cantidad_ingresada.get()
+    pieza_og = pieza_seleccionada.get()
+    
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+    
+    try:
+        # Validación de la cantidad ingresada
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        
+        cantidad_og = int(cantidad_og)
+        
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro que quiere tornear {cantidad_og} unidades de {pieza_og}?")
+        
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado is not None:
+                cantidad_actual = resultado[0]
+                
+                if cantidad_actual >= cantidad_og:
+                    if pieza_og in piezas_torno_2:
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                        historial.insert(0, f"Se cortaron {cantidad_og} unidades de {pieza_og}.")
+                    elif pieza_og in piezas_torno_1:
+                        # Diccionario para mapeo de piezas y sus piezas resultantes
+                        piezas_mapeo = {
+                            "caja_330": "cajas_torneadas_330",
+                            "caja_300": "cajas_torneadas_300",
+                            "caja_250": "cajas_torneadas_250",
+                            "cubrecuchilla_300": "cubre_300_torneado",
+                            "teletubi_300": "teletubi_300_torneado"
+                        }
+                        
+                        if pieza_og in piezas_mapeo:
+                            pieza_torneada = piezas_mapeo[pieza_og]
+                            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_torneada))
+                        
+                        if pieza_og in ["carros", "carros_250", "movimiento"]:
+                            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                            cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+
+                        historial.insert(0, f"Se doblaron {cantidad_og} unidades de {pieza_og}.")
+                    else:
+                        historial.insert(0, f"No hay suficientes unidades de {pieza_og} en stock.")
+                else:
+                    historial.insert(0, f"No hay suficientes unidades de {pieza_og} en stock.")
+            else:
+                historial.insert(0, f"No hay piezas de {pieza_og} en stock.")
+
+            conn.commit()  # Confirmar los cambios en la base de datos
+            cantidad_ingresada.delete(0, "end")  # Limpiar la entrada de cantidad
+            limpiar_tabla(treeview)  # Limpiar la tabla antes de actualizar los datos
+            
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()  # Revertir los cambios en caso de error
+    finally:
+        conn.close()  # Cerrar la conexión a la base de datos

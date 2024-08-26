@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from mycode.funciones.add_funcion import mostrar_categoria, limpiar_tabla, agregar_piezas
 
-categoria = ["Aluminio", "Hierro", "Plastico", "Compra", "Chapa", "Tornilleria", "Fundidor"]
+categoria = ["Aluminio", "Hierro", "Plastico", "Compra", "Chapa", "Tornilleria", "Acero_dulce"]
 
 def add_piezas(ventana):
     pestania = ttk.Frame(ventana)
@@ -23,13 +23,16 @@ def add_piezas(ventana):
     box_btn = tk.Frame(box1)
     box_btn.grid(row=2,column=0)
 
-    ttk.Button(box_btn, text=categoria[0]).grid(row=1, column=0)
+    ttk.Button(box_btn, text=categoria[0], command=lambda:
+        mostrar_categoria(mostrar_piezas, "Aluminio", "piezas_brutas", detalles_pieazas, pieza_seleccionada)).grid(row=1, column=0)
     ttk.Button(box_btn, text=categoria[1], command=lambda: mostrar_categoria(mostrar_piezas, "Hierro", "piezas_brutas", detalles_pieazas, pieza_seleccionada)).grid(row=1, column=1)
-    ttk.Button(box_btn, text=categoria[2]).grid(row=2, column=0)
+    ttk.Button(box_btn, text=categoria[2], command=lambda:mostrar_categoria(mostrar_piezas, "Plastico", "piezas_brutas", detalles_pieazas, pieza_seleccionada) ).grid(row=2, column=0)
     ttk.Button(box_btn, text=categoria[3]).grid(row=2, column=1)
     ttk.Button(box_btn, text=categoria[4], command=lambda: mostrar_categoria(mostrar_piezas, "Chapa", "piezas_brutas", detalles_pieazas, pieza_seleccionada)).grid(row=3, column=0)
-    ttk.Button(box_btn, text=categoria[5]).grid(row=3, column=1)
-    ttk.Button(box_btn, text=categoria[6]).grid(row=4, columnspan=2)
+    ttk.Button(box_btn, text=categoria[5], command=lambda:
+        mostrar_categoria(mostrar_piezas, "Tornilleria", "piezas_brutas", detalles_pieazas, pieza_seleccionada)).grid(row=3, column=1)
+    ttk.Button(box_btn, text=categoria[6], command=lambda:
+        mostrar_categoria(mostrar_piezas, "Acero_dulce", "piezas_brutas", detalles_pieazas, pieza_seleccionada)).grid(row=4, columnspan=2)
     ttk.Button(box_btn, text="Limpiar Tabla", command=lambda: limpiar_tabla(mostrar_piezas)).grid(row=5, columnspan=2)
 
     box_btn2 = tk.Frame(box1)

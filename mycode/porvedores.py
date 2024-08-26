@@ -18,10 +18,10 @@ query_maxi = "SELECT PIEZAS ,CANTIDAD FROM pulidor_maxi"
 query_stock_fabrica_pulido = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pulidor'"
 
 
-lista_piezas_carmerlo = ["brazo_250","brazo_300","brazo_330","caja_torneado_250","caja_torneado_300","caja_torneado_330","cubrecuchilla_250","cubrecuchilla_300","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
+lista_piezas_carmerlo = ["brazo_250","brazo_300","brazo_330","cajas_torneado_250","cajas_torneado_300","cajas_torneado_330","cubrecuchilla_250","cubrecuchilla_300","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
 ]
 
-lista_piezas_maxi = ["brazo_250","brazo_300","brazo_330","caja_torneado_250","caja_torneado_300","caja_torneado_330","cubrecuchilla_250","cubrecuchilla_300","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
+lista_piezas_maxi = ["brazo_250","brazo_300","brazo_330","cajas_torneado_250","cajas_torneado_300","cajas_torneado_330","cubrecuchilla_250","cubrecuchilla_300","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
 ]
 
 

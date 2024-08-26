@@ -1,6 +1,6 @@
 import tkinter as tk 
 from tkinter import ttk
-from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin
+from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin, accion_torno
 
 macanizado = ["plasma", "plegadora", "soldador", ""]
 
@@ -9,6 +9,10 @@ lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pin
 piezas_corte = ["planchuela_250","planchuela_300","planchuela_330","varilla_300","varilla_330","varilla_250","portaeje"]
 
 piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje"]
+
+piezas_augeriado = ["brazos_330", "carros"]
+
+piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300"]
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
 
@@ -26,7 +30,8 @@ query_mostrar_piezas_balancin_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_bruta
 
 query_mostrar_piezas_balancin_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MECANIZADO = 'balancin'"
 
-
+query_mostar_piezas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'torno'"
+querty_mostrar_piezas_torneada = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'torno' UNION SELECT PIEZAS ,CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'torno' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE ORIGEN = 'torno'"
 
 def mecanizado(ventana):
     pestania = ttk.Frame(ventana)
@@ -58,15 +63,15 @@ def mecanizado(ventana):
     historial.grid(row=6,column=0)
 
     
+    
+    
+    
+    
     box2 = tk.Frame(index)
     box2.grid(row=1, column=1)
     
     mecanizsmo = ttk.Frame(box2)
     mecanizsmo.grid(row=0, column=1)
-
-
-
-
 
 
     plegadora = ttk.Frame(mecanizsmo, style='Color.TFrame')
@@ -105,7 +110,6 @@ def mecanizado(ventana):
     ttk.Separator(plegadora, orient="horizontal").grid(
         row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
     )
-    
     
     
     
@@ -151,8 +155,6 @@ def mecanizado(ventana):
     ttk.Separator(plasma, orient="horizontal").grid(
         row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
     )
-    
-    
     
     
     
@@ -240,3 +242,103 @@ def mecanizado(ventana):
         row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
     )
     
+    
+    
+    
+    
+    box3 = tk.Frame(index)
+    box3.grid(row=1, column=2)
+    
+    mecanizsmo2 = ttk.Frame(box3)
+    mecanizsmo2.grid(row=0, column=1)
+
+
+
+    augeriado = ttk.Frame(mecanizsmo2, style='Color.TFrame')
+    augeriado.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+    ttk.Label(augeriado, text="Augeriado", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Label(augeriado, text="Piezas para augeriadar",style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_balancin = ttk.Combobox(augeriado, values=(piezas_augeriado), state="readonly", width=16)
+    piezas_a_balancin.grid(row=2, column=0)
+    ttk.Label(augeriado, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
+    cantidad_ingresada_balancin = ttk.Entry(augeriado, width=10, style='WhiteOnRed.TEntry')
+    cantidad_ingresada_balancin.grid(row=2, column=1)
+    tk.Button(
+        augeriado,
+        text="Balancin",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold")
+    ).grid(row=3, column=1, padx=2, pady=2)
+    ttk.Separator(augeriado, orient="horizontal").grid(
+        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+    stock_balancin = ttk.Frame(augeriado, style='Color.TFrame')
+    stock_balancin.grid(row=5, column=0, columnspan=2)
+    ttk.Label(stock_balancin, text="Stock del piezas augeriar", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Button(
+        stock_balancin,
+        text="Stock Bruto",
+        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3) 
+    ttk.Button(
+        stock_balancin,
+        text="Stock Terminado",
+        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+    ttk.Separator(augeriado, orient="horizontal").grid(
+        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+    
+    
+    
+    
+    
+    
+    
+    
+    torno = ttk.Frame(mecanizsmo2, style='Color.TFrame')
+    torno.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
+
+    ttk.Label(torno, text="Torno", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
+
+    ttk.Label(torno, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_torner = ttk.Combobox(torno, values=piezas_torno, state="readonly", width=16)
+    piezas_a_torner.grid(row=2, column=0)
+
+    ttk.Label(torno, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
+    cantidad_torneada = ttk.Entry(torno, width=10, style='WhiteOnRed.TEntry')
+    cantidad_torneada.grid(row=2, column=1)
+
+    tk.Button(
+        torno,
+        text="Tornear",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold"),
+        command=lambda: accion_torno(cantidad_torneada, piezas_a_torner, tabla_principal, historial)
+    ).grid(row=3, column=1, padx=2, pady=2)
+
+    ttk.Separator(torno, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+
+    stock_torno = ttk.Frame(torno, style='Color.TFrame')
+    stock_torno.grid(row=5, column=0, columnspan=2)
+    
+    ttk.Label(stock_torno, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Button(
+        stock_torno,
+        text="Stock Bruto",
+        style="Estilo4.TButton", command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostar_piezas_para_tornear)).grid(row=1, column=0, pady=3, padx=3)
+    ttk.Button(
+        stock_torno,
+        text="Stock Terminado",
+        style="Estilo4.TButton",
+        command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_piezas_torneada)).grid(row=1, column=1, pady=3, padx=3)
+
+    ttk.Separator(torno, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
