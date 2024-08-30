@@ -151,34 +151,40 @@ def accion_corte(cantidad_ingresada, pieza_seleccionada, treeview, historial):
             historial.insert(0, "Ingrese una cantidad válida")
             return
         cantidad_og = int(cantidad_og)
+
         # Confirmar la acción con el usuario
         confirmar = messagebox.askyesno("Confirmar acción", f"¿Está seguro de que quiere cortar {cantidad_og} unidades de {piezas_og}?")
         
         if confirmar:
-            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
+            if piezas_og in chapa_cubre_cabezal:
+                cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (piezas_og,))
+            else:
+                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
+
             resultado = cursor.fetchone()
             
             if resultado:
                 if piezas_og in chapa_cubre_cabezal:
-                    cantidad_actual = cantidad_og  # Se usa cantidad_og para restar y sumar a la cantidad
-                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_actual, piezas_og))
-                    cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_actual, piezas_og))
-                else: 
-                    cantidad_actual = resultado[0] + cantidad_og
-                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = ? WHERE PIEZAS = ?", (cantidad_actual, piezas_og))
+                    cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                else:
+                    nueva_cantidad = resultado[0] + cantidad_og
+                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, piezas_og))
             else:
                 historial.insert(0, f"No se encontró la pieza {piezas_og}")
-                            
+                return  # Salir de la función si no se encuentra la pieza
+
             limpiar_tabla(treeview)
             historial.insert(0, f"Se cortaron {cantidad_og} unidades de {piezas_og}")
             conn.commit()
+
+            # Limpia el campo de cantidad ingresada
             cantidad_ingresada.delete(0, "end")
     except sqlite3.Error as e:
         historial.insert(0, f"Error en la base de datos: {e}")
         conn.rollback()
     finally:
         conn.close()
-        
+
 def accion_balancin(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     cantidad_og = cantidad_ingresada.get()
     piezas_og = pieza_seleccionar.get()
@@ -417,3 +423,43 @@ def accion_fresa(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         conn.rollback()  # Revertir los cambios en caso de error
     finally:
         conn.close()  # Cerrar la conexión a la base de datos
+
+def accion_lijar(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
+    pieza_og = pieza_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()   
+
+def accion_soldar(piezas_seleccionadad, cantidad_Seleccionada, treeview, historial):
+    pass
+    return
+

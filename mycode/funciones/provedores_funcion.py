@@ -120,8 +120,16 @@ cabezales_dic = {
     }
 }
 
-
-#query_mostrar_piezas_soldador = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador'"
+piezas_para_afiladores = {
+    "capuchon_afilador": 2,
+    "carcaza_afilador": 1,
+    "eje_corto": 1,
+    "eje_largo": 1,
+    "ruleman608": 2,
+    "palanca_afilador": 1,
+    "resorte_palanca": 1,
+    "resorte_empuje": 2
+}
 
 base = ["BaseInox_330",
 "BaseInox_300",
@@ -570,5 +578,89 @@ def resivir_de_pintura(pieza_seleccionada, cantidad_seleccionada, treeview, hist
     finally:
         conn.close()
 
+def mandar_a_roman(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
+    pieza_og = pieza_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
 
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
 
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE AFILADOR SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
+def resibir_afiladores(cantidad_ingresada_, res):
+    cantidad_ingresada = cantidad_ingresada_.get()  # Obtener el valor ingresado por el usuario
+    cantidad_ingresada_int = int(cantidad_ingresada)  # Convertirlo a entero si es necesario
+
+    cantidad_piezas = {
+        "capuchon_afilador": 2,
+        "carcaza_afilador": 1,
+        "eje_corto": 1,
+        "eje_largo": 1,
+        "ruleman608": 2,
+        "palanca_afilador": 1,
+        "resorte_palanca": 1,
+        "resorte_empuje": 2
+    }
+
+    with sqlite3.connect("dbfadeco.db") as conn:
+        cursor = conn.cursor()
+
+        try:
+            piezas_suficientes = True
+
+            for pieza, cantidad_pieza in cantidad_piezas.items():
+                cursor.execute("SELECT CANTIDAD FROM AFILADOR WHERE PIEZAS = ?", (pieza,))
+                cantidad_actual = cursor.fetchone()
+
+                if cantidad_actual is None or cantidad_actual[0] < cantidad_ingresada_int * cantidad_pieza:
+                    messagebox.showerror("Error", f"No hay suficiente cantidad de {pieza} en lo de roman")
+                    piezas_suficientes = False
+                    break
+
+            if piezas_suficientes:
+                confirmacion = messagebox.askyesno("Confirmar", f"¿Estás seguro de que deseas resibir {cantidad_ingresada_int} unidades de afiladores de Roman?")
+                if confirmacion:
+                    for pieza, cantidad_pieza in cantidad_piezas.items():
+                        cantidad_restante = cantidad_actual[0] - cantidad_ingresada_int * cantidad_pieza
+                        cursor.execute("UPDATE AFILADOR SET CANTIDAD = ? WHERE PIEZAS = ?", (cantidad_restante, pieza))
+
+                    cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'afilador_final'", (cantidad_ingresada_int,))
+                    conn.commit()
+                    messagebox.showinfo("Éxito", f"Roman armó {cantidad_ingresada_int} unidades de afiladores")
+                    res.insert(0, f"Roman armó {cantidad_ingresada_int} unidades de afiladores")
+            
+            # Limpiar el contenido del Entry después de la acción
+            cantidad_ingresada_.delete(0, 'end')
+            
+        except sqlite3.Error as e:
+            messagebox.showerror("Error", f"Error en la base de datos: {e}")
+            conn.rollback()
+
+        except ValueError as ve:
+            messagebox.showerror("Error", ve)

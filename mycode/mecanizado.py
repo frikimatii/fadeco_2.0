@@ -10,13 +10,17 @@ lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pin
 piezas_corte = [ "planchuela_250", "planchuela_300", "planchuela_330", "varilla_300", "varilla_330", "varilla_250", "portaeje", "eje_rectificado", "varilla_brazo_330" ,"varilla_brazo_300" ,"varilla_brazo_250" ,"tubo_manija" ,"tubo_manija_250" ,"cuadrado_regulador" ,"palanca_afilador" ,"eje_corto" ,"eje_largo" ,"buje_eje_eco" ,"teletubi_eco", "guia_u", "chapa_cubre_cabezal_inox", "chapa_cubre_cabezal_pintada", "chapa_cubre_cabezal_inox_250"]
 
 
-piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje", "guia_u", "teletubi_eco", "chapaU_inox", "chapaU_pintada", "chapaU_inox_250"]
+piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje", "guia_u", "teletubi_eco", "chapaU_inox", "chapaU_pintada", "chapaU_inox_250", "eje_corto", "eje_largo"]
 
 piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
 
 piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco"]
 
 piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250"]
+
+piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
+
+piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250", "varilla_330", "varilla_300", "varilla_250"]
 
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
@@ -427,12 +431,12 @@ def mecanizado(ventana):
     ttk.Label(soldador, text="SOLDADO", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
 
     ttk.Label(soldador, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_fresa = ttk.Combobox(soldador, values=piezas_para_fresar, state="readonly", width=16)
-    piezas_a_fresa.grid(row=2, column=0)
+    piezas_a_soldar = ttk.Combobox(soldador, values=piezas_para_fresar, state="readonly", width=16)
+    piezas_a_soldar.grid(row=2, column=0)
 
     ttk.Label(soldador, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
-    cantidad_fresa = ttk.Entry(soldador, width=10, style='WhiteOnRed.TEntry')
-    cantidad_fresa.grid(row=2, column=1)
+    cantidad_sold = ttk.Entry(soldador, width=10, style='WhiteOnRed.TEntry')
+    cantidad_sold.grid(row=2, column=1)
 
     tk.Button(
         soldador,
@@ -441,9 +445,7 @@ def mecanizado(ventana):
         foreground="white",
         padx=4,
         pady=1,
-        font=('Helvetica', 8, "bold"),
-        command=lambda: accion_fresa(cantidad_fresa, piezas_a_fresa, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
+        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
 
     ttk.Separator(soldador, orient="horizontal", style="Separador2.TSeparator").grid(
         row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
@@ -456,14 +458,157 @@ def mecanizado(ventana):
     ttk.Button(
         stock_soldador,
         text="Stock Bruto",
-        style="Estilo4.TButton", command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_velas_planchada_cortada)).grid(row=1, column=0, pady=3, padx=3)
+        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
     ttk.Button(
         stock_soldador,
         text="Stock Terminado",
-        style="Estilo4.TButton", command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_velas_planchada_fresada)).grid(row=1, column=1, pady=3, padx=3)
+        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
 
     ttk.Separator(soldador, orient="horizontal", style="Separador2.TSeparator").grid(
         row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
     )
+
+
+
+    
+    lijado = ttk.Frame(box4, style='Color.TFrame')
+    lijado.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
+
+    ttk.Label(lijado, text="Lijado", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
+
+    ttk.Label(lijado, text="Piezas A lijar",style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_lijado = ttk.Combobox(lijado, values=piezas_para_lijar, state="readonly", width=16)
+    piezas_a_lijado.grid(row=2, column=0)
+
+    ttk.Label(lijado, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
+    cantidad_lijado = ttk.Entry(lijado, width=10, style='WhiteOnRed.TEntry')
+    cantidad_lijado.grid(row=2, column=1)
+
+    tk.Button(
+        lijado,
+        text="Tornear",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
+
+    ttk.Separator(lijado, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+
+    stock_lijado = ttk.Frame(lijado, style='Color.TFrame')
+    stock_lijado.grid(row=5, column=0, columnspan=2)
+    
+    ttk.Label(stock_lijado, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Button(
+        stock_lijado,
+        text="Stock Bruto",
+        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
+    ttk.Button(
+        stock_lijado,
+        text="Stock Terminado",
+        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+
+    ttk.Separator(lijado, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+    
     
 
+
+
+
+
+    pulido = ttk.Frame(box4, style='Color.TFrame')
+    pulido.grid(row=2, column=0, padx=5, pady=5, columnspan=2)
+
+    ttk.Label(pulido, text="pulido", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
+
+    ttk.Label(pulido, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_pulido = ttk.Combobox(pulido, values=piezas_para_fresar, state="readonly", width=16)
+    piezas_a_pulido.grid(row=2, column=0)
+
+    ttk.Label(pulido, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
+    cantidad_pulido = ttk.Entry(pulido, width=10, style='WhiteOnRed.TEntry')
+    cantidad_pulido.grid(row=2, column=1)
+
+    tk.Button(
+        pulido,
+        text="Tornear",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
+
+    ttk.Separator(pulido, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+
+    stock_pulido = ttk.Frame(pulido, style='Color.TFrame')
+    stock_pulido.grid(row=5, column=0, columnspan=2)
+    
+    ttk.Label(stock_pulido, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Button(
+        stock_pulido,
+        text="Stock Bruto",
+        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
+    ttk.Button(
+        stock_pulido,
+        text="Stock Terminado",
+        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+
+    ttk.Separator(pulido, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+    
+
+
+
+
+
+
+    soldar = ttk.Frame(box4, style='Color.TFrame')
+    soldar.grid(row=3, column=0, padx=5, pady=5, columnspan=2)
+
+    ttk.Label(soldar, text="soldar", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
+
+    ttk.Label(soldar, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_soldar = ttk.Combobox(soldar, values=piezas_para_fresar, state="readonly", width=16)
+    piezas_a_soldar.grid(row=2, column=0)
+
+    ttk.Label(soldar, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
+    cantidad_soldar = ttk.Entry(soldar, width=10, style='WhiteOnRed.TEntry')
+    cantidad_soldar.grid(row=2, column=1)
+
+    tk.Button(
+        soldar,
+        text="Tornear",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
+
+    ttk.Separator(soldar, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+
+    stock_soldar = ttk.Frame(soldar, style='Color.TFrame')
+    stock_soldar.grid(row=5, column=0, columnspan=2)
+    
+    ttk.Label(stock_soldar, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+    ttk.Button(
+        stock_soldar,
+        text="Stock Bruto",
+        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
+    ttk.Button(
+        stock_soldar,
+        text="Stock Terminado",
+        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+
+    ttk.Separator(soldar, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+    )
+    

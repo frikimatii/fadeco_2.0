@@ -1,7 +1,7 @@
 import tkinter as tk 
 from tkinter import ttk
 
-from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de, armar_cabezales, mandar_a_niquelar, resibir_niquelado, mandar_a_pintar, resivir_de_pintura
+from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de, armar_cabezales, mandar_a_niquelar, resibir_niquelado, mandar_a_pintar, resivir_de_pintura, mandar_a_roman, resibir_afiladores
 
 bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300", "cabezal_pintado"]
 
@@ -45,6 +45,9 @@ modelo_piezas = ["BasePintada_330", "BasePintura_300", "cabezal_pintada","caja_s
 piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
 
 
+piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
+
+
 query_cabezales_inox = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'inox' AND SECTOR = 'cabezal'"
 query_cabezales_pintada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'pintada' AND SECTOR = 'cabezal'"
 query_cabezales_250 = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = '250' AND SECTOR = 'cabezal' "
@@ -63,6 +66,12 @@ quety_pintura_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO 
 quety_en_pintura = "SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'pintura'"
 
 quety_pintura_terminada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'pintura'"
+
+query_piezas_afialador_fabrica = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'pieza_afilador'"
+
+query_piezas_afialador_en_roman = "SELECT PIEZAS, CANTIDAD FROM AFILADOR "
+
+query_afialador_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = 'afilador_terminado' "
 
 
 
@@ -140,10 +149,9 @@ def provedores(ventana):
     tk.Label(soldador, text="Cantidad").grid(row=9, column=0)
     cantidad_de_bases_resividas = tk.Entry(soldador)
     cantidad_de_bases_resividas.grid(row=9, column=1)
-    tk.Button(soldador, text="Resivir", command=lambda:resibir_bases(base_seleccionada_resivida, cantidad_de_bases_resividas, historial) ).grid(row=10, columnspan=2)
+    tk.Button(soldador, text="Resivir", command=lambda:resibir_bases(base_seleccionada_resivida, cantidad_de_bases_resividas, historial)).grid(row=10, columnspan=2)
     tk.Label(soldador, text="Info del Soldador").grid(row=11, column=0)
-    tk.Button(soldador, text="Stock en Soldador", command=lambda: mostrar_piezas_tablas(tabla_principal,
-query_mostras_bases_ensoldador)).grid(row=12, column=0)
+    tk.Button(soldador, text="Stock en Soldador", command=lambda: mostrar_piezas_tablas(tabla_principal,query_mostras_bases_ensoldador)).grid(row=12, column=0)
     tk.Button(soldador, text="Stock en fabrica", command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_base_enfabrica)).grid(row=12, column=1)
     
     
@@ -490,13 +498,10 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
     box10.grid(row=1, column=4)
 
 
-
     box1 = ttk.Frame(box10, style='Color.TFrame')
     box1.grid(row=0, column=3, sticky="n",pady=3, padx=4, columnspan=2)
     
 
-
-    
     ttk.Label(box1, text="Armado De Afilador", style="WhiteOnRed.TLabel", font=("Arial", 18, "bold")).grid(row=0, column=0, columnspan=2)
 
     ttk.Label(box1, text="Mostrar Piezas", style="WhiteOnRed.TLabel").grid(row=1, column=0, columnspan=2)
@@ -507,7 +512,8 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
         background= "gray", 
         foreground= "white",
         padx=4,
-        pady=1).grid(row=2, column=1)
+        pady=1,
+        command=  lambda: mostrar_piezas_tablas(tabla_principal,query_piezas_afialador_fabrica )).grid(row=2, column=1)
     tk.Button(
         box1, 
         text="en Roman", 
@@ -515,7 +521,8 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
         background= "gray", 
         foreground= "white",
         padx=4,
-        pady=1).grid(row=2, column=0)
+        pady=1, 
+        command=  lambda: mostrar_piezas_tablas(tabla_principal,query_piezas_afialador_en_roman)).grid(row=2, column=0)
     
 
     ttk.Separator(box1, orient="horizontal", style="Separador2.TSeparator").grid(
@@ -529,7 +536,8 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
         background= "gray", 
         foreground= "white",
         padx=4,
-        pady=1).grid(row=4, column=1)
+        pady=1, 
+        command= lambda: mostrar_piezas_tablas(tabla_principal, query_afialador_terminado )).grid(row=4, column=1)
 
     ttk.Separator(box1, orient="horizontal", style="Separador2.TSeparator").grid(
         row=5, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
@@ -553,9 +561,8 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
             background="green",
             foreground="white",
             padx=4,
-            pady=1, 
-            command= lambda:enviar_piezas_a_roman(comboxboxafiladores, entrycantidad1, "piezas_finales_defenitivas", "piezas_afiladores_roman", arbol, result ,info
-        )).grid(row=3, column=1)
+            pady=1,
+            command= lambda: mandar_a_roman(comboxboxafiladores, entrycantidad1, tabla_principal, historial) ).grid(row=3, column=1)
     
     
     ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
@@ -571,7 +578,7 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
             foreground="white",
             padx=4,
             pady=1,
-            command=lambda:  armado_final_afiladores_y_agregar_cantidad(cantidad_terminada, result)
+            command= lambda: resibir_afiladores(cantidad_terminada, historial)
             ).grid(row=7, column=0, columnspan=2)
 
     ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
