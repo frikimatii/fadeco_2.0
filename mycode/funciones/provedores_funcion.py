@@ -102,6 +102,25 @@ BaseECO = [
     "portaeje"
 ]
 
+cabezales_dic = {
+    "cabezal_250": {
+        "chapa_U_inox_250": "chapa_U_inox_250",
+        "chapa_cubre_cabezal_inox_250": "chapa_cubre_cabezal_inox_250",
+        "bandeja_cabezal_inox_250": "bandeja_cabezal_inox_250"
+    },
+    "cabezal_inox": {
+        "chapa_U_inox": "chapa_U_inox",
+        "chapa_cubre_cabezal_inox": "chapa_cubre_cabezal_inox",
+        "bandeja_cabezal_inox": "bandeja_cabezal_inox"
+    },
+    "cabezal_pintada": {
+        "chapa_U_pintada": "chapa_U_pintada",
+        "chapa_cubre_cabezal_pintada": "chapa_cubre_cabezal_pintada",
+        "bandeja_cabezal_pintada": "bandeja_cabezal_pintada"
+    }
+}
+
+
 #query_mostrar_piezas_soldador = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador'"
 
 base = ["BaseInox_330",
@@ -336,3 +355,220 @@ def resicbir_piezas_de(proveedor, cantidad_ingresada, pieza_seleccionada, treevi
         conn.rollback()
     finally:
         conn.close()
+
+def armar_cabezales(modelo, cantidad, historial):
+    cantidad = cantidad.get()  # Obtiene el valor del Entry
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if modelo not in cabezales_dic:
+            historial.insert(0, f"El modelo {modelo} no existe.")
+            return
+
+        piezas_necesarias = cabezales_dic[modelo]
+
+        if not cantidad.isdigit() or int(cantidad) <= 0:
+            historial.insert(0, "Ingrese una cantidad válida.")
+            return
+        cantidad = int(cantidad)
+
+        # Confirmar la acción con el usuario
+        confirmar = messagebox.askyesno("Confirmar acción", f"¿Está seguro de que quiere armar {cantidad} unidades de {modelo}?")
+        
+        if not confirmar:
+            historial.insert(0, "Acción cancelada por el usuario.")
+            return
+
+        # Verificación de stock
+        for pieza_db_name in piezas_necesarias.values():
+            cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_db_name,))
+            resultado = cursor.fetchone()
+
+            if not resultado or resultado[0] < cantidad:
+                historial.insert(0, f"No hay suficiente stock de {pieza_db_name} para armar {cantidad} cabezales.")
+                return
+
+        # Descontar las piezas necesarias
+        for pieza_db_name in piezas_necesarias.values():
+            cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad, pieza_db_name))
+
+        # Sumar la cantidad de cabezales armados
+        cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (modelo,))
+        resultado = cursor.fetchone()
+
+        if resultado:
+            nueva_cantidad = resultado[0] + cantidad
+            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, modelo))
+        else:
+            historial.insert(0, f"El modelo {modelo} no se encontró.")
+            return
+
+        conn.commit()
+        historial.insert(0, f"Se armaron {cantidad} unidades de {modelo}.")
+
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+
+    finally:
+        conn.close()
+
+def mandar_a_niquelar(piezas_seleccionada, cantidad_seleccionada, treeview, historial):
+    piezas_og = piezas_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0:
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar acción", f"¿Está seguro de que quiere mandar a niquelar {cantidad_og} unidades de {piezas_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+
+                # Verifica si la pieza existe en PIEZAS_RETOCADA
+                cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = ?", (piezas_og,))
+                resultado_retoque = cursor.fetchone()
+
+                if resultado_retoque:
+                    cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                else:
+                    historial.insert(0, "No se encontro la pieza seleccionada ")
+
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a niquelar {cantidad_og} unidades de {piezas_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No se encontró la pieza {piezas_og} o no hay suficiente cantidad en stock.")
+            cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally: 
+        conn.close()
+
+def resibir_niquelado(piezas_seleccionada, cantidad_seleccionada, treeview, historial):
+    piezas_og = piezas_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0:
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar acción", f"¿Está seguro de que quiere mandar a niquelar {cantidad_og} unidades de {piezas_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = ?", (piezas_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+
+                # Verifica si la pieza existe en PIEZAS_RETOCADA
+                cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (piezas_og,))
+                resultado_retoque = cursor.fetchone()
+
+                if resultado_retoque:
+                    cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                else:
+                    historial.insert(0, "No se encontro la pieza seleccionada ")
+
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a niquelar {cantidad_og} unidades de {piezas_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No se encontró la pieza {piezas_og} o no hay suficiente cantidad en stock.")
+            cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally: 
+        conn.close()
+
+def mandar_a_pintar(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
+    pieza_og = pieza_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
+def resivir_de_pintura(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
+    pieza_og = pieza_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
+
+

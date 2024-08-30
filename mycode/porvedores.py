@@ -1,9 +1,9 @@
 import tkinter as tk 
 from tkinter import ttk
 
-from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de
+from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de, armar_cabezales, mandar_a_niquelar, resibir_niquelado, mandar_a_pintar, resivir_de_pintura
 
-bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300"]
+bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300", "cabezal_pintado"]
 
 query_mostrar_piezas_soldador = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'soldador' "
 
@@ -18,11 +18,52 @@ query_maxi = "SELECT PIEZAS ,CANTIDAD FROM pulidor_maxi"
 query_stock_fabrica_pulido = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pulidor'"
 
 
+query_piezas_cabezal_250 = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROVEDOR = 'pulidor' AND MODELO = '250'"
+
+
+query_piezas_cabezal_inox = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROVEDOR = 'pulidor' AND MODELO = 'inox'"
+
+query_piezas_cabezal_pintada = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROVEDOR = 'pulidor' AND MODELO = 'pintada'"
+
+niquelado = [
+    "eje_rectificado",
+    "varilla_brazo_330",
+    "varilla_brazo_300",
+    "varilla_brazo_250",
+    "tubo_manija",
+    "tubo_manija_250",
+    "palanca_afilador"
+]
+
 lista_piezas_carmerlo = ["brazo_250","brazo_300","brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
 ]
 
 lista_piezas_maxi = ["brazo_250","brazo_300","brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
 ]
+
+modelo_piezas = ["BasePintada_330", "BasePintura_300", "cabezal_pintada","caja_soldada_eco", "teletubi_doblado_eco"]
+piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
+
+
+query_cabezales_inox = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'inox' AND SECTOR = 'cabezal'"
+query_cabezales_pintada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'pintada' AND SECTOR = 'cabezal'"
+query_cabezales_250 = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = '250' AND SECTOR = 'cabezal' "
+
+
+quety_niquelado_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'niquelar'"
+
+quety_niquelado_en_niquelado = "SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'niqular'"
+
+quety_niquelado_en_fabrica = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'niquelar'"
+
+
+
+quety_pintura_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pintura'"
+
+quety_en_pintura = "SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'pintura'"
+
+quety_pintura_terminada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'pintura'"
+
 
 
 
@@ -57,6 +98,10 @@ def provedores(ventana):
     historial.grid(row=6,column=0)
 
     
+
+
+
+
     box2 = tk.Frame(index)
     box2.grid(row=1, column=1)
 
@@ -102,6 +147,90 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
     tk.Button(soldador, text="Stock en fabrica", command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_base_enfabrica)).grid(row=12, column=1)
     
     
+
+
+
+
+
+
+
+    cabezales_terminados = ttk.Frame(box2, style='Pestania.TFrame')
+    cabezales_terminados.grid(row=1, column=0)
+
+    ttk.Label(cabezales_terminados, text="Cabezales", font=("Arial", 17, "bold"), style='WhiteOnRed.TLabel').grid(row=0, column=1, padx=2, pady=2)
+
+    stock_cabezal = ttk.Frame(cabezales_terminados)
+    stock_cabezal.grid(row=1, columnspan=2)
+
+    tk.Label(stock_cabezal, text="Stock de cabezales").grid(row=0, column=0)
+
+    btn_agregar_cabezal_inox = ttk.Button(
+        stock_cabezal,
+        text="INOX",
+        style="TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, query_cabezales_inox)
+        
+        )
+    btn_agregar_cabezal_inox.grid(row=1, column=0, padx=3)
+    btn_agregar_cabezal_pintada = ttk.Button(
+        stock_cabezal,
+        text="PINTADA",
+        style="TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, query_cabezales_pintada))
+    btn_agregar_cabezal_pintada.grid(row=1, column=1, padx=3)
+    btn_agregar_cabezal_250 = ttk.Button(
+        stock_cabezal,
+        text="250",
+        style="TButton", 
+        command= lambda: mostrar_piezas_tablas(tabla_principal, query_cabezales_250))
+    btn_agregar_cabezal_250.grid(row=1, column=2, padx=3)
+
+    botones = tk.Frame(cabezales_terminados)
+    botones.grid(row=2 ,columnspan=2)
+
+
+    ttk.Label(botones, style='WhiteOnRed.TLabel', text="acero").grid(row=1, column=0)
+
+    entrada_cantida_inox = ttk.Entry(botones, width=10, style='WhiteOnRed.TEntry')
+    entrada_cantida_inox.grid(row=2, column=0)
+
+    btn_agregar_cabezal_inox = ttk.Button(
+        botones,
+        text="Agregar",
+        style="TButton",
+        command= lambda: armar_cabezales("cabezal_inox", entrada_cantida_inox, historial))
+    btn_agregar_cabezal_inox.grid(row=3, column=0, padx=3)
+
+    ttk.Label(botones, style='WhiteOnRed.TLabel', text="pintada").grid(row=1, column=1)
+
+    entrada_cantidad_pintada = ttk.Entry(botones, width=10, style='WhiteOnRed.TEntry')
+    entrada_cantidad_pintada.grid(row=2, column=1)
+
+    btn_agregar_cabezal_pintada = ttk.Button(
+        botones,
+        text="Agregar",
+        style="TButton",
+        command= lambda: armar_cabezales("cabezal_pintada", entrada_cantidad_pintada, historial))
+    btn_agregar_cabezal_pintada.grid(row=3, column=1, padx=3)
+    
+    ttk.Label(botones, style='WhiteOnRed.TLabel', text="250").grid(row=1, column=2)
+
+    entrada_cantidad_250 = ttk.Entry(botones, width=10, style='WhiteOnRed.TEntry')
+    entrada_cantidad_250.grid(row=2, column=2)
+
+    btn_agregar_cabezal_250 = ttk.Button(
+        botones,
+        text="Agregar",
+        style="TButton",
+        command= lambda: armar_cabezales("cabezal_250", entrada_cantidad_250, historial))
+    btn_agregar_cabezal_250.grid(row=3, column=2, padx=3 )
+    
+
+
+
+
+
+
     box3 = tk.Frame(index)
     box3.grid(row=1, column=2)
 
@@ -171,4 +300,280 @@ query_mostras_bases_ensoldador)).grid(row=12, column=0)
     
     tk.Label(maxi, text="--------------------------------------").grid(row=10, columnspan=2)
 
+
+
+
+
+
+
+    box4 = tk.Frame(index)
+    box4.grid(row=1, column=3)
+
+
+
+    box6 = ttk.Frame(box4, style='Color.TFrame')
+    box6.grid(row=2, column=0, columnspan=2)
+    
+    ttk.Label(box6, text="Pintura", style="WhiteOnRed.TLabel",font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=3 )
+
+    btn_group = tk.Frame(box6)
+    btn_group.grid(row=1, column=0, columnspan=3)
+
+    ttk.Button(
+        btn_group,
+        text="Stock en fabrica",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_pintura_bruto)
+    ).grid(row=1, column=0)
+    ttk.Button(
+        btn_group,
+        text="Stock Terminado",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_pintura_terminada)
+    ).grid(row=1, column=1)
+    ttk.Button(
+        btn_group,
+        text="Stock en Pintura",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_en_pintura)
+    ).grid(row=1, column=2)
+
+    ttk.Separator(box6, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=2, column=0, columnspan=3, padx=5, pady=5
+    )
+    
+    cajapintura1 = ttk.Frame(box6, style='Color.TFrame')
+    cajapintura1.grid(row=3, column=0)
+    
+    ttk.Label(cajapintura1 , text="Envios A Pintura",font=("Arial", 11, "bold"), style="WhiteOnRed.TLabel").grid(row=3, column=0, columnspan=2)
+
+    ttk.Label(cajapintura1 , text="Tipo", style="WhiteOnRed.TLabel",).grid(row=4, column=0, sticky="ew")
+    modelo = ttk.Combobox(cajapintura1 , values=modelo_piezas,state="readonly", width=17)
+    modelo.grid(row=4, column=1, sticky="w")
+
+    ttk.Label(cajapintura1 , text="Cantidad", style="WhiteOnRed.TLabel",).grid(row=5, column=0, sticky="ew")
+    enviar_a_pintura = ttk.Entry(cajapintura1 , width=10, style='WhiteOnRed.TEntry' )
+    enviar_a_pintura.grid(row=5, column=1, pady=2)
+
+    tk.Button(
+        cajapintura1 ,
+        text="Enviar Bases",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold"),
+        command= lambda: mandar_a_pintar(modelo, enviar_a_pintura, tabla_principal, historial)
+    ).grid(row=6, column=1)
+    
+
+    cajapintura4 = ttk.Frame(box6, style='Color.TFrame')
+    cajapintura4.grid(row=5, column=0)
+
+
+    ttk.Label(cajapintura4, text="Bases Resibidas",font=("Arial", 12, "bold"), style="WhiteOnRed.TLabel",).grid(row=11, column=0, columnspan=2)
+
+    ttk.Label(cajapintura4, text="Tipo", style="WhiteOnRed.TLabel",).grid(row=12, column=0)
+    modelo_pintur = ttk.Combobox(cajapintura4, values=modelo_piezas, state="readonly")
+    modelo_pintur.grid(row=12, column=1)
+
+    ttk.Label(cajapintura4, text="Cantidad", style="WhiteOnRed.TLabel",).grid(row=13, column=0)
+    resibe_cantidad_pintura = ttk.Entry(cajapintura4, width=10, style='WhiteOnRed.TEntry')
+    resibe_cantidad_pintura.grid(row=13, column=1, pady=3)
+
+    tk.Button(
+        cajapintura4,
+        text="Cantida Resibida",
+        background="blue",
+        foreground="white",
+        padx=10,
+        pady=4,
+        font=('Helvetica', 8, "bold"),
+        command= lambda: resivir_de_pintura(modelo_pintur, resibe_cantidad_pintura, tabla_principal, historial)
+    ).grid(row=14, column=1, pady=2)
+
+    ttk.Separator(cajapintura4, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=17, column=0, columnspan=2, sticky="ew", padx=3, pady=3
+    )
+
+
+
+
+
+
+
+
+    box5 = ttk.Frame(box4, style='Color.TFrame')
+    box5.grid(row=0, column=0 ,columnspan=2)
+    
+    ttk.Label(box5, text="Niquelado", style="WhiteOnRed.TLabel",font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=3)
+    grupbtn = tk.Frame(box5)
+    grupbtn.grid(row=1, column=0, columnspan=3)
+    ttk.Button(
+        grupbtn,
+        text="Stock en bruto",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_niquelado_bruto)
+    ).grid(row=1, column=0)
+    
+    ttk.Button(
+        grupbtn,
+        text="Stock en fabrica",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_niquelado_en_niquelado)
+    ).grid(row=1, column=1)
+    
+    ttk.Button(
+        grupbtn,
+        text="Stock en niquelado",
+        style="Estilo2.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_niquelado_en_fabrica)
+    ).grid(row=1, column=2)
+    
+    ttk.Label(box5, text="Piezas A Niquelar", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=2, column=0, columnspan=2)
+    ttk.Label(box5, text="Piezas", style="WhiteOnRed.TLabel").grid(row=3, column=0, sticky="w")
+    
+    lista_piezas = ttk.Combobox(box5, values=niquelado, state="readonly", width=17)
+    lista_piezas.grid(row=3, column=1, sticky="w")
+    
+    ttk.Label(box5, text="Cantidad", style="WhiteOnRed.TLabel",).grid(row=4, column=0, sticky="w")
+    
+    cantidad_a_niquelar = ttk.Entry(box5,style='WhiteOnRed.TEntry', width=10)
+    cantidad_a_niquelar.grid(row=4, column=1, sticky="w",pady=1)
+
+    tk.Button(
+        box5,
+        text="Enviar",
+        background="green",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold"),
+        command= lambda: mandar_a_niquelar(lista_piezas, cantidad_a_niquelar, tabla_principal, historial)
+    ).grid(row=5, column=1, columnspan=2, padx=2, pady=2,sticky="w")
+
+    ttk.Separator(box5, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=6, column=0, columnspan=2, sticky="ew", padx=3, pady=3
+    )
+
+    ttk.Label(box5, text="Piezas Terminadas", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=7, column=0, columnspan=2)
+    ttk.Label(box5, text="Piezas", style="WhiteOnRed.TLabel").grid(row=8, column=0, sticky="w")
+    
+    lista_piezas_nique = ttk.Combobox(box5, values=niquelado, state="readonly", width=17)
+    lista_piezas_nique.grid(row=8, column=1, sticky="w")
+    
+    ttk.Label(box5, text="Cantidad", style="WhiteOnRed.TLabel",).grid(row=9, column=0, sticky="w")
+    
+    cantidad_a_niquelado = ttk.Entry(box5,style='WhiteOnRed.TEntry', width=10)
+    cantidad_a_niquelado.grid(row=9, column=1, sticky="w" ,pady=1)
+
+    tk.Button(
+        box5,
+        text="Resibido",
+        background="blue",
+        foreground="white",
+        padx=4,
+        pady=1,
+        font=('Helvetica', 8, "bold"),
+        command= lambda: resibir_niquelado(lista_piezas_nique, cantidad_a_niquelado, tabla_principal, historial)
+        ).grid(row=10, column=1, columnspan=2, padx=2, pady=2, sticky="w")
+
+    ttk.Separator(box5, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=11, column=0, columnspan=2, sticky="ew", padx=3, pady=3
+    )    
+
+
+
+
+    
+    box10 = tk.Frame(index)
+    box10.grid(row=1, column=4)
+
+
+
+    box1 = ttk.Frame(box10, style='Color.TFrame')
+    box1.grid(row=0, column=3, sticky="n",pady=3, padx=4, columnspan=2)
+    
+
+
+    
+    ttk.Label(box1, text="Armado De Afilador", style="WhiteOnRed.TLabel", font=("Arial", 18, "bold")).grid(row=0, column=0, columnspan=2)
+
+    ttk.Label(box1, text="Mostrar Piezas", style="WhiteOnRed.TLabel").grid(row=1, column=0, columnspan=2)
+    tk.Button(
+        box1, 
+        text="en Fabrica", 
+        font=('Arial', 8, "italic"),
+        background= "gray", 
+        foreground= "white",
+        padx=4,
+        pady=1).grid(row=2, column=1)
+    tk.Button(
+        box1, 
+        text="en Roman", 
+        font=('Arial', 8, "italic"),
+        background= "gray", 
+        foreground= "white",
+        padx=4,
+        pady=1).grid(row=2, column=0)
+    
+
+    ttk.Separator(box1, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=3, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+
+    ttk.Label(box1, text="Afiladores Terminadas", style="WhiteOnRed.TLabel").grid(row=4, column=0)
+    tk.Button(
+        box1, 
+        text="Mostrar", 
+        font=('Arial', 8, "italic"),
+        background= "gray", 
+        foreground= "white",
+        padx=4,
+        pady=1).grid(row=4, column=1)
+
+    ttk.Separator(box1, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=5, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+
+    envios_afilador = ttk.Frame(box1, style='Color.TFrame')
+    envios_afilador.grid(row=6, column=0, columnspan=2)
+    
+    ttk.Label(envios_afilador, text="Enviar piezas a Roman", font=("Arial", 12, "bold"), style="WhiteOnRed.TLabel").grid(row=0, column=0, columnspan=2)
+    
+    ttk.Label(envios_afilador, text="Piezas", style="WhiteOnRed.TLabel").grid(row=1, column=0)
+    ttk.Label(envios_afilador, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=1, column=1)
+    
+    comboxboxafiladores = ttk.Combobox(envios_afilador, values=piezas_afilador ,state="readonly", width=15)
+    comboxboxafiladores.grid(row=2, column=0)
+    
+    entrycantidad1 = ttk.Entry(envios_afilador, width=7)
+    entrycantidad1.grid(row=2, column=1)
+    
+    tk.Button(envios_afilador, 
+            text="Envios a Roman",
+            background="green",
+            foreground="white",
+            padx=4,
+            pady=1, 
+            command= lambda:enviar_piezas_a_roman(comboxboxafiladores, entrycantidad1, "piezas_finales_defenitivas", "piezas_afiladores_roman", arbol, result ,info
+        )).grid(row=3, column=1)
+    
+    
+    ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=4, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    
+    
+    ttk.Label(envios_afilador, text="ENTREGA DE AFILADORES TERMINADOS" ,font=("Arial", 10, "bold"), style="WhiteOnRed.TLabel").grid(row=5, column=0, columnspan=2)
+    cantidad_terminada = ttk.Entry(envios_afilador, width=10)
+    cantidad_terminada.grid(row=6, column=0,columnspan=2, pady=2)
+    tk.Button(envios_afilador,
+            text="Afiladores Terminados",
+            background="blue",
+            foreground="white",
+            padx=4,
+            pady=1,
+            command=lambda:  armado_final_afiladores_y_agregar_cantidad(cantidad_terminada, result)
+            ).grid(row=7, column=0, columnspan=2)
+
+    ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=8, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 

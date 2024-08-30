@@ -6,7 +6,7 @@ from mycode.mecanizado import mecanizado
 from mycode.porvedores import provedores
 root = tk.Tk()
 root.title("FadeCo Stok")
-root.geometry("1000x800") #wxh
+root.geometry("1600x800") #wxh
 
 ventana = ttk.Notebook(root)
 ventana.grid(row=0, column=0)
