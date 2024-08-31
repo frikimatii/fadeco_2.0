@@ -1,7 +1,7 @@
 import tkinter as tk 
 from tkinter import ttk
 
-from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de, armar_cabezales, mandar_a_niquelar, resibir_niquelado, mandar_a_pintar, resivir_de_pintura, mandar_a_roman, resibir_afiladores
+from mycode.funciones.provedores_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_por_modelo, enviar_a_soldar, resibir_bases, mandar_piezas_a, resicbir_piezas_de, armar_cabezales, mandar_a_niquelar, resibir_niquelado, mandar_a_pintar, resivir_de_pintura, mandar_a_roman, resibir_afiladores, mecanizar_carcaza
 
 bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300", "cabezal_pintado"]
 
@@ -71,8 +71,9 @@ query_piezas_afialador_fabrica = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas
 
 query_piezas_afialador_en_roman = "SELECT PIEZAS, CANTIDAD FROM AFILADOR "
 
-query_afialador_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = 'afilador_terminado' "
+query_afialador_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = 'afilador_final' "
 
+query_piezas_carcaza = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'carcaza_afilador' "
 
 
 
@@ -539,22 +540,48 @@ def provedores(ventana):
         pady=1, 
         command= lambda: mostrar_piezas_tablas(tabla_principal, query_afialador_terminado )).grid(row=4, column=1)
 
+
+
     ttk.Separator(box1, orient="horizontal", style="Separador2.TSeparator").grid(
         row=5, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
+
+    
+
+
     envios_afilador = ttk.Frame(box1, style='Color.TFrame')
     envios_afilador.grid(row=6, column=0, columnspan=2)
+
+    carcaza = tk.Frame(envios_afilador)
+    carcaza.grid(row=0, columnspan=2)
+
+
+    tk.Label(carcaza, text="Carcaza mecanizadas").grid(row=4, columnspan=2)
+
+    tk.Label(carcaza, text="Ingrese Cantida de Carcaza.").grid(row=4, columnspan=2)
+
+    cantidad_ingresada_carcaza = tk.Entry(carcaza)
+    cantidad_ingresada_carcaza.grid(row=5, columnspan=2)
+
+    tk.Button(carcaza, text="Cargar...", command= lambda: mecanizar_carcaza(cantidad_ingresada_carcaza, tabla_principal, historial) ).grid(row=6, column=0)
+    tk.Button(carcaza, text="Consulta Carcaza", command= lambda: mostrar_piezas_tablas(tabla_principal, query_piezas_carcaza) ).grid(row=6, column=1)
     
-    ttk.Label(envios_afilador, text="Enviar piezas a Roman", font=("Arial", 12, "bold"), style="WhiteOnRed.TLabel").grid(row=0, column=0, columnspan=2)
+    ttk.Separator(carcaza, orient="horizontal", style="Separador2.TSeparator").grid(
+    row=7, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+
+
+
     
-    ttk.Label(envios_afilador, text="Piezas", style="WhiteOnRed.TLabel").grid(row=1, column=0)
-    ttk.Label(envios_afilador, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=1, column=1)
+    ttk.Label(envios_afilador, text="Enviar piezas a Roman", font=("Arial", 12, "bold"), style="WhiteOnRed.TLabel").grid(row=1, column=0, columnspan=2)
+    
+    ttk.Label(envios_afilador, text="Piezas", style="WhiteOnRed.TLabel").grid(row=2, column=0)
+    ttk.Label(envios_afilador, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=2, column=1)
     
     comboxboxafiladores = ttk.Combobox(envios_afilador, values=piezas_afilador ,state="readonly", width=15)
-    comboxboxafiladores.grid(row=2, column=0)
+    comboxboxafiladores.grid(row=3, column=0)
     
     entrycantidad1 = ttk.Entry(envios_afilador, width=7)
-    entrycantidad1.grid(row=2, column=1)
+    entrycantidad1.grid(row=3, column=1)
     
     tk.Button(envios_afilador, 
             text="Envios a Roman",
@@ -562,16 +589,20 @@ def provedores(ventana):
             foreground="white",
             padx=4,
             pady=1,
-            command= lambda: mandar_a_roman(comboxboxafiladores, entrycantidad1, tabla_principal, historial) ).grid(row=3, column=1)
+            command= lambda: mandar_a_roman(comboxboxafiladores, entrycantidad1, tabla_principal, historial) ).grid(row=4, column=1)
+
+
+   
+    
     
     
     ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=4, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+        row=5, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
     
     
-    ttk.Label(envios_afilador, text="ENTREGA DE AFILADORES TERMINADOS" ,font=("Arial", 10, "bold"), style="WhiteOnRed.TLabel").grid(row=5, column=0, columnspan=2)
+    ttk.Label(envios_afilador, text="ENTREGA DE AFILADORES TERMINADOS" ,font=("Arial", 10, "bold"), style="WhiteOnRed.TLabel").grid(row=6, column=0, columnspan=2)
     cantidad_terminada = ttk.Entry(envios_afilador, width=10)
-    cantidad_terminada.grid(row=6, column=0,columnspan=2, pady=2)
+    cantidad_terminada.grid(row=7, column=0,columnspan=2, pady=2)
     tk.Button(envios_afilador,
             text="Afiladores Terminados",
             background="blue",
@@ -579,8 +610,8 @@ def provedores(ventana):
             padx=4,
             pady=1,
             command= lambda: resibir_afiladores(cantidad_terminada, historial)
-            ).grid(row=7, column=0, columnspan=2)
+            ).grid(row=8, column=0, columnspan=2)
 
     ttk.Separator(envios_afilador, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=8, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+        row=9, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 

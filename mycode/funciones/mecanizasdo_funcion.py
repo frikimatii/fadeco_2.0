@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 chapasbase=["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox"]
 
-laterales=["lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250" , "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
+laterales=["lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250" , "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox", "pieza_caja_eco"]
 
 piezas_torno_1 = ["carros", "carros_250", "movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300" ,"tornillo_teletubi_eco"]
 
@@ -459,7 +459,99 @@ def accion_lijar(pieza_seleccionada, cantidad_seleccionada, treeview, historial)
     finally:
         conn.close()   
 
-def accion_soldar(piezas_seleccionadad, cantidad_Seleccionada, treeview, historial):
-    pass
-    return
+def accion_soldar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
+    cantidad_og = cantidad_ingresada.get()
+    pieza_og = pieza_seleccionar.get()
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+    
+    try:
+        # Validar que la cantidad ingresada sea un número positivo
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0:
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+        
+        # Confirmar la acción con el usuario
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
+        
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
 
+            if resultado is not None:
+                cantidad_actual = resultado[0]
+                if cantidad_actual >= cantidad_og:
+                    piezas_mapeo = {
+                        "vela_fresada_250": "vela_final_250",
+                        "vela_fresada_300": "vela_final_300",
+                        "vela_fresada_330": "vela_final_330",
+                        "planchada_fresada_330": "planchada_final_330",
+                        "planchada_fresada_300": "planchada_final_300",
+                        "planchada_fresada_250": "planchada_final_250",
+                    }
+                    
+                    # Mapeo y actualización según el tipo de pieza
+                    if pieza_og in piezas_mapeo:
+                        pieza_fresada = piezas_mapeo[pieza_og]
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= ?", (cantidad_og, pieza_fresada))
+                        
+                        historial.insert(0, f"Se soldaron {cantidad_og} unidades de {pieza_og}.")
+                    elif pieza_og == "pieza_caja_eco":
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= 'caja_soldada_eco'", (cantidad_og,))
+                        historial.insert(0, f"Se soldaron {cantidad_og} unidades de caja_soldada_eco.")
+                    else:
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
+                        historial.insert(0, f"Se soldaron {cantidad_og} unidades de {pieza_og}.")
+                else:
+                    historial.insert(0, f"No hay suficientes unidades de {pieza_og} en stock.")
+            else:
+                historial.insert(0, f"No hay piezas de {pieza_og} en stock.")
+
+            conn.commit()  # Confirmar los cambios en la base de datos
+            cantidad_ingresada.delete(0, "end")  # Limpiar la entrada de cantidad
+            limpiar_tabla(treeview)  # Limpiar la tabla antes de actualizar los datos
+            
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()  # Revertir los cambios en caso de error
+    finally:
+        conn.close()  # Cerrar la conexión a la base de datos
+
+def accion_pulir(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
+    pieza_og = pieza_seleccionada.get()
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()

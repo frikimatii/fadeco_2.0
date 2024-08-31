@@ -1,11 +1,11 @@
 import tkinter as tk 
 from tkinter import ttk
-from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin, accion_torno, accion_augeriado, accion_fresa
+from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin, accion_torno, accion_augeriado, accion_fresa, accion_soldar, accion_pulir
 
 
 lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
 
-lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250","bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox"]
+lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250","bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "pieza_caja_eco"]
 
 piezas_corte = [ "planchuela_250", "planchuela_300", "planchuela_330", "varilla_300", "varilla_330", "varilla_250", "portaeje", "eje_rectificado", "varilla_brazo_330" ,"varilla_brazo_300" ,"varilla_brazo_250" ,"tubo_manija" ,"tubo_manija_250" ,"cuadrado_regulador" ,"palanca_afilador" ,"eje_corto" ,"eje_largo" ,"buje_eje_eco" ,"teletubi_eco", "guia_u", "chapa_cubre_cabezal_inox", "chapa_cubre_cabezal_pintada", "chapa_cubre_cabezal_inox_250"]
 
@@ -16,12 +16,14 @@ piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250"
 
 piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco"]
 
-piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250"]
 
 piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
 
-piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250", "varilla_330", "varilla_300", "varilla_250"]
+piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250"]
 
+piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "pieza_caja_eco"] 
+
+piezas_pulir = [ "cabezal_250" ,"cabezal_inox"]
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
 
@@ -42,18 +44,22 @@ query_mostrar_piezas_balancin_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_t
 query_mostar_piezas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'torno'"
 querty_mostrar_piezas_torneada = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'torno' UNION SELECT PIEZAS ,CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'torno' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE ORIGEN = 'torno'" 
 
-
 querty_mostra_pieza_agujeriar = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'agueriado' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'augeriado'"
 
-
 querty_pieza_agujeriar_terminadad = "SELECT PIEZAS,CANTIDAD FROM piezas_terminadas WHERE MECANIZADO = 'augeriado' UNION  SELECT PIEZAS,CANTIDAD FROM PIEZAS_RETOCADA WHERE ORIGEN = 'fundidor'"
-
 
 querty_mostrar_velas_planchada_cortada = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'fresado'"
 
 querty_mostrar_velas_planchada_fresada = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'fresado'"
 
+querty_mostrar_para_pulir = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pulidor_'"
 
+querty_mostrar_pulido = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'pulido_'"
+
+
+querty_mostrar_para_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'soldado_'"
+
+querty_mostrar_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador_' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'caja_soldada_eco' "
 
 
 
@@ -419,7 +425,6 @@ def mecanizado(ventana):
 
 
 
-
     box4 = tk.Frame(index)
     box4.grid(row=1, column=3)
     
@@ -430,8 +435,8 @@ def mecanizado(ventana):
 
     ttk.Label(soldador, text="SOLDADO", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
 
-    ttk.Label(soldador, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_soldar = ttk.Combobox(soldador, values=piezas_para_fresar, state="readonly", width=16)
+    ttk.Label(soldador, text="Piezas A Tornear", style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    piezas_a_soldar = ttk.Combobox(soldador, values=piezas_para_soldar, state="readonly", width=16)
     piezas_a_soldar.grid(row=2, column=0)
 
     ttk.Label(soldador, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
@@ -445,7 +450,8 @@ def mecanizado(ventana):
         foreground="white",
         padx=4,
         pady=1,
-        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
+        font=('Helvetica', 8, "bold"),
+        command= lambda: accion_soldar(cantidad_sold,piezas_a_soldar, tabla_principal, historial)).grid(row=3, column=1, padx=2, pady=2)
 
     ttk.Separator(soldador, orient="horizontal", style="Separador2.TSeparator").grid(
         row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
@@ -458,11 +464,13 @@ def mecanizado(ventana):
     ttk.Button(
         stock_soldador,
         text="Stock Bruto",
-        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
+        style="Estilo4.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_para_soldador_ )).grid(row=1, column=0, pady=3, padx=3)
     ttk.Button(
         stock_soldador,
         text="Stock Terminado",
-        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+        style="Estilo4.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_soldador_)).grid(row=1, column=1, pady=3, padx=3)
 
     ttk.Separator(soldador, orient="horizontal", style="Separador2.TSeparator").grid(
         row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
@@ -470,63 +478,17 @@ def mecanizado(ventana):
 
 
 
-    
-    lijado = ttk.Frame(box4, style='Color.TFrame')
-    lijado.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
-
-    ttk.Label(lijado, text="Lijado", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
-
-    ttk.Label(lijado, text="Piezas A lijar",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_lijado = ttk.Combobox(lijado, values=piezas_para_lijar, state="readonly", width=16)
-    piezas_a_lijado.grid(row=2, column=0)
-
-    ttk.Label(lijado, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
-    cantidad_lijado = ttk.Entry(lijado, width=10, style='WhiteOnRed.TEntry')
-    cantidad_lijado.grid(row=2, column=1)
-
-    tk.Button(
-        lijado,
-        text="Tornear",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
-
-    ttk.Separator(lijado, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
-
-    stock_lijado = ttk.Frame(lijado, style='Color.TFrame')
-    stock_lijado.grid(row=5, column=0, columnspan=2)
-    
-    ttk.Label(stock_lijado, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
-    ttk.Button(
-        stock_lijado,
-        text="Stock Bruto",
-        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
-    ttk.Button(
-        stock_lijado,
-        text="Stock Terminado",
-        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
-
-    ttk.Separator(lijado, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
-    
-    
-
 
 
 
 
     pulido = ttk.Frame(box4, style='Color.TFrame')
-    pulido.grid(row=2, column=0, padx=5, pady=5, columnspan=2)
+    pulido.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
 
     ttk.Label(pulido, text="pulido", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
 
     ttk.Label(pulido, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_pulido = ttk.Combobox(pulido, values=piezas_para_fresar, state="readonly", width=16)
+    piezas_a_pulido = ttk.Combobox(pulido, values=piezas_pulir, state="readonly", width=16)
     piezas_a_pulido.grid(row=2, column=0)
 
     ttk.Label(pulido, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
@@ -540,7 +502,8 @@ def mecanizado(ventana):
         foreground="white",
         padx=4,
         pady=1,
-        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
+        font=('Helvetica', 8, "bold"),
+        command= lambda: accion_pulir(piezas_a_pulido, cantidad_pulido, tabla_principal, historial)).grid(row=3, column=1, padx=2, pady=2)
 
     ttk.Separator(pulido, orient="horizontal", style="Separador2.TSeparator").grid(
         row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
@@ -553,15 +516,16 @@ def mecanizado(ventana):
     ttk.Button(
         stock_pulido,
         text="Stock Bruto",
-        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
+        style="Estilo4.TButton",
+        command= lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_para_pulir)).grid(row=1, column=0, pady=3, padx=3)
+
+
     ttk.Button(
         stock_pulido,
         text="Stock Terminado",
-        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+        command= lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_pulido)).grid(row=1, column=1, pady=3, padx=3)
 
-    ttk.Separator(pulido, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
+
     
 
 
@@ -569,46 +533,5 @@ def mecanizado(ventana):
 
 
 
-    soldar = ttk.Frame(box4, style='Color.TFrame')
-    soldar.grid(row=3, column=0, padx=5, pady=5, columnspan=2)
 
-    ttk.Label(soldar, text="soldar", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
 
-    ttk.Label(soldar, text="Piezas A Tornear",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_soldar = ttk.Combobox(soldar, values=piezas_para_fresar, state="readonly", width=16)
-    piezas_a_soldar.grid(row=2, column=0)
-
-    ttk.Label(soldar, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
-    cantidad_soldar = ttk.Entry(soldar, width=10, style='WhiteOnRed.TEntry')
-    cantidad_soldar.grid(row=2, column=1)
-
-    tk.Button(
-        soldar,
-        text="Tornear",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold")).grid(row=3, column=1, padx=2, pady=2)
-
-    ttk.Separator(soldar, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
-
-    stock_soldar = ttk.Frame(soldar, style='Color.TFrame')
-    stock_soldar.grid(row=5, column=0, columnspan=2)
-    
-    ttk.Label(stock_soldar, text="Stock del Torno", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
-    ttk.Button(
-        stock_soldar,
-        text="Stock Bruto",
-        style="Estilo4.TButton").grid(row=1, column=0, pady=3, padx=3)
-    ttk.Button(
-        stock_soldar,
-        text="Stock Terminado",
-        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
-
-    ttk.Separator(soldar, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
-    

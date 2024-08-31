@@ -664,3 +664,38 @@ def resibir_afiladores(cantidad_ingresada_, res):
 
         except ValueError as ve:
             messagebox.showerror("Error", ve)
+
+def mecanizar_carcaza(cantidad_seleccionada, treeview, historial):
+    cantidad_og = cantidad_seleccionada.get()
+
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+
+    try:
+        if not cantidad_og.isdigit() or int(cantidad_og) <= 0: 
+            historial.insert(0, "Ingrese una cantidad válida")
+            return
+        cantidad_og = int(cantidad_og)
+
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de carcaza_afilador?")
+
+        if confirmar:
+            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'carcaza_afilador'")
+            resultado = cursor.fetchone()
+
+            if resultado and resultado[0] >= cantidad_og:
+                cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = 'carcaza_afilador' ", (cantidad_og,))
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'carcaza_afilador' ", (cantidad_og,))
+                limpiar_tabla(treeview)
+                historial.insert(0, f"Se mandaron a mecanizaron {cantidad_og} unidades de carcaza_afilador")
+                conn.commit()
+            else:
+                historial.insert(0, f"No hay suficiente cantidad en stock.")
+        
+        cantidad_seleccionada.delete(0, "end")
+    except sqlite3.Error as e:
+        historial.insert(0, f"Error en la base de datos: {e}")
+        conn.rollback()
+    finally:
+        conn.close()
+
