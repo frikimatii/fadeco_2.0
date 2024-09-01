@@ -9,7 +9,7 @@ laterales=["lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecl
 
 piezas_torno_1 = ["carros", "carros_250", "movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300" ,"tornillo_teletubi_eco"]
 
-piezas_torno_2 = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia"]
+piezas_torno_2 = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "caja_330_armada"]
 
 piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
 
@@ -269,7 +269,7 @@ def accion_torno(cantidad_ingresada, pieza_seleccionada, treeview, historial):
                     if pieza_og in piezas_torno_2:
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
                         cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
-                        historial.insert(0, f"Se cortaron {cantidad_og} unidades de {pieza_og}.")
+                        historial.insert(0, f"Se torneo {cantidad_og} unidades de {pieza_og}.")
                     elif pieza_og in piezas_torno_1:
                         # Diccionario para mapeo de piezas y sus piezas resultantes
                         piezas_mapeo = {

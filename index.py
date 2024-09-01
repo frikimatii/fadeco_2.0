@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+
 from mycode.mecanizado import mecanizado
 from mycode.porvedores import provedores
 from mycode.agregado_piezas import agregado_piezas
+from mycode.zona_armado import zona_armado
 
 root = tk.Tk()
 root.title("FadeCo Stok")
@@ -17,6 +19,7 @@ ventana.grid(row=0, column=0, sticky="nsew")
 agregado_piezas(ventana)
 mecanizado(ventana)
 provedores(ventana)
+zona_armado(ventana)
 
 
 root.mainloop()

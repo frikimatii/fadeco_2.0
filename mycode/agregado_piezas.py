@@ -8,11 +8,12 @@ from mycode.piezas.acero_dulce import acero_dulce
 from mycode.piezas.compra import shop
 from mycode.piezas.plastico import plastico
 from mycode.piezas.tornilleria import tornillo
+from mycode.piezas.hierro import hierro
 
 def agregado_piezas(notebook_principal):
     # Crear una nueva pestaña en el notebook principal
     pestania_principal = ttk.Frame(notebook_principal)
-    notebook_principal.add(pestania_principal, text='Pestaña Principal')
+    notebook_principal.add(pestania_principal, text='Agregado de Piezas')
 
     # Crear un Frame para el contenido de las pestañas
     contenido_frame = ttk.Frame(pestania_principal)
@@ -29,6 +30,8 @@ def agregado_piezas(notebook_principal):
     boton4 = ttk.Button(vertical_frame, text='Shop', command=lambda: mostrar_contenido(contenido_frame, 'shop'))
     boton5 = ttk.Button(vertical_frame, text='Plástico', command=lambda: mostrar_contenido(contenido_frame, 'plastico'))
     boton6 = ttk.Button(vertical_frame, text='Tornillo', command=lambda: mostrar_contenido(contenido_frame, 'tornillo'))
+    boton7 = ttk.Button(vertical_frame, text='Fundicion hierro', command=lambda: mostrar_contenido(contenido_frame, 'hierro'))
+
 
     # Empacar los botones verticalmente en el vertical_frame
     boton1.grid(row=0, column=0, sticky="ew")
@@ -37,6 +40,7 @@ def agregado_piezas(notebook_principal):
     boton4.grid(row=3, column=0, sticky="ew")
     boton5.grid(row=4, column=0, sticky="ew")
     boton6.grid(row=5, column=0, sticky="ew")
+    boton7.grid(row=5, column=0, sticky="ew")
 
     # Función para mostrar el contenido de la pestaña seleccionada
     def mostrar_contenido(contenido_frame, texto):
@@ -54,6 +58,8 @@ def agregado_piezas(notebook_principal):
             frame = plastico(contenido_frame)
         elif texto == 'tornillo':
             frame = tornillo(contenido_frame)
+        elif texto == 'hierro':
+            frame = hierro(contenido_frame)
         frame.grid(row=0, column=0, sticky="nsew")
 
     # Mostrar el contenido de la primera pestaña por defecto

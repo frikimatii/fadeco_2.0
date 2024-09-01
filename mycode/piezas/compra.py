@@ -60,9 +60,6 @@ def shop(parent):
 
     hisotrial = tk.Listbox(box_acciones, width=50)
     hisotrial.grid(row=7, column=0)
-
-    acciones_realizada = tk.Label(box_acciones, text="")
-    acciones_realizada.grid(row=7, column=0)
     
 
     return frame
