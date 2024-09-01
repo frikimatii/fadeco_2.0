@@ -11,7 +11,7 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
     cursor = conn.cursor()
 
     # Consulta para obtener datos basados en TIPO_DE_MATERIAL
-    cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM {tabladb} WHERE TIPO_DE_MATERIAL = ?", (categoria,))
+    cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM {tabladb} WHERE TIPO_DE_MATERIAL = ? UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE TIPO_DE_MATERIAL = '{categoria}' ", (categoria,) )
     datos = cursor.fetchall()
     conn.close()
 
@@ -31,7 +31,7 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
             # Conectar a la base de datos para obtener detalles
             conn = sqlite3.connect("dbfadeco.db")
             cursor = conn.cursor()
-            cursor.execute(f"SELECT DETALLES, CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
+            cursor.execute(f"SELECT DETALLES, CANTIDAD FROM {tabladb} WHERE PIEZAS = ? UNION SELECT DETALLES , CANTIDAD FROM piezas_terminadas WHERE PIEZAS = '{pieza_nombre}'", (pieza_nombre,)  )
             pieza_detalle = cursor.fetchone()
             conn.close()
 
@@ -54,10 +54,21 @@ def on_item_selected(event, treeview, label, detalles):
         label.config(text="...")
         detalles.config(text="...")
 
-def agregar_piezas(pieza , cant_entry, tabla, accion):
-    
-    pieza_nombre =  pieza.cget("text").strip()
+def mostrar_datos(tabla, tipo_de_material, tabladb):
+    conn = sqlite3.connect("dbfadeco.db")
+    cursor = conn.cursor()
+    # Usar parámetros para evitar inyecciones SQL
+    cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM {tabladb} WHERE TIPO_DE_MATERIAL = '{tipo_de_material}' UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE TIPO_DE_MATERIAL = '{tipo_de_material}'")
+    datos = cursor.fetchall()
+    conn.close()
+    limpiar_tabla(tabla)
+    for dato in datos:
+        tabla.insert("", tk.END, values=dato)
+
+def agregar_piezas(pieza, cant_entry, tabla, accion, categoria, tabladb):
+    pieza_nombre = pieza.cget("text").strip()
     cantidad_str = cant_entry.get().strip()
+
     if cantidad_str.isdigit():
         cantidad = int(cantidad_str)
 
@@ -71,40 +82,43 @@ def agregar_piezas(pieza , cant_entry, tabla, accion):
             try:
                 conn = sqlite3.connect("dbfadeco.db")
                 cursor = conn.cursor()
-                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ? " ,(pieza_nombre,))
+
+                # Buscar primero en la tabla principal
+                cursor.execute(f"SELECT CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
                 resultado = cursor.fetchone()
 
                 if resultado:
+                    # Si se encuentra la pieza, actualizar la cantidad en la tabla principal
                     cantidad_actual = resultado[0]
                     nueva_cantidad = cantidad_actual + cantidad
-                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = ? WHERE PIEZAS =? ", (nueva_cantidad, pieza_nombre,))
-                    messagebox.showinfo("Exito")
-                    limpiar_tabla(tabla)
+                    cursor.execute(f"UPDATE {tabladb} SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
+                    messagebox.showinfo("Éxito", f"Se actualizaron {cantidad} unidades a {pieza_nombre} en {tabladb}.")
+                    accion.insert(0, f"Carga exitosa: se cargaron {cantidad} unidades a {pieza_nombre} en {tabladb}.")
+                else:
+                    # Si no se encuentra en la tabla principal, buscar en 'piezas_terminadas'
+                    cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
+                    resultado = cursor.fetchone()
 
-                    accion.insert(0, f"Carga exitosa: se Cagaron {cantidad} unidades a {pieza_nombre}.")
-                else: 
-                    messagebox.showerror("Error", f"La Pieza {pieza_nombre} no se pudo encontrar")
+                    if resultado:
+                        # Si se encuentra en 'piezas_terminadas', actualizar la cantidad
+                        cantidad_actual = resultado[0]
+                        nueva_cantidad = cantidad_actual + cantidad
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
+                        messagebox.showinfo("Éxito", f"Se actualizaron {cantidad} unidades a {pieza_nombre} en piezas terminadas.")
+                        accion.insert(0, f"Carga exitosa: se cargaron {cantidad} unidades a {pieza_nombre} en piezas terminadas.")
+                    else:
+                        # Si no se encuentra en ninguna tabla, mostrar un mensaje de error
+                        messagebox.showerror("Error", f"La pieza {pieza_nombre} no se pudo encontrar en {tabladb} ni en piezas terminadas.")
                 
                 conn.commit()
             except sqlite3.DataError as e:
-                messagebox.showerror("Error", f"Erorr en la base de datos: {e}")
+                messagebox.showerror("Error", f"Error en la base de datos: {e}")
             finally:
                 conn.close()
         else:
-            print("Operacions Cancelada")
+            print("Operación Cancelada")
     else: 
-        messagebox.showerror("Error", "La Cantidad ingresas no es un numero valido")
-
+        messagebox.showerror("Error", "La Cantidad ingresada no es un número válido")
+    
+    mostrar_datos(tabla, categoria, tabladb)
     cant_entry.delete(0, 'end')
-
-
-#def mostrar_datos(tabla, tablasql, categoria):
-#    conn = sqlite3.connect("fadeco25.db")
-#    cursor = conn.cursor()
-#    cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM {tablasql} WHERE TIPO_DE_MATERIAL = ?", (categoria,)")
-#    datos = cursor.fetchall()
-#    conn.close()
-#
-#    limpiar_tabla(tabla)
-#    for dato in datos:
-#        tabla.insert("", tk.END, values=(dato))

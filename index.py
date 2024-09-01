@@ -1,18 +1,22 @@
-import tkinter as tk 
+import tkinter as tk
 from tkinter import ttk
-
-from mycode.add import add_piezas
 from mycode.mecanizado import mecanizado
 from mycode.porvedores import provedores
+from mycode.agregado_piezas import agregado_piezas
+
 root = tk.Tk()
 root.title("FadeCo Stok")
-root.geometry("1600x800") #wxh
+root.geometry("1600x800")  # wxh
 
+# Crear el Notebook para manejar las pestañas
 ventana = ttk.Notebook(root)
-ventana.grid(row=0, column=0)
+ventana.grid(row=0, column=0, sticky="nsew")
 
-add_piezas(ventana)
+# Agregar pestañas al Notebook
+
+agregado_piezas(ventana)
 mecanizado(ventana)
 provedores(ventana)
 
-root.mainloop() 
+
+root.mainloop()
