@@ -14,7 +14,7 @@ piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje"
 
 piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
 
-piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco", "caja_330_armada"]
+piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco", "caja_330_armada", "caja_300_armada", "caja_250_armada", "caja_eco_armada"]
 
 
 piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
@@ -33,7 +33,7 @@ query_mostar_piezas_para_plasma = "SELECT PIEZAS, CANTIDAD FROM plasma WHERE MEC
 
 query_piezas_plasma_teminadad = "SELECT PIEZAS,CANTIDAD FROM piezas_terminadas WHERE MECANIZADO = 'soldar'"
 
-query_piezas_para_cortar = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'corte'"
+query_piezas_para_cortar = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE  MECANIZADO = 'corte' UNION SELECT PIEZAS , CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'buje_eje_eco' "
 
 querty_piezas_cortadas = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'corte' "
 
@@ -41,8 +41,9 @@ query_mostrar_piezas_balancin_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_bruta
 
 query_mostrar_piezas_balancin_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MECANIZADO = 'balancin'"
 
-query_mostar_piezas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'torno'"
-querty_mostrar_piezas_torneada = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'torno' UNION SELECT PIEZAS ,CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'torno' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE ORIGEN = 'torno'" 
+query_mostar_piezas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO ='torno_caja' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'torno' "
+
+querty_mostrar_piezas_torneada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MECANIZADO ='torno_caja' UNION SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'torno' UNION SELECT PIEZAS ,CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'torno' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE ORIGEN = 'torno'" 
 
 querty_mostra_pieza_agujeriar = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'agueriado' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'augeriado'"
 

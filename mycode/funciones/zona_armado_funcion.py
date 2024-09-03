@@ -57,7 +57,7 @@ def manejar_inventario(modelo, cantidad, historial):
             "ruleman6000": 1
         },
         2: {
-            "caja_torneado_300": 1,
+            "cajas_torneadas_300": 1,
             "eje": 1,
             "manchon": 1,
             "ruleman_6005": 1,
@@ -65,12 +65,12 @@ def manejar_inventario(modelo, cantidad, historial):
             "corona_300": 1,
             "seguer": 1,
             "sinfin": 1,
-            "motores_220w": 1,
+            "motor_220w": 1,
             "oring": 1,
             "ruleman6000": 1
         },
         3: {
-            "caja_torneado_250": 1,
+            "cajas_torneadas_250": 1,
             "eje_250": 1,
             "manchon_250": 1,
             "ruleman_6004": 1,
@@ -78,19 +78,19 @@ def manejar_inventario(modelo, cantidad, historial):
             "corona_250": 1,
             "seguer": 1,
             "sinfin": 1,
-            "motores250_220w": 1,
+            "motor250_200w": 1,
             "oring": 1,
             "rulemanR6": 1
         },
         4: {
             "polea_grande": 1, 
             "polea_chica": 1,
-            "tornillo_teletubi_eco_fin": 2,
+            "tornillo_teletubi_eco": 2,
             "teclas": 1,
-            "capacitores_eco": 1,
+            "capacitor_eco": 1,
             "conector_hembra": 1,
             "cable_corto_eco": 1,
-            "motores_eco": 1,
+            "motor_eco": 1,
             "caja_soldada_eco": 1, 
             "tapa_correa_eco": 1,
             "correa_eco": 1,

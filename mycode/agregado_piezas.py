@@ -40,7 +40,7 @@ def agregado_piezas(notebook_principal):
     boton4.grid(row=3, column=0, sticky="ew")
     boton5.grid(row=4, column=0, sticky="ew")
     boton6.grid(row=5, column=0, sticky="ew")
-    boton7.grid(row=5, column=0, sticky="ew")
+    boton7.grid(row=6, column=0, sticky="ew")
 
     # Función para mostrar el contenido de la pestaña seleccionada
     def mostrar_contenido(contenido_frame, texto):

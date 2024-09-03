@@ -11,6 +11,8 @@ caja_300 = ["corona_300", "cajas_torneadas_300", "eje", "manchon", "ruleman_6005
 
 caja_250 = ["corona_250", "cajas_torneadas_250", "eje_250", "manchon_250", "ruleman_6004",  "ruleman_6204", "seguer", "sinfin", "motor250_200w", "oring", "rulemanR6"]
 
+eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitores_eco", "conector_hembra", "cable_corto_eco", "motores_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco"]
+
 
 
 quety_motores = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'motores'"
@@ -72,7 +74,7 @@ def zona_armado(ventana):
     tk.Button(box_btn, text="330", command= lambda: mostrar_piezas_motor(tabla_principal, caja_330)).grid(row=0, column=0)
     tk.Button(box_btn, text="300", command= lambda: mostrar_piezas_motor(tabla_principal, caja_300)).grid(row=0, column=1)
     tk.Button(box_btn, text="250", command= lambda: mostrar_piezas_motor(tabla_principal, caja_250)).grid(row=1, column=0)
-    tk.Button(box_btn, text="ECO").grid(row=1, column=1)
+    tk.Button(box_btn, text="ECO", command= lambda: mostrar_piezas_motor(tabla_principal, eco)).grid(row=1, column=1)
 
     checkbox = ttk.Frame(cajas, style='Color.TFrame')
     checkbox.grid(row=4, column=0, columnspan=2)
@@ -113,13 +115,15 @@ def zona_armado(ventana):
         row=8, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
 
-    tk.Button(cajas, text="Consula de Motores para Tornear", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_para_tornear)).grid(row=9, column=0)
-    tk.Button(cajas, text="Consula de Motores Para Armar", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_terminadas)).grid(row=9, column=1)
+    tk.Button(cajas, text=" Motores para Tornear", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_para_tornear)).grid(row=9, column=0)
+    tk.Button(cajas, text="Motores Para Armar", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_terminadas)).grid(row=9, column=1)
 
 
     pre_armado = tk.Frame(box2)
     pre_armado.grid(row=1, column=2)
     tk.Label(pre_armado, text="ZOna de armado").grid(row=0, column=0)
+
+
 
 
     armado_final = tk.Frame(box2)
