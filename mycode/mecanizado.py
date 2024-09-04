@@ -21,7 +21,7 @@ piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
 
 piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250"]
 
-piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "pieza_caja_eco"] 
+piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "pieza_caja_eco", "cuadrado_regulador"] 
 
 piezas_pulir = [ "cabezal_250" ,"cabezal_inox"]
 
@@ -58,9 +58,9 @@ querty_mostrar_para_pulir = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PR
 querty_mostrar_pulido = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'pulido_'"
 
 
-querty_mostrar_para_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'soldado_'"
+querty_mostrar_para_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'soldado' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = 'cuadrado_regulador' "
 
-querty_mostrar_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador_' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'caja_soldada_eco' "
+querty_mostrar_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PROVEDOR = 'soldador_' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'soldado_' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'caja_soldada_eco' "
 
 
 

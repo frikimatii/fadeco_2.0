@@ -131,10 +131,7 @@ piezas_para_afiladores = {
     "resorte_empuje": 2
 }
 
-base = ["BaseInox_330",
-"BaseInox_300",
-"BaseInox_250",
-"BaseECO"]
+base = ["BaseInox_330", "BaseInox_300", "BaseInox_250", "BaseECO"]
 
 def limpiar_tabla(tabla):
     for item in tabla.get_children():
@@ -275,6 +272,8 @@ def resibir_bases(base_selecionada, cantidad_ingresada, historial):
     finally:
         conn.close()
 
+brazo = ["brazo_augeriado_250", "brazo_augeriado_300", "brazo_augeriado_330"]
+
 def mandar_piezas_a(provedor, canitada_ingresada, pieza_seleccionada, treeview, historial):
     cantidad_og = canitada_ingresada.get()
     pieza_og = pieza_seleccionada.get()
@@ -284,33 +283,40 @@ def mandar_piezas_a(provedor, canitada_ingresada, pieza_seleccionada, treeview, 
     
     try:
         if not cantidad_og.isdigit() or int(cantidad_og) <= 0:
-            historial.insert(0, "Ingrese una Cantidad Valida.")
+            historial.insert(0, "Ingrese una Cantidad Válida.")
             return
         cantidad_og = int(cantidad_og)
         
-        confirmar = messagebox.askyesno("Confirmar accion", f"Estas Seguro que quiere Mandas {cantidad_og}, unidades de {pieza_og}")
+        confirmar = messagebox.askyesno("Confirmar acción", f"¿Estás seguro que quieres mandar {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
-            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og, ))
+            if pieza_og in brazo:
+                cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = ?", (pieza_og,))
+            else:
+                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
             resultado = cursor.fetchone()
             
             if resultado is not None:
                 cantidad_actual = resultado[0]
                 if cantidad_actual >= cantidad_og:
-                    cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?",(cantidad_og, pieza_og))
-                    cursor.execute(f"UPDATE {provedor} SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?",(cantidad_og, pieza_og))
-                    historial.insert(0, f"Envio {cantidad_og} unidades de {pieza_og} a {provedor}")
+                    if pieza_og in brazo:
+                        pieza_prov = pieza_og.replace("brazo_augeriado_", "brazo_")
+                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                        cursor.execute(f"UPDATE {provedor} SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_prov))
+                    else:
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                        cursor.execute(f"UPDATE {provedor} SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                    historial.insert(0, f"Envió {cantidad_og} unidades de {pieza_og} a {provedor}")
                     limpiar_tabla(treeview)
                 else:
-                    historial.insert(0, f"No hay Suficientes Unideades de {pieza_og} en Stock")
+                    historial.insert(0, f"No hay suficientes unidades de {pieza_og} en stock.")
             else:
-                historial.insert(0, f"La Piezas {pieza_og} no esta registrado")
+                historial.insert(0, f"La pieza {pieza_og} no está registrada.")
             
             conn.commit()
             canitada_ingresada.delete(0, "end")
-            
         else:
-            historial.insert(0, "Accion Cancelada")
+            historial.insert(0, "Acción cancelada.")
     except sqlite3.Error as e:
         historial.insert(0, f"Error en la base de datos: {e}")
         conn.rollback()

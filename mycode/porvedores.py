@@ -15,7 +15,7 @@ query_mostrar_base_enfabrica = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE
 query_carmelo ="SELECT PIEZAS ,CANTIDAD FROM pulidor_carmelo"
 query_maxi = "SELECT PIEZAS ,CANTIDAD FROM pulidor_maxi"
 
-query_stock_fabrica_pulido = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pulidor'"
+query_stock_fabrica_pulido = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pulidor' UNION SELECT PIEZAS, CANTIDAD FROM PIEZAS_RETOCADA WHERE MECANIZADO = 'pulido' "
 
 
 query_piezas_cabezal_250 = "SELECT PIEZAS ,CANTIDAD FROM piezas_brutas WHERE PROVEDOR = 'pulidor' AND MODELO = '250'"
@@ -35,15 +35,19 @@ niquelado = [
     "palanca_afilador"
 ]
 
-lista_piezas_carmerlo = ["brazo_250","brazo_300","brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
+lista_piezas_carmerlo = ["brazo_augeriado_250", "brazo_augeriado_300", "brazo_augeriado_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO", "tapa_afilador_eco"
+]
+lista_piezas_carmerlo_para_fabrica = ["brazo_250", "brazo_300", "brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO", "tapa_afilador_eco"
 ]
 
-lista_piezas_maxi = ["brazo_250","brazo_300","brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO"
+lista_piezas_maxi = ["brazo_augeriado_250", "brazo_augeriado_300", "brazo_augeriado_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","tapa_afilador_eco"
 ]
 
-modelo_piezas = ["BasePintada_330", "BasePintura_300", "cabezal_pintada","caja_soldada_eco", "teletubi_doblado_eco"]
-piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
+lista_piezas_maxi_para_fabrica = ["brazo_250", "brazo_300", "brazo_330","cajas_torneadas_250","cajas_torneadas_300","cajas_torneadas_330","cubrecuchilla_250","cubre_300_torneado","cubrecuchilla_330","velero","vela_final_330","vela_final_250","vela_final_300","planchada_final_330","planchada_final_300","planchada_final_250","tapa_afilador","aro_numerador","tapa_afilador_250","teletubi_330","teletubi_300_torneado","teletubi_250","BaseInox_330","BaseInox_300","BaseInox_250","BaseECO", "tapa_afilador_eco"
+]
 
+
+modelo_piezas = ["BasePintada_330", "BasePintada_300", "cabezal_pintada","caja_soldada_eco", "teletubi_doblado_eco"]
 
 piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
 
@@ -74,7 +78,6 @@ query_piezas_afialador_en_roman = "SELECT PIEZAS, CANTIDAD FROM AFILADOR "
 query_afialador_terminado = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = 'afilador_final' "
 
 query_piezas_carcaza = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = 'carcaza_afilador' "
-
 
 
 
@@ -260,7 +263,7 @@ def provedores(ventana):
     
     tk.Label(carmelo, text="ENTREGA").grid(row=5, columnspan=2)
     tk.Label(carmelo, text="seleccione la piezas").grid(row=6, column=0)
-    piezas_resibida_c = ttk.Combobox(carmelo, values=lista_piezas_carmerlo)
+    piezas_resibida_c = ttk.Combobox(carmelo, values=lista_piezas_carmerlo_para_fabrica)
     piezas_resibida_c.grid(row=7, column=0)
     tk.Label(carmelo, text="Cantidad").grid(row=6, column=1)
     cantida_de_resibida_c = tk.Entry(carmelo)
@@ -293,7 +296,7 @@ def provedores(ventana):
     
     tk.Label(maxi, text="ENTREGA").grid(row=5, columnspan=2)
     tk.Label(maxi, text="seleccione la piezas").grid(row=6, column=0)
-    piezas_resibida_m = ttk.Combobox(maxi, values=lista_piezas_maxi)
+    piezas_resibida_m = ttk.Combobox(maxi, values=lista_piezas_maxi_para_fabrica)
     piezas_resibida_m.grid(row=7, column=0)
     tk.Label(maxi, text="Cantidad").grid(row=6, column=1)
     cantida_de_resibida_m = tk.Entry(maxi)
@@ -415,7 +418,7 @@ def provedores(ventana):
     box5 = ttk.Frame(box4, style='Color.TFrame')
     box5.grid(row=0, column=0 ,columnspan=2)
     
-    ttk.Label(box5, text="Niquelado", style="WhiteOnRed.TLabel",font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=3)
+    ttk.Label(box5, text="Niquelado/ Rectificado", style="WhiteOnRed.TLabel",font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=3)
     grupbtn = tk.Frame(box5)
     grupbtn.grid(row=1, column=0, columnspan=3)
     ttk.Button(
@@ -427,19 +430,19 @@ def provedores(ventana):
     
     ttk.Button(
         grupbtn,
-        text="Stock en fabrica",
+        text="Stock en niquelado",
         style="Estilo2.TButton",
         command= lambda: mostrar_piezas_tablas(tabla_principal, quety_niquelado_en_niquelado)
     ).grid(row=1, column=1)
     
     ttk.Button(
         grupbtn,
-        text="Stock en niquelado",
+        text="Stock en fabrica",
         style="Estilo2.TButton",
         command= lambda: mostrar_piezas_tablas(tabla_principal, quety_niquelado_en_fabrica)
     ).grid(row=1, column=2)
     
-    ttk.Label(box5, text="Piezas A Niquelar", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=2, column=0, columnspan=2)
+    ttk.Label(box5, text="Piezas A Niquelar/ Rectificado", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=2, column=0, columnspan=2)
     ttk.Label(box5, text="Piezas", style="WhiteOnRed.TLabel").grid(row=3, column=0, sticky="w")
     
     lista_piezas = ttk.Combobox(box5, values=niquelado, state="readonly", width=17)

@@ -11,7 +11,16 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
     cursor = conn.cursor()
 
     # Consulta para obtener datos basados en TIPO_DE_MATERIAL
-    cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM {tabladb} WHERE TIPO_DE_MATERIAL = ? UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE TIPO_DE_MATERIAL = '{categoria}' ", (categoria,) )
+    query = f"""
+    SELECT PIEZAS, CANTIDAD, 'brutas' AS source 
+    FROM {tabladb} 
+    WHERE TIPO_DE_MATERIAL = ? 
+    UNION ALL 
+    SELECT PIEZAS, CANTIDAD, 'terminadas' AS source 
+    FROM piezas_terminadas 
+    WHERE TIPO_DE_MATERIAL = ?
+    """
+    cursor.execute(query, (categoria, categoria))
     datos = cursor.fetchall()
     conn.close()
 
@@ -20,20 +29,24 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
 
     # Insertar datos en la tabla
     for dato in datos:
-        tabla.insert("", tk.END, values=dato)
+        tabla.insert("", tk.END, values=dato[:2])  # Solo insertar PIEZAS y CANTIDAD, ignorando 'source'
 
-    # Asociar el evento de selección en la tabla
     def on_item_selected(event):
         selected_item = tabla.selection()
         if selected_item:
-            # Obtener el nombre de la pieza seleccionada
             pieza_nombre = tabla.item(selected_item[0], "values")[0]
-            # Conectar a la base de datos para obtener detalles
-            conn = sqlite3.connect("dbfadeco.db")
-            cursor = conn.cursor()
-            cursor.execute(f"SELECT DETALLES, CANTIDAD FROM {tabladb} WHERE PIEZAS = ? UNION SELECT DETALLES , CANTIDAD FROM piezas_terminadas WHERE PIEZAS = '{pieza_nombre}'", (pieza_nombre,)  )
-            pieza_detalle = cursor.fetchone()
-            conn.close()
+
+            with sqlite3.connect("dbfadeco.db") as conn:
+                cursor = conn.cursor()
+
+                # Primero buscar en piezas_brutas
+                cursor.execute(f"SELECT DETALLES, CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
+                pieza_detalle = cursor.fetchone()
+
+                # Si no se encuentran detalles en piezas_brutas, buscar en piezas_terminadas
+                if not pieza_detalle:
+                    cursor.execute("SELECT DETALLES, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
+                    pieza_detalle = cursor.fetchone()
 
             # Mostrar el nombre y detalle en los widgets correspondientes
             pieza.config(text=pieza_nombre)
@@ -41,6 +54,7 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
                 detalles.config(text=f"Detalles: {pieza_detalle[0]}")
             else:
                 detalles.config(text="No se encontraron detalles para la pieza seleccionada.")
+
     tabla.bind("<<TreeviewSelect>>", on_item_selected)
 
 def on_item_selected(event, treeview, label, detalles):

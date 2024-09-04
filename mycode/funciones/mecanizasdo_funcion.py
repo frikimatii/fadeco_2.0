@@ -15,7 +15,6 @@ piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250"
 
 piezas_corte = ["planchuela_250","planchuela_300","planchuela_330","varilla_300","varilla_330","varilla_250", "portaeje"]
 
-piezas_augeriado_extra = ["brazo_330","brazo_300","brazo_250"]
 
 piezas_augeriado_extra_1 = ["carros", "carros_250", "movimiento", "tornillo_teletubi_eco"]
 
@@ -157,7 +156,7 @@ def accion_corte(cantidad_ingresada, pieza_seleccionada, treeview, historial):
         
         if confirmar:
             if piezas_og in chapa_cubre_cabezal:
-                cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (piezas_og,))
+                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
             else:
                 cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (piezas_og,))
 
@@ -307,6 +306,7 @@ def accion_torno(cantidad_ingresada, pieza_seleccionada, treeview, historial):
     finally:
         conn.close()  # Cerrar la conexión a la base de datos
 
+piezas_augeriado_extra = ["brazo_330", "brazo_300", "brazo_250"]
 def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial):
     cantidad_og = cantidad_ingresada.get()
     piezas_og = pieza_seleccionada.get()
@@ -319,7 +319,6 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
             historial.insert(0, "Ingrese una cantidad válida")
             return
         cantidad_og = int(cantidad_og)
-        print(piezas_og)
         
         # Confirmar la acción con el usuario
         confirmar = messagebox.askyesno("Confirmar acción", f"¿Está seguro de que quiere augeriar {cantidad_og} unidades de {piezas_og}?")
@@ -327,9 +326,6 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
             # Determinar la categoría de la pieza seleccionada
             if piezas_og in piezas_augeriado_extra:
                 cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS =?", (piezas_og,))
-                resultado = cursor.fetchone()
-            elif piezas_og in piezas_augeriado_extra_1:
-                cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS =?", (piezas_og,))
                 resultado = cursor.fetchone()
             elif piezas_og == "cuadrado_regulador":
                 cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS =?", (piezas_og,))
@@ -345,15 +341,12 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
                 if cantidad_actual >= cantidad_og:
                     if piezas_og in piezas_augeriado_extra:
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
-                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
-                        historial.insert(0, f"Se augeriaron {cantidad_og} unidades de {piezas_og}.")
-                    elif piezas_og in piezas_augeriado_extra_1:
-                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
-                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
-                        historial.insert(0, f"Se completaron {cantidad_og} unidades de {piezas_og}.")
+                        pieza_retocada = f"brazo_augeriado_{piezas_og.split('_')[1]}"
+                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_retocada))
+                        historial.insert(0, f"Se augeriaron {cantidad_og} unidades de {pieza_retocada}.")
                     elif piezas_og == "cuadrado_regulador":
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
-                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         historial.insert(0, f"Se completaron {cantidad_og} unidades de {piezas_og}.")
                     
                     limpiar_tabla(treeview)
@@ -476,7 +469,11 @@ def accion_soldar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
-            cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+            if pieza_og == "cuadrado_regulador":
+                cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS = ?", (pieza_og,))
+            else: 
+                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
+
             resultado = cursor.fetchone()
 
             if resultado is not None:
@@ -495,13 +492,18 @@ def accion_soldar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                     if pieza_og in piezas_mapeo:
                         pieza_fresada = piezas_mapeo[pieza_og]
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
-                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= ?", (cantidad_og, pieza_fresada))
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= ?", (cantidad_og, pieza_fresada))
                         
                         historial.insert(0, f"Se soldaron {cantidad_og} unidades de {pieza_og}.")
                     elif pieza_og == "pieza_caja_eco":
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= 'caja_soldada_eco'", (cantidad_og,))
                         historial.insert(0, f"Se soldaron {cantidad_og} unidades de caja_soldada_eco.")
+
+                    elif pieza_og == "cuadrado_regulador":
+                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= 'cuadrado_regulador'", (cantidad_og,))
+                        historial.insert(0, f"Se soldaron {cantidad_og} unidades de cuadrado regularo")
                     else:
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
                         cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS= ?", (cantidad_og, pieza_og))
