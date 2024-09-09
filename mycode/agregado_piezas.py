@@ -5,10 +5,9 @@ from PIL import Image, ImageTk
 # Importar funciones para el contenido de cada pestaña
 from mycode.piezas.aluminio import aluminio
 from mycode.piezas.chapa import chapa
-from mycode.piezas.acero_dulce import acero_dulce
+#from mycode.piezas.acero_dulce import acero_dulce
 from mycode.piezas.compra import shop
 from mycode.piezas.plastico import plastico
-from mycode.piezas.tornilleria import tornillo
 from mycode.piezas.hierro import hierro
 
 def agregado_piezas(notebook_principal):
@@ -34,7 +33,6 @@ def agregado_piezas(notebook_principal):
     img_hierro_ = ImageTk.PhotoImage(img_redimensionada4)
 
 
-
     # Crear una nueva pestaña en el notebook principal
     pestania_principal = ttk.Frame(notebook_principal)
     notebook_principal.add(pestania_principal, text='Agregado de Piezas')
@@ -49,28 +47,28 @@ def agregado_piezas(notebook_principal):
     vertical_frame.grid(row=0, column=1, sticky="ns", padx=50)
 
     # Crear botones para las pestañas verticales, incluyendo la imagen redimensionada
-    boton1 = ttk.Button(vertical_frame, text="Acero", command=lambda: mostrar_contenido(contenido_frame, 'acero_dulce'))
+    #boton1 = ttk.Button(vertical_frame, text="Acero", command=lambda: mostrar_contenido(contenido_frame, 'acero_dulce'))
     boton2 = ttk.Button(vertical_frame, text='Aluminio',image=img_aluminio_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'aluminio'), width=30)
-    boton3 = ttk.Button(vertical_frame, text='Chapa',image=img_chapa_ ,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'chapa'))
-    boton4 = ttk.Button(vertical_frame, text='Shop',image=img_shop_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'shop'))
-    boton5 = ttk.Button(vertical_frame, text='Plástico',image=img_plastico_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'plastico'))
-    boton7 = ttk.Button(vertical_frame, text='Fundicion hierro', image=img_hierro_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'hierro'))
+    boton3 = ttk.Button(vertical_frame, text='Chapa',image=img_chapa_ ,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'chapa'), width=30)
+    boton4 = ttk.Button(vertical_frame, text='Shop',image=img_shop_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'shop'), width=30)
+    boton5 = ttk.Button(vertical_frame, text='Plástico',image=img_plastico_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'plastico'), width=30)
+    boton7 = ttk.Button(vertical_frame, text='Fundicion hierro', image=img_hierro_,compound='top', command=lambda: mostrar_contenido(contenido_frame, 'hierro'), width=30)
 
     # Empacar los botones verticalmente en el vertical_frame
-    boton1.grid(row=0, column=0)
-    boton2.grid(row=1, column=0)
-    boton3.grid(row=2, column=0)
-    boton4.grid(row=3, column=0)
-    boton5.grid(row=4, column=0)
-    boton7.grid(row=6, column=0)
+    #boton1.grid(row=0, column=0)
+    boton2.grid(row=1, column=0, pady=5)
+    boton3.grid(row=2, column=0, pady=5)
+    boton4.grid(row=3, column=0, pady=5)
+    boton5.grid(row=4, column=0, pady=5)
+    boton7.grid(row=6, column=0, pady=5)
 
     # Función para mostrar el contenido de la pestaña seleccionada
     def mostrar_contenido(contenido_frame, texto):
         for widget in contenido_frame.winfo_children():
             widget.destroy()  # Elimina el contenido actual
-        if texto == 'acero_dulce':
-            frame = acero_dulce(contenido_frame)
-        elif texto == 'aluminio':
+#        if texto == 'acero_dulce':
+#            frame = acero_dulce(contenido_frame)
+        if texto == 'aluminio':
             frame = aluminio(contenido_frame)
         elif texto == 'chapa':
             frame = chapa(contenido_frame)
@@ -83,7 +81,7 @@ def agregado_piezas(notebook_principal):
         frame.grid(row=0, column=0, sticky="nsew")
 
     # Mostrar el contenido de la primera pestaña por defecto
-    mostrar_contenido(contenido_frame, 'acero_dulce')
+    mostrar_contenido(contenido_frame, 'aluminio')
 
     # Configurar el peso de las filas y columnas para el contenido
     pestania_principal.grid_rowconfigure(0, weight=1)
@@ -100,4 +98,5 @@ def agregado_piezas(notebook_principal):
     pestania_principal.img_plastico_ = img_plastico_
     pestania_principal.img_shop_ = img_shop_
     pestania_principal.img_hierro_ = img_hierro_
+
 

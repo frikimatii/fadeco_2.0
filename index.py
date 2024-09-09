@@ -8,7 +8,7 @@ from mycode.zona_armado import zona_armado
 
 root = tk.Tk()
 root.title("FadeCo Stok")
-root.geometry("1600x800")  # wxh
+root.geometry("1500x850")  # wxh
 
 # Crear el Notebook para manejar las pestañas
 ventana = ttk.Notebook(root)
