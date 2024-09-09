@@ -16,8 +16,8 @@ ventana.grid(row=0, column=0, sticky="nsew")
 
 # Agregar pestañas al Notebook
 
-agregado_piezas(ventana)
 mecanizado(ventana)
+agregado_piezas(ventana)
 provedores(ventana)
 zona_armado(ventana)
 

@@ -1,6 +1,8 @@
 import tkinter as tk 
 from tkinter import ttk
 from mycode.funciones.mecanizasdo_funcion import accion_plegadora, accion_plasmas, mostrar_piezas_tablas, limpiar_tabla, accion_corte, accion_balancin, accion_torno, accion_augeriado, accion_fresa, accion_soldar, accion_pulir
+from mycode.funciones.add_funcion import ordenar_por
+from PIL import Image, ImageTk
 
 
 lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
@@ -9,13 +11,11 @@ lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pin
 
 piezas_corte = [ "planchuela_250", "planchuela_300", "planchuela_330", "varilla_300", "varilla_330", "varilla_250", "portaeje", "eje_rectificado", "varilla_brazo_330" ,"varilla_brazo_300" ,"varilla_brazo_250" ,"tubo_manija" ,"tubo_manija_250" ,"cuadrado_regulador" ,"palanca_afilador" ,"eje_corto" ,"eje_largo" ,"buje_eje_eco" ,"teletubi_eco", "guia_u", "chapa_cubre_cabezal_inox", "chapa_cubre_cabezal_pintada", "chapa_cubre_cabezal_inox_250"]
 
-
 piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje", "guia_u", "teletubi_eco", "chapaU_inox", "chapaU_pintada", "chapaU_inox_250", "eje_corto", "eje_largo"]
 
 piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
 
 piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco", "caja_330_armada", "caja_300_armada", "caja_250_armada", "caja_eco_armada"]
-
 
 piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
 
@@ -24,6 +24,8 @@ piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planch
 piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "pieza_caja_eco", "cuadrado_regulador"] 
 
 piezas_pulir = [ "cabezal_250" ,"cabezal_inox"]
+
+
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
 
@@ -65,26 +67,30 @@ querty_mostrar_soldador_ = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE
 
 
 def mecanizado(ventana):
+
+
     pestania = ttk.Frame(ventana)
     ventana.add(pestania, text="Mecanizado")
 
     index = ttk.Frame(pestania)
     index.grid(row=0, column=0)
 
-    tk.Label(index, text="Mecanizado").grid(row=0,columnspan=3, sticky="nsew")
+    tk.Label(index, text="Mecanizado", font=("Arial", 30, "bold", 'underline')).grid(row=0,columnspan=5 )
 
     box1 = tk.Frame(index)
-    box1.grid(row=1, column=0)
-    tk.Label(box1, text="Tabla de piezas Mecanizado").grid(row=0,column=0)
+    box1.grid(row=1, column=0, padx=15)
+    tk.Label(box1, text="Tabla de piezas Mecanizado", font=("Arial", 16, "bold")).grid(row=0,column=0 , sticky="w")
 
     tabla_principal = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
-    tabla_principal.heading("Pieza", text="Pieza")
-    tabla_principal.heading("Cantidad", text="Cantidad")
+    tabla_principal.heading("Pieza", text="Pieza", command= lambda: ordenar_por(tabla_principal, "Pieza", False))
+    tabla_principal.heading("Cantidad", text="Cantidad",command= lambda: ordenar_por(tabla_principal, "Cantidad", False))
     tabla_principal.column("#0", width=0,stretch=tk.NO)
-    tabla_principal.column("Pieza", width=200)
-    tabla_principal.column("Cantidad", width=70)
-    tabla_principal.config(height=20)
-    tabla_principal.grid(row=2, column=0)
+    tabla_principal.column("Pieza", width=250)
+    tabla_principal.column("Cantidad", width=110)
+    tabla_principal.config(height=30)
+    tabla_principal.grid(row=2, column=0, sticky="nsew")
+
+
 
     tk.Label(box1, text="Limpiar").grid(row=3, column=0)
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=4, column=0)
@@ -97,54 +103,76 @@ def mecanizado(ventana):
     
     
     
-    
     box2 = tk.Frame(index)
-    box2.grid(row=1, column=1)
-    
+    box2.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+
+    img_plegadora = Image.open(r"img\plegadora.png")
+    img_redimencionada = img_plegadora.resize((70, 70))
+    img_plgadora_ = ImageTk.PhotoImage(img_redimencionada)
+
+    # Configuración del marco mecánizmo
     mecanizsmo = ttk.Frame(box2)
-    mecanizsmo.grid(row=0, column=1)
+    mecanizsmo.grid(row=0, column=0, sticky="nsew")
 
-
+    # Configuración del marco plegadora
+    style = ttk.Style()
+    style.configure("Bold9.TLabelframe.Label", font=("Helvetica", 14, "bold"))
+    style.configure("WhiteOnRed.TLabel", font=("Arial", 10, "bold"))
+    # Configuración del marco plegadora
     plegadora = ttk.Frame(mecanizsmo, style='Color.TFrame')
     plegadora.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
-    ttk.Label(plegadora, text="Plegadora", style="WhiteOnRed.TLabel", font=("Verdana", 15, "bold")).grid(row=0, column=0, columnspan=2)
-    ttk.Label(plegadora, text="Piezas a plegar",style='WhiteOnRed.TLabel').grid(row=1, column=0)
-    piezas_a_plegar_plegada = ttk.Combobox(plegadora, values=(lista_piezas_plegadora), state="readonly", width=20)
-    piezas_a_plegar_plegada.grid(row=2, column=0)
-    ttk.Label(plegadora, text="Cantidad",style='WhiteOnRed.TLabel').grid(row=1, column=1)
-    cantidad_ingresada_plegado = ttk.Entry(plegadora, width=10, style='WhiteOnRed.TEntry')
-    cantidad_ingresada_plegado.grid(row=2, column=1)
+
+    panel = ttk.PanedWindow(plegadora, orient=tk.VERTICAL)
+    panel.grid(row=0, column=0, columnspan=2, sticky="nsew")
+
+    # Frame Plegadora
+    frame_plegar = ttk.Labelframe(panel, text="Plegadora", style="Bold9.TLabelframe")
+    panel.add(frame_plegar)
+
+    ttk.Label(frame_plegar, text="Piezas a plegar", style='WhiteOnRed.TLabel').grid(row=0, column=0)
+    piezas_a_plegar_plegada = ttk.Combobox(frame_plegar, values=(lista_piezas_plegadora),state="readonly", width=17, font=("Arial", 12, "bold"))
+    piezas_a_plegar_plegada.grid(row=1, column=0)
+    ttk.Label(frame_plegar, text="Cantidad", style='WhiteOnRed.TLabel').grid(row=0, column=1)
+    cantidad_ingresada_plegado = ttk.Entry(frame_plegar, width=10, font=("Arial", 12, "bold"))
+    cantidad_ingresada_plegado.grid(row=1, column=1)
+
     tk.Button(
-        plegadora,
+        frame_plegar,
         text="Plegar",
         background="green",
         foreground="white",
-        padx=4,
-        pady=1,
+        padx=15,
+        pady=4,
         font=('Helvetica', 8, "bold"),
-        command=lambda: accion_plegadora(cantidad_ingresada_plegado, piezas_a_plegar_plegada, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
-    ttk.Separator(plegadora, orient="horizontal").grid(
-        row=4, column=0, sticky="ew", columnspan=2, padx=2, pady=2
-    )
-    stock_plegadora = ttk.Frame(plegadora, style='Color.TFrame')
-    stock_plegadora.grid(row=5, column=0, columnspan=2)
-    ttk.Label(stock_plegadora, text="Stock del piezas para PLEGAR", style="WhiteOnRed.TLabel", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
+        command=lambda: accion_plegadora(cantidad_ingresada_plegado, piezas_a_plegar_plegada,   tabla_principal, historial)
+    ).grid(row=2, column=1, padx=5, pady=5)
+
+    # Frame Stock del Plegado
+    frame_stock = ttk.Labelframe(panel, text="Stock del Plegado", style="Bold9.TLabelframe")
+    panel.add(frame_stock)
+
     ttk.Button(
-        stock_plegadora,
+        frame_stock,
         text="Stock Bruto",
-        style="Estilo4.TButton" ,command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_parar_doblar) ).grid(row=1, column=0, pady=3, padx=3) 
+        style="Estilo4.TButton",
+        command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_parar_doblar)
+    ).grid(row=0, column=0, pady=3, padx=3)
+
     ttk.Button(
-        stock_plegadora,
-        text="Stock Terminado",command=lambda: mostrar_piezas_tablas(tabla_principal,query_mostrar_piezas_dobladas ),
-        style="Estilo4.TButton").grid(row=1, column=1, pady=3, padx=3)
+        frame_stock,
+        text="Stock Terminado",
+        style="Estilo4.TButton",
+        command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_dobladas)
+    ).grid(row=0, column=1, pady=3, padx=3)
+
+    tk.Label(frame_stock, image=img_plgadora_ ).grid(row=0, column=2, pady=3, padx=3)
+    # Separador horizontal final
     ttk.Separator(plegadora, orient="horizontal").grid(
-        row=6, column=0, sticky="ew", columnspan=2, padx=2, pady=2
+        row=6, column=0, sticky="ew", columnspan=2, padx=5, pady=10
     )
-    
-    
-    
-    
+
+    mecanizado.img_plgadora_ = img_plgadora_
+
     
     
     plasma = ttk.Frame(mecanizsmo, style='Color.TFrame')
