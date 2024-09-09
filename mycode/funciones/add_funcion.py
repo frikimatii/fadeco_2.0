@@ -5,8 +5,10 @@ from tkinter import messagebox
 def limpiar_tabla(tabla):
     for item in tabla.get_children():
         tabla.delete(item)
+import tkinter as tk
+import sqlite3
 
-def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
+def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
 
@@ -40,22 +42,36 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza):
                 cursor = conn.cursor()
 
                 # Primero buscar en piezas_brutas
-                cursor.execute(f"SELECT DETALLES, CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
+                cursor.execute(f"SELECT DETALLES, IMAGEN, CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
                 pieza_detalle = cursor.fetchone()
 
                 # Si no se encuentran detalles en piezas_brutas, buscar en piezas_terminadas
                 if not pieza_detalle:
-                    cursor.execute("SELECT DETALLES, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
+                    cursor.execute("SELECT DETALLES, IMAGEN, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
                     pieza_detalle = cursor.fetchone()
 
-            # Mostrar el nombre y detalle en los widgets correspondientes
+            # Mostrar el nombre, detalle e imagen en los widgets correspondientes
             pieza.config(text=pieza_nombre)
             if pieza_detalle:
-                detalles.config(text=f"Detalles: {pieza_detalle[0]}")
+                detalles.config(text=f"{pieza_detalle[0]}")
+
+                # Mostrar imagen si está disponible
+                imagen_ruta = pieza_detalle[1]
+                if imagen_ruta:
+                    # Cargar la imagen
+                    imagen = tk.PhotoImage(file=imagen_ruta)
+                    imagen_label.config(image=imagen)
+                    imagen_label.image = imagen  # Necesario para mantener la referencia de la imagen
+                else:
+                    imagen_label.config(image="")
+                    imagen_label.image = None
             else:
                 detalles.config(text="No se encontraron detalles para la pieza seleccionada.")
+                imagen_label.config(image="")
+                imagen_label.image = None
 
     tabla.bind("<<TreeviewSelect>>", on_item_selected)
+
 
 def on_item_selected(event, treeview, label, detalles):
     selected_item = treeview.selection()
@@ -136,3 +152,18 @@ def agregar_piezas(pieza, cant_entry, tabla, accion, categoria, tabladb):
     
     mostrar_datos(tabla, categoria, tabladb)
     cant_entry.delete(0, 'end')
+
+
+def ordenar_por(treeview, col, reverse):
+    # Obtener los datos actuales en la Treeview
+    lista = [(treeview.set(k, col), k) for k in treeview.get_children('')]
+    
+    # Ordenar los datos alfabéticamente o numéricamente
+    lista.sort(reverse=reverse)
+    
+    # Reorganizar los elementos en la Treeview según el ordenamiento
+    for index, (val, k) in enumerate(lista):
+        treeview.move(k, '', index)
+    
+    # Cambiar el estado de ordenamiento para la próxima vez que se haga clic
+    treeview.heading(col, command=lambda: ordenar_por(treeview, col, not reverse))
