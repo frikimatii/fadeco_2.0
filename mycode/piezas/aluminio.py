@@ -22,7 +22,7 @@ def aluminio(parent):
     mostrar_piezas.column("#0", width=0, stretch=tk.NO)
     mostrar_piezas.column("Pieza", width=250)
     mostrar_piezas.column("Cantidad", width=110)
-    mostrar_piezas.config(height=30)
+    mostrar_piezas.config(height=25)
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
     style_treeview = ttk.Style()
@@ -36,7 +36,7 @@ def aluminio(parent):
     box2.grid(row=0, column=1, padx=30)
 
     tk.Label(box2, text="Aluminio", font=("Arial", 30, "bold")).grid(row=0, column=0)
-    tk.Label(box2,fg="#535c68", text="Mostrar todas las piezas de aluminio y seleccionar una pieza de la tabla", font=("Arial", 12, "bold")).grid(row=1, column=0)
+    tk.Label(box2,fg="#535c68", text="Mostrar todas las piezas de aluminio y  seleccionar una pieza de la tabla", font=("Arial", 12, "bold"), wraplength=300).grid(row=1, column=0)
 
     tk.Button(box2, text="Mostrar Piezas", padx=20, pady=5, font=("Arial", 14, "bold"), bg="blue", fg="white",command=lambda: mostrar_categoria(mostrar_piezas, "Aluminio", "piezas_brutas", detalles_piezas, pieza_seleccionada, imagen_piezas)).grid(row=2, column=0)
 
@@ -60,13 +60,16 @@ def aluminio(parent):
     box_btn = tk.Frame(box_acciones)
     box_btn.grid(row=3, columnspan=2)
 
-    btn_agregar = tk.Button(box_btn, width=30, text="Agregar", font=("Arial", 14, "bold"), bg="green", fg="white",command=lambda: agregar_piezas(pieza_seleccionada, entry_cantidad_piezas, mostrar_piezas, historial, "Aluminio", "piezas_brutas"))
-    btn_agregar.grid(row=0, columnspan=2, pady=30)
+    btn_agregar = tk.Button(box_btn, width=10, text="Agregar", font=("Arial", 14, "bold"), bg="green", fg="white",command=lambda: agregar_piezas(pieza_seleccionada, entry_cantidad_piezas, mostrar_piezas, historial, "Aluminio", "piezas_brutas"))
+    btn_agregar.grid(row=0, column=1, pady=10, padx=5)
 
-    ttk.Separator(box_acciones, orient=tk.HORIZONTAL).grid(row=4, column=0, columnspan=3, sticky="EW", padx=2, pady=10)
+    btn_agregar = tk.Button(box_btn, width=10, text="eliminar", font=("Arial", 14, "bold"), bg="red", fg="white")
+    btn_agregar.grid(row=0, column=0, pady=10, padx=5)
+
+    ttk.Separator(box_acciones, orient=tk.HORIZONTAL).grid(row=4, column=0, columnspan=3, sticky="EW", padx=2, pady=7)
 
     detalles = tk.Frame(box_acciones, highlightthickness=1, highlightbackground="#535c68", height=40)
-    detalles.grid(row=5, columnspan=2, pady=20, sticky="nw")
+    detalles.grid(row=5, columnspan=2, pady=10, sticky="nw")
 
     tk.Label(detalles, text="Detalles de las Piezas:", font=("Arial", 9, "bold", 'underline')).grid(row=0, column=0, sticky="nw")
 
@@ -87,7 +90,7 @@ def aluminio(parent):
 
     tk.Label(box_historial, text="Historial").grid(row=0, column=0)
 
-    historial = tk.Listbox(box_historial, width=90, height=6, font=("Arial", 10, "bold"))
+    historial = tk.Listbox(box_historial, width=80, height=6, font=("Arial", 10, "bold"))
     historial.grid(row=1, column=0)
 
     pieza_seleccionada.img_ruta = img_ruta

@@ -13,23 +13,23 @@ from mycode.piezas.hierro import hierro
 def agregado_piezas(notebook_principal):
     # Cargar la imagen usando PIL y redimensionarla
     img_original = Image.open(r"img\img_aluminio.png")
-    img_redimensionada = img_original.resize((120, 120))  # Ajustar el tamaño (ancho, alto)
+    img_redimensionada = img_original.resize((90, 90))  # Ajustar el tamaño (ancho, alto)
     img_aluminio_ = ImageTk.PhotoImage(img_redimensionada)
 
     img_original1 = Image.open(r"img\img_chapa.png")
-    img_redimensionada1 = img_original1.resize((120, 120))
+    img_redimensionada1 = img_original1.resize((90, 90))
     img_chapa_ = ImageTk.PhotoImage(img_redimensionada1)
 
     img_original2 = Image.open(r"img\img_plastico.png")
-    img_redimensionada2 = img_original2.resize((120, 120))
+    img_redimensionada2 = img_original2.resize((90, 90))
     img_plastico_ = ImageTk.PhotoImage(img_redimensionada2)
 
     img_original3 = Image.open(r"img\img_shop.png")
-    img_redimensionada3 = img_original3.resize((120, 120))
+    img_redimensionada3 = img_original3.resize((90, 90))
     img_shop_ = ImageTk.PhotoImage(img_redimensionada3)
 
     img_original4 = Image.open(r"img\img_hierro.png")
-    img_redimensionada4 = img_original4.resize((120, 120))
+    img_redimensionada4 = img_original4.resize((90, 90))
     img_hierro_ = ImageTk.PhotoImage(img_redimensionada4)
 
 
