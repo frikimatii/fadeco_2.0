@@ -6,8 +6,6 @@ from mycode.funciones.add_funcion import on_item_selected, limpiar_tabla, mostra
 
 def aluminio(parent):
 
-    img_ruta = tk.PhotoImage(file="img_piezas/default.png")
-
     frame = ttk.Frame(parent)
     
     # Crear un Frame para la tabla de piezas
@@ -93,6 +91,5 @@ def aluminio(parent):
     historial = tk.Listbox(box_historial, width=80, height=6, font=("Arial", 10, "bold"))
     historial.grid(row=1, column=0)
 
-    pieza_seleccionada.img_ruta = img_ruta
 
     return frame

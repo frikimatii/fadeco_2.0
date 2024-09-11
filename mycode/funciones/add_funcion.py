@@ -78,8 +78,6 @@ def on_item_selected(event, treeview, label, detalles):
     if selected_item:
         item_text = treeview.item(selected_item[0], "values")[0]
         label.config(text=item_text)    
-        
-
     else:
         label.config(text="...")
         detalles.config(text="...")

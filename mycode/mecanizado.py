@@ -76,7 +76,7 @@ def mecanizado(ventana):
     index = ttk.Frame(pestania)
     index.grid(row=0, column=0)
 
-    tk.Label(index, text="Mecanizado", font=("Arial", 30, "bold", 'underline')).grid(row=0,columnspan=6 )
+    tk.Label(index, text="Mecanizado", font=("Arial", 25, "bold", 'underline')).grid(row=0,columnspan=6 )
 
     box1 = tk.Frame(index)
     box1.grid(row=1, column=0, padx=15, sticky="nw")
@@ -86,8 +86,8 @@ def mecanizado(ventana):
     tabla_principal.heading("Pieza", text="Pieza", command= lambda: ordenar_por(tabla_principal, "Pieza", False))
     tabla_principal.heading("Cantidad", text="Cantidad",command= lambda: ordenar_por(tabla_principal, "Cantidad", False))
     tabla_principal.column("#0", width=0,stretch=tk.NO)
-    tabla_principal.column("Pieza", width=270)
-    tabla_principal.column("Cantidad", width=110)
+    tabla_principal.column("Pieza", width=240)
+    tabla_principal.column("Cantidad", width=50)
     tabla_principal.config(height=18)
     tabla_principal.grid(row=2, column=0, sticky="nsew")
 
@@ -95,7 +95,7 @@ def mecanizado(ventana):
 
     tk.Label(box1, text="Historial", font=("Arial", 9, "bold")).grid(row=5, column=0, sticky="w")
 
-    historial = tk.Listbox(box1, width=70, font=("Arial", 10, "bold"), height=5)
+    historial = tk.Listbox(box1, width=50, font=("Arial", 10, "bold"), height=7)
     historial.grid(row=6,column=0)
 
     
@@ -103,7 +103,7 @@ def mecanizado(ventana):
     
     
     box2 = tk.Frame(index)
-    box2.grid(row=1, column=1, padx=10, pady=10)
+    box2.grid(row=1, column=1, padx=5, pady=5)
 
     img_plegadora = Image.open(r"img\dobladora.png")
     img_redimencionada = img_plegadora.resize((50, 50))
@@ -111,7 +111,7 @@ def mecanizado(ventana):
 
     # Configuración del marco mecánizmo
     mecanizsmo = ttk.Frame(box2)
-    mecanizsmo.grid(row=0, column=0, sticky="nsew")
+    mecanizsmo.grid(row=0, column=0, sticky="nw")
 
     # Configuración del marco plegadora
     style = ttk.Style()
@@ -316,7 +316,7 @@ def mecanizado(ventana):
     box3.grid(row=1, column=2)
     
     mecanizsmo2 = ttk.Frame(box3)
-    mecanizsmo2.grid(row=0, column=1, sticky="nsew")
+    mecanizsmo2.grid(row=0, column=1, sticky="nw")
 
 
 
@@ -510,15 +510,13 @@ def mecanizado(ventana):
     # Retener referencia de la imagen para evitar su eliminación por el recolector de basura
     mecanizsmo2.img_fresa_ = img_fresa_
 
-    # Segundo separador horizontal
-    ttk.Separator(fresa, orient="horizontal", style="Separador2.TSeparator").grid(row=2, column=0, sticky="ew",     columnspan=2, padx=2, pady=2)
 
 
 
 
 
     box4 = tk.Frame(index)
-    box4.grid(row=1, column=3, sticky="nsew")
+    box4.grid(row=1, column=3, sticky="nw")
     
     
 
@@ -711,6 +709,3 @@ def mecanizado(ventana):
 
     # Retener referencia de la imagen para evitar su eliminación por el recolector de basura
     box4.img_balancin_ = img_balancin_
-
-    # Segundo separador horizontal
-    ttk.Separator(balancin, orient="horizontal").grid(row=2, column=0, sticky="ew", columnspan=2, padx=2, pady=2)
