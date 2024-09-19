@@ -1,98 +1,14 @@
 
 
-Inox_330 = {
+inox_330__ = {
     "brazo_330": 1,
     "cubrecuchilla_330": 1,
     "velero": 1,
     "perilla_brazo": 1,
     "cabezal_inox": 1,
-    "teletubi_330": 1
-    "cuchilla_330": 1,
-    "cuadrado_regulador_final": 1,
-    "vela_final_330": 1,
-    "cubre_motor_rectangulo": 1
-    "cubre_motor_cuadrado": 1
-    "planchada_final_330": 1,
-    "varilla_brazo_330": 1,
-    "resorte_brazo": 1,
-    "tapa_afilador": 1,
-    "pipas": 2,
-    "tubo_manija": 1,
-    "afilador_final": 1,
-    "perilla_cubrecuchilla": 2,
-    "perilla_afilador": 1,
-    "base_afilador_330": 1
-    "base_pre_armada330inox": 1,
-    "piedra_afilador": 1,
-    "pinche_frontal" : 1,
-    "pinche_lateral" : 1
-} 
-
-i300 = {
-    "brazo_300": 1,
-    "cubre_300": 1,
-    "velero": 1,
-    "perilla_brazo": 1,
-    "cabezal_inox": 1,
-    "teletu_300": 1,
-    "cuchilla_300": 1,
-    "cuadrado_regulador_final": 1,
-    "vela_final_300": 1,
-    "cubre_motor_rectangulo": 1,
-    "cubre_motor_cuadrado": 1,
-    "planchada_final_300": 1,
-    "varilla_brazo_300": 1,
-    "resorte_brazo": 1,
-    "tapa_afilador": 1,
-    "pipas": 2,
-    "tubo_manija": 1,
-    "afilador_final": 1,
-    "perilla_cubrecuchilla": 2,
-    "perilla_afilador": 1,
-    "base_afilador_300": 1,
-    "base_pre_armada300inox": 1,
-    "piedra_afilador": 1,
-    "pinche_frontal" : 1,
-    "pinche_lateral" : 1 
-}
-
-i250 = {
-    "brazo_250": 1,
-    "cubrecuchilla_250": 1,
-    "velero": 1,
-    "perilla_brazo": 1,
-    "cabezal_250": 1,
-    "teletubi_250": 1,
-    "cuchilla_250": 1,
-    "cuadrado_regulador_final": 1,
-    "vela_final_250": 1,
-    "cubre_motor_rectangulo": 1,
-    "planchada_final_250": 1,
-    "varilla_brazo_250": 1,
-    "resorte_brazo": 1,
-    "tapa_afilador_250": 1,
-    "pipas": 2,
-    "tubo_manija_250": 1,
-    "afilador_final": 1,
-    "perilla_cubrecuchilla": 2,
-    "perilla_afilador": 1,
-    "base_afilador_250": 1,
-    "base_pre_armada250inox": 1,
-    "piedra_afilador": 1,
-    "capuchon_250": 1 ,
-    "pinche_frontal_250" : 1,
-    "pinche_lateral_250" : 1 
-    }
-
-p330 = {
-    "brazo_330": 1,
-    "cubrecuchilla_330": 1,
-    "velero": 1,
-    "perilla_brazo": 1,
-    "cabezal_pintura": 1,
     "teletubi_330": 1,
     "cuchilla_330": 1,
-    "cuadrado_regulador_final": 1,
+    "cuadrado_regulador": 1,
     "vela_final_330": 1,
     "cubre_motor_rectangulo": 1,
     "cubre_motor_cuadrado": 1,
@@ -106,22 +22,20 @@ p330 = {
     "perilla_cubrecuchilla": 2,
     "perilla_afilador": 1,
     "base_afilador_330": 1,
-    "base_pre_armada330pint": 1,
+    "Base_Pre_armado_i330": 1,
     "piedra_afilador": 1,
-    "pinche_frontal" : 1,
-    "pinche_lateral" : 1
+    "pinche_frontal": 1,
+    "pinche_lateral": 1
 }
-
-
-p300 = {
+inox_300__ = {
     "brazo_300": 1,
     "cubre_300": 1,
     "velero": 1,
     "perilla_brazo": 1,
-    "cabezal_pintura": 1,
+    "cabezal_inox": 1,
     "teletu_300": 1,
     "cuchilla_300": 1,
-    "cuadrado_regulador_final": 1,
+    "cuadrado_regulador": 1,
     "vela_final_300": 1,
     "cubre_motor_rectangulo": 1,
     "cubre_motor_cuadrado": 1,
@@ -135,14 +49,94 @@ p300 = {
     "perilla_cubrecuchilla": 2,
     "perilla_afilador": 1,
     "base_afilador_300": 1,
-    "base_pre_armada300pint": 1,
+    "Base_Pre_armado_i300": 1,
     "piedra_afilador": 1,
-    "pinche_frontal" : 1,
-    "pinche_lateral" : 1
+    "pinche_frontal": 1,
+    "pinche_lateral": 1
 }
-
-iEco = {
-    "brazo_330":1,
+inox_250__ = {
+    "brazo_250": 1,
+    "cubrecuchilla_250": 1,
+    "velero": 1,
+    "perilla_brazo": 1,
+    "cabezal_250": 1,
+    "teletubi_250": 1,
+    "cuchilla_250": 1,
+    "cuadrado_regulador": 1,
+    "vela_final_250": 1,
+    "cubre_motor_rectangulo": 1,
+    "planchada_final_250": 1,
+    "varilla_brazo_250": 1,
+    "resorte_brazo": 1,
+    "tapa_afilador_250": 1,
+    "pipas": 2,
+    "tubo_manija_250": 1,
+    "afilador_final": 1,
+    "perilla_cubrecuchilla": 2,
+    "perilla_afilador": 1,
+    "base_afilador_250": 1,
+    "Base_Pre_armado_i250": 1,
+    "piedra_afilador": 1,
+    "capuchon_250": 1,
+    "pinche_frontal_250": 1,
+    "pinche_lateral_250": 1
+}
+pintada_330__ = {
+    "brazo_330": 1,
+    "cubrecuchilla_330": 1,
+    "velero": 1,
+    "perilla_brazo": 1,
+    "cabezal_pintada": 1,
+    "teletubi_330": 1,
+    "cuchilla_330": 1,
+    "cuadrado_regulador": 1,
+    "vela_final_330": 1,
+    "cubre_motor_rectangulo": 1,
+    "cubre_motor_cuadrado": 1,
+    "planchada_final_330": 1,
+    "varilla_brazo_330": 1,
+    "resorte_brazo": 1,
+    "tapa_afilador": 1,
+    "pipas": 2,
+    "tubo_manija": 1,
+    "afilador_final": 1,
+    "perilla_cubrecuchilla": 2,
+    "perilla_afilador": 1,
+    "base_afilador_330": 1,
+    "Base_Pre_armado_p330": 1,
+    "piedra_afilador": 1,
+    "pinche_frontal": 1,
+    "pinche_lateral": 1
+        }
+pintada_300__= {
+    "brazo_300": 1,
+    "cubre_300": 1,
+    "velero": 1,
+    "perilla_brazo": 1,
+    "cabezal_pintada": 1,
+    "teletu_300": 1,
+    "cuchilla_300": 1,
+    "cuadrado_regulador": 1,
+    "vela_final_300": 1,
+    "cubre_motor_rectangulo": 1,
+    "cubre_motor_cuadrado": 1,
+    "planchada_final_300": 1,
+    "varilla_brazo_300": 1,
+    "resorte_brazo": 1,
+    "tapa_afilador": 1,
+    "pipas": 2,
+    "tubo_manija": 1,
+    "afilador_final": 1,
+    "perilla_cubrecuchilla": 2,
+    "perilla_afilador": 1,
+    "base_afilador_300": 1,
+    "Base_Pre_armado_p300": 1,
+    "piedra_afilador": 1,
+    "pinche_frontal": 1,
+    "pinche_lateral": 1
+}
+eco__ = {
+    "brazo_330": 1,
     "cubrecuchilla_330": 1,
     "velero": 1,
     "perilla_brazo": 1,
@@ -150,20 +144,106 @@ iEco = {
     "teletubi_doblado_eco": 1,
     "cuchilla_330": 1,
     "vela_final_330": 1,
-    "cuadrado_regulador_final": 1,
-    "planchada_final_330":1,
-    "varilla_brazo_330":1,
-    "resorte_brazo":1,
+    "cuadrado_regulador": 1,
+    "planchada_final_330": 1,
+    "varilla_brazo_330": 1,
+    "resorte_brazo": 1,
     "tapa_afilador_eco": 1,
-    "silbato" :1,
-    "pipas":2,
+    "pitito_teletubi_eco": 1,
+    "pipas": 2,
     "tubo_manija": 1,
-    "afilador_final":1,
-    "perilla_cubrecuchilla":2,
+    "afilador_final": 1,
+    "perilla_cubrecuchilla": 2,
     "perilla_afilador": 1,
-    "base_afilador_250":1,
-    "base_pre_armadaECOinox": 1,
+    "base_afilador_250": 1,
+    "Base_Pre_armado_ECO": 1,
     "piedra_afilador": 1,
     "pinche_lateral": 1,
-    "pinche_frontal":1
+    "pinche_frontal": 1
 }
+
+
+
+def obtener_base_piezas_modelo(modelo):
+    # Define la relación entre modelos y sus piezas correspondientes
+    bases_prearmadas = {
+        "inoxidable 330": inox_330__,
+        "inoxidable 300": inox_300__,
+        "inoxidable 250": inox_250__,
+        "pintada 330": pintada_330__,
+        "pintada 300": pintada_300__,
+        "inoxidable eco": eco__,
+    }
+    return bases_prearmadas.get(modelo)
+
+def verificar_disponibilidad_pedido(pedido):
+    try:
+        conn = sqlite3.connect("dbfadeco.db")
+        cursor = conn.cursor()
+
+        # Consulta SQL para obtener las cantidades disponibles de las piezas
+        cursor.execute("""
+            SELECT piezas, cantidad 
+            FROM piezas_terminadas
+        """)
+
+        datos_piezas = dict(cursor.fetchall())
+
+    except sqlite3.Error as e:
+        print(f"Error al obtener datos de la base de datos: {e}")
+        return False, {}
+
+    finally:
+        conn.close()
+
+    piezas_faltantes = {}
+    for modelo, cantidad in pedido.items():
+        try:
+            cantidad = int(cantidad)  # Asegurarse de que la cantidad sea un número
+        except ValueError:
+            print(f"Cantidad inválida para el modelo {modelo}.")
+            continue
+
+        # Obtener la base de piezas según el modelo
+        base_piezas_modelo = obtener_base_piezas_modelo(modelo)
+
+        if base_piezas_modelo is None:
+            print(f"Modelo '{modelo}' no reconocido.")
+            return False, {}
+
+        # Verificar si hay suficientes piezas disponibles para el pedido
+        for pieza, cantidad_necesaria in base_piezas_modelo.items():
+            cantidad_disponible = int(datos_piezas.get(pieza, 0))
+            cantidad_requerida = cantidad_necesaria * cantidad
+            if cantidad_disponible < cantidad_requerida:
+                cantidad_faltante = cantidad_requerida - cantidad_disponible
+                piezas_faltantes[(modelo, pieza)] = cantidad_faltante
+
+    if not piezas_faltantes:
+        return True, {}
+    else:
+        return False, piezas_faltantes
+
+def on_averiguar_click(entry_i330, entry_i300, entry_i250, entry_p330, entry_p300, entry_ieco, tree, listbox):
+    for item in tree.get_children():
+        tree.delete(item)
+        
+    # Recoger los valores de entrada para el pedido de las máquinas
+    pedido_maquinas = {
+        "inoxidable 330": entry_i330.get(),
+        "inoxidable 300": entry_i300.get(),
+        "inoxidable 250": entry_i250.get(),
+        "pintada 330": entry_p330.get(),
+        "pintada 300": entry_p300.get(),
+        "inoxidable eco": entry_ieco.get(),
+    }
+
+    # Verificar disponibilidad
+    se_puede_armar, piezas_faltantes = verificar_disponibilidad_pedido(pedido_maquinas)
+    
+    if se_puede_armar:
+        listbox.insert(0, "El pedido se puede armar.")
+    else:
+        listbox.insert(0, "No hay suficientes piezas para armar el pedido. Piezas faltantes:")
+        for (modelo, pieza), cantidad_faltante in piezas_faltantes.items():
+            tree.insert('', 'end', values=(pieza, cantidad_faltante, modelo))

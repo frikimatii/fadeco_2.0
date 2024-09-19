@@ -11,7 +11,7 @@ caja_300 = ["corona_300", "cajas_torneadas_300", "eje", "manchon", "ruleman_6005
 
 caja_250 = ["corona_250", "cajas_torneadas_250", "eje_250", "manchon_250", "ruleman_6004",  "ruleman_6204", "seguer", "sinfin", "motor250_200w", "oring", "rulemanR6"]
 
-eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitores_eco", "conector_hembra", "cable_corto_eco", "motores_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco"]
+eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitor_eco", "conector_hembra", "cable_corto_eco", "motor_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco"]
 
 
 
@@ -237,12 +237,12 @@ def zona_armado(ventana):
 
     tabla_principal = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
     tabla_principal.heading("Pieza", text="Pieza")
-    tabla_principal.heading("Cantidad", text="Cantidad")
+    tabla_principal.heading("Cantidad", text="Cant")
     tabla_principal.column("#0", width=0,stretch=tk.NO)
-    tabla_principal.column("Pieza", width=200)
+    tabla_principal.column("Pieza", width=250)
     tabla_principal.column("Cantidad", width=70)
-    tabla_principal.config(height=20)
-    tabla_principal.grid(row=2, column=0)
+    tabla_principal.config(height=17)
+    tabla_principal.grid(row=2, column=0, padx=10)
 
     tk.Label(box1, text="Limpiar tabla").grid(row=3, column=0)
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=4, column=0)
@@ -259,96 +259,134 @@ def zona_armado(ventana):
 
     
 
+
+
     cajas = tk.Frame(box2)
-    cajas.grid(row=1, column=1)
-    tk.Label(cajas, text="armado de Cajas").grid(row=0, column=0)
+    cajas.grid(row=1, column=1, padx=10, pady=10)
+
+    # Labelframe para Armado de Cajas
+    lf_armado_cajas = ttk.Labelframe(cajas, text="Armado de Cajas", padding=(10, 10), style="Bold9.TLabelframe")
+    lf_armado_cajas.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
     
-    tk.Button(cajas, text="motores", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_motores)).grid(row=1, column=0)
+    # Configura la columna para que tome todo el espacio disponible y alinee el botón al centro
+    lf_armado_cajas.grid_columnconfigure(0, weight=1)
     
-    tk.Label(cajas, text="mostrar piezas por modelo").grid(row=2, column=0)
+    # Botón para mostrar motores, centrado en la columna
+    tk.Button(lf_armado_cajas, text="Motores", command=lambda: mostrar_piezas_tablas(tabla_principal, quety_motores)).grid(row=0, column=0, sticky="ew")
 
-    box_btn = tk.Frame(cajas)
-    box_btn.grid(row=3, columnspan=2)
+        # Labelframe para seleccionar modelo
+    lf_modelo = ttk.Labelframe(cajas, text="Seleccionar Modelo", padding=(10, 10), style="Bold9.TLabelframe")
+    lf_modelo.grid(row=1, column=0, sticky="ew", padx=5, pady=5)    
 
-    tk.Button(box_btn, text="330", command= lambda: mostrar_piezas_motor(tabla_principal, caja_330)).grid(row=0, column=0)
-    tk.Button(box_btn, text="300", command= lambda: mostrar_piezas_motor(tabla_principal, caja_300)).grid(row=0, column=1)
-    tk.Button(box_btn, text="250", command= lambda: mostrar_piezas_motor(tabla_principal, caja_250)).grid(row=1, column=0)
-    tk.Button(box_btn, text="ECO", command= lambda: mostrar_piezas_motor(tabla_principal, eco)).grid(row=1, column=1)
+    # Frame para contener los botones
+    box_btn = tk.Frame(lf_modelo)
+    box_btn.grid(row=0, column=0, pady=5, padx=5, sticky="nsew")    
 
-    checkbox = ttk.Frame(cajas, style='Color.TFrame')
-    checkbox.grid(row=4, column=0, columnspan=2)
+    # Configura el Frame para que los botones se centren
+    box_btn.grid_columnconfigure(0, weight=1)
+    box_btn.grid_columnconfigure(1, weight=1)
+    box_btn.grid_rowconfigure(0, weight=1)
+    box_btn.grid_rowconfigure(1, weight=1)  
+
+    # Botones para mostrar piezas por modelo
+    tk.Button(box_btn, text="Caja 330", command=lambda: mostrar_piezas_motor(tabla_principal, caja_330)).grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+    tk.Button(box_btn, text="Caja 300", command=lambda: mostrar_piezas_motor(tabla_principal, caja_300)).grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+    tk.Button(box_btn, text="Caja 250", command=lambda: mostrar_piezas_motor(tabla_principal, caja_250)).grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+    tk.Button(box_btn, text="Caja ECO", command=lambda: mostrar_piezas_motor(tabla_principal, eco)).grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+
+    # Labelframe para seleccionar modelo con Radiobuttons
+    lf_modelo_radio = ttk.Labelframe(cajas, text="Modelo", padding=(10, 10), style="Bold9.TLabelframe")
+    lf_modelo_radio.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
 
     modelo = tk.IntVar()
-    ttk.Label(checkbox, text="Modelo", style="WhiteOnRed.TLabel").grid(row=0, column=0, columnspan=3)
-    tk.Radiobutton(checkbox, text="330", variable=modelo,selectcolor='#2f3542',
-                   value=1, background='#192965', foreground='#fff',borderwidth=3, relief="raised").grid(row=1, column=0, padx=2, pady=2)
-    tk.Radiobutton(checkbox, text="300", variable=modelo,selectcolor='#2f3542',
-                   value=2, background='#192965', foreground='#fff',borderwidth=3, relief="raised").grid(row=1, column=1, padx=2, pady=2)
-    tk.Radiobutton(checkbox, text="250", variable=modelo,selectcolor='#2f3542',
-                   value=3, background='#192965', foreground='#fff',borderwidth=3, relief="raised").grid(row=1, column=2, padx=2, pady=2)
-    tk.Radiobutton(checkbox, text="Eco", variable=modelo, selectcolor='#2f3542',
-                   value=4, background='#192965', foreground='#fff',borderwidth=3, relief="raised").grid(row=1, column=3, padx=2, pady=2)
+    tk.Radiobutton(lf_modelo_radio, text="330", variable=modelo, value=1, background='#192965', foreground='#fff', selectcolor='#2f3542').grid(row=0, column=0)
+    tk.Radiobutton(lf_modelo_radio, text="300", variable=modelo, value=2, background='#192965', foreground='#fff', selectcolor='#2f3542').grid(row=0, column=1)
+    tk.Radiobutton(lf_modelo_radio, text="250", variable=modelo, value=3, background='#192965', foreground='#fff', selectcolor='#2f3542').grid(row=0, column=2)
+    tk.Radiobutton(lf_modelo_radio, text="ECO", variable=modelo, value=4, background='#192965', foreground='#fff', selectcolor='#2f3542').grid(row=0, column=3)
 
+        # Labelframe para ingresar cantidad
+    lf_cantidad = ttk.Labelframe(cajas, text="Cantidad de Motores", padding=(10, 10), style="Bold9.TLabelframe")
+    lf_cantidad.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
 
-    ttk.Label(cajas, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=5, column=0,columnspan=2)
-    cantidad_motores = tk.Entry(cajas, width=10)
-    cantidad_motores.grid(row=6, column=0, columnspan=2, pady=3, padx=3)
-    
+    # Frame para centrar los elementos dentro del Labelframe
+    box_cantidad = tk.Frame(lf_cantidad)
+    box_cantidad.grid(row=0, column=0, pady=5, padx=5, sticky="nsew")
+
+    # Configura el Frame para que los elementos se centren
+    box_cantidad.grid_rowconfigure(0, weight=1)
+    box_cantidad.grid_rowconfigure(1, weight=1)
+    box_cantidad.grid_columnconfigure(0, weight=1)
+
+    # Campo de entrada para la cantidad de motores
+    cantidad_motores = tk.Entry(box_cantidad, width=10)
+    cantidad_motores.grid(row=0, column=0, pady=5)
+
+    # Función para manejar el inventario
     def enviar():
         selected_modelo = modelo.get()
         cantidad = int(cantidad_motores.get())
         manejar_inventario(selected_modelo, cantidad, historial)
 
-    tk.Button(
-    cajas,
-    text="Motores Terminado",
-    background="green",
-    foreground="white",
-    padx=4,
-    pady=1,
-    font=('Helvetica', 8, "bold"),
-    command=enviar  # Asocia la función 'enviar' al botón
-).grid(row=7, column=0, columnspan=2, padx=5, pady=5)
+    # Botón para enviar datos
+    tk.Button(box_cantidad, text="Motores Terminados", command=enviar,
+              background="green", foreground="white", padx=4, pady=2, font=('Helvetica', 8, "bold")).grid(row=1, column=0, pady=5)
 
-    ttk.Separator(cajas, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=8, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    ttk.Separator(cajas, orient="horizontal").grid(row=4, column=0, sticky="ew", pady=5)
+
+    # Labelframe para opciones adicionales
+    lf_opciones = ttk.Labelframe(cajas, text="Opciones Adicionales", padding=(10, 10), style="Bold9.TLabelframe")
+    lf_opciones.grid(row=5, column=0, sticky="ew", padx=5, pady=5)
+
+    # Configura las columnas del Labelframe para que los botones se centren
+    lf_opciones.grid_columnconfigure(0, weight=1)
+    lf_opciones.grid_columnconfigure(1, weight=1)
+
+    # Botones adicionales centrados
+    tk.Button(lf_opciones, text="Motores para Tornear", wraplength=50, command=lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_para_tornear)).grid(row=0, column=0, padx=5, sticky="ew")
+    tk.Button(lf_opciones, text="Motores para Armar", wraplength=50, command=lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_terminadas)).grid(row=0, column=1, padx=5, sticky="ew")
 
 
-    tk.Button(cajas, text=" Motores para Tornear", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_para_tornear)).grid(row=9, column=0)
-    tk.Button(cajas, text="Motores Para Armar", command= lambda: mostrar_piezas_tablas(tabla_principal, quety_cajas_terminadas)).grid(row=9, column=1)
+
+
 
 
     pre_armado = tk.Frame(box2)
     pre_armado.grid(row=1, column=2)
-    tk.Label(pre_armado, text="ZOna de PRE armado").grid(row=0, columnspan=2)
-
-    box_boton_pre_armado = tk.Frame(pre_armado)
-    box_boton_pre_armado.grid(row=1, columnspan=2)
-
-    tk.Label(box_boton_pre_armado, text="Consulta de piezas del pre_armado").grid(row=0, columnspan=3)
-
-    tk.Button(box_boton_pre_armado, text="Inox 330", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada330)).grid(row=1, column=0)
-    tk.Button(box_boton_pre_armado, text="Inox 300", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada300)).grid(row=1, column=1)
-    tk.Button(box_boton_pre_armado, text="Inox 250", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada250)).grid(row=1, column=2)
-    tk.Button(box_boton_pre_armado, text="ECO", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armadaeco)).grid(row=2, column=1)
-    tk.Button(box_boton_pre_armado, text="Pintada 330", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_pintada_armada330)).grid(row=2, column=0)
-    tk.Button(box_boton_pre_armado, text="Pintada 300", command= lambda: mostrar_piezas_motor(tabla_principal, piezas_pintada_armada300)).grid(row=2, column=2)
 
 
+    lf_pre_armado = ttk.Labelframe(pre_armado, text="Zona de Pre Armado", padding=(10, 10))
+    lf_pre_armado.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
 
+    # Labelframe para la consulta de piezas del pre-armado
+    lf_consulta_piezas = ttk.Labelframe(lf_pre_armado, text="Consulta de Piezas del Pre-Armado", padding=(10, 10))
+    lf_consulta_piezas.grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    ttk.Separator(pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=2, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    # Botones para mostrar piezas según el tipo de pre-armado
+    tk.Button(lf_consulta_piezas, text="Inox 330", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada330)).grid(row=0, column=0, padx=5, pady=5)
+    tk.Button(lf_consulta_piezas, text="Inox 300", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada300)).grid(row=0, column=1, padx=5, pady=5)
+    tk.Button(lf_consulta_piezas, text="Inox 250", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armada250)).grid(row=0, column=2, padx=5, pady=5)
+    tk.Button(lf_consulta_piezas, text="ECO", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_inox_armadaeco)).grid(row=1, column=1, padx=5, pady=5)
+    tk.Button(lf_consulta_piezas, text="Pintada 330", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_pintada_armada330)).grid(row=1, column=0, padx=5, pady=5)
+    tk.Button(lf_consulta_piezas, text="Pintada 300", command=lambda: mostrar_piezas_motor(tabla_principal, piezas_pintada_armada300)).grid(row=1, column=2, padx=5, pady=5)
 
-    ttk.Label(pre_armado, text="Maquinas pre-armadas", style="WhiteOnRed.TLabel", font=("Arial", 14, "bold")).grid(row=3, column=0, columnspan=2)
+    # Separador
+    ttk.Separator(lf_pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=1, column=0, sticky="ew", columnspan=2, pady=5, padx=5)
 
-    ttk.Label(pre_armado, text="Modelo de Maquina", style="WhiteOnRed.TLabel").grid(row=4, column=0)
-    tipo_prearmada = ttk.Combobox(pre_armado, values=tipos_de_maquinas, state="readonly", width=16)
-    tipo_prearmada.grid(row=4, column=1)
+    # Labelframe para la selección del modelo y cantidad
+    lf_seleccion_modelo = ttk.Labelframe(lf_pre_armado, text="Maquinas Pre-Armadas", padding=(10, 10))
+    lf_seleccion_modelo.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    ttk.Label(pre_armado, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=5, column=0)
-    cantidad_prearmada = tk.Entry(pre_armado, width=10)
-    cantidad_prearmada.grid(row=5, column=1, pady=4, padx=4)
+    # Selección del modelo de la máquina
+    ttk.Label(lf_seleccion_modelo, text="Modelo de Maquina", style="WhiteOnRed.TLabel").grid(row=0, column=0, padx=5, pady=5)
+    tipo_prearmada = ttk.Combobox(lf_seleccion_modelo, values=tipos_de_maquinas, state="readonly", width=16)
+    tipo_prearmada.grid(row=0, column=1, padx=5, pady=5)
+
+    # Ingreso de cantidad
+    ttk.Label(lf_seleccion_modelo, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=1, column=0, padx=5, pady=5)
+    cantidad_prearmada = tk.Entry(lf_seleccion_modelo, width=10)
+    cantidad_prearmada.grid(row=1, column=1, padx=5, pady=5)
+
 
     def enviar_():
         tipo_= tipo_prearmada.get()
@@ -356,98 +394,84 @@ def zona_armado(ventana):
         pre_armado_(tipo_, cantidad, historial)
 
 
+    # Botón para enviar la información de pre-armado
     tk.Button(
-        pre_armado, 
+        lf_seleccion_modelo, 
         text="Pre Armado", 
         background="green",
         foreground="white",
         padx=4,
         pady=1,
         font=('Helvetica', 8, "bold"),
-        command= enviar_
-    ).grid(row=6, column=1)
+        command=enviar_
+    ).grid(row=2, column=1, pady=5)
 
-    ttk.Separator(pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=7, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    # Separador
+    ttk.Separator(lf_pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=3, column=0, sticky="ew", columnspan=2, pady=5, padx=5)
 
-    ttk.Label(pre_armado, text="Consulta", style="WhiteOnRed.TLabel", font=("Arial", 14, "bold")).grid(row=8, column=0, columnspan=2)
-    ttk.Label(pre_armado, text="Pre Armado Terminados ", style="WhiteOnRed.TLabel").grid(row=9, column=0, columnspan=2)
+    # Labelframe para la consulta de pre-armado terminados
+    lf_consulta_terminados = ttk.Labelframe(lf_pre_armado, text="Consulta de Pre Armado Terminados", padding=(10, 10))
+    lf_consulta_terminados.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
+
+    ttk.Label(lf_consulta_terminados, text="Pre Armado Terminados", style="WhiteOnRed.TLabel", font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=2, padx=5, pady=5)
     tk.Button(
-        pre_armado,
+        lf_consulta_terminados,
         text="Terminados", 
         font=('Arial', 8, "italic"),
-        background= "gray", 
-        foreground= "white",
+        background="gray", 
+        foreground="white",
         padx=4,
         pady=1,
-        command= lambda: mostrar_piezas_tablas(tabla_principal, quety_bases_pre_armadas)).grid(row=10, columnspan=2)
-    
-    ttk.Separator(pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=12, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+        command=lambda: mostrar_piezas_tablas(tabla_principal, quety_bases_pre_armadas)).grid(row=1, columnspan=2, padx=5, pady=5)
 
-
+    # Separador final
+    ttk.Separator(lf_pre_armado, orient="horizontal", style="Separador2.TSeparator").grid(
+        row=5, column=0, sticky="ew", columnspan=2, pady=5, padx=5)
 
 
 
     armado_final = tk.Frame(box2)
     armado_final.grid(row=1, column=3)
-    tk.Label(armado_final, text="ZOna de armado").grid(row=0, column=0)
+    tk.Label(armado_final, text="Zona de Armado").grid(row=0, column=0, columnspan=2)
 
-    botonera_armadofinal = ttk.Frame(armado_final, style='Color.TFrame')
-    botonera_armadofinal.grid(row=1, column=0 , columnspan=2)
+    # Sección de Botonera dentro de un Labelframe
+    lf_botonera = ttk.Labelframe(armado_final, text="Piezas por modelo")
+    lf_botonera.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    ttk.Label(botonera_armadofinal, style="WhiteOnRed.TLabel",font=("Arial",12,"bold"), text="Piezas por modelo").grid(row=0, column=0, columnspan=3)
-    
-    ttk.Button(botonera_armadofinal, text="Inox 330", command= lambda: mostrar_piezas_motor(tabla_principal, i330_piezas)).grid(row=1, column=0, pady=5, padx=5)
-    ttk.Button(botonera_armadofinal, text="Inox 300", command= lambda: mostrar_piezas_motor(tabla_principal, i300_piezas)).grid(row=1, column=1, pady=5, padx=5)
-    ttk.Button(botonera_armadofinal, text="Inox 250", command= lambda: mostrar_piezas_motor(tabla_principal, i250_piezas)).grid(row=1, column=2, pady=5, padx=5)
+    tk.Button(lf_botonera, text="Inox 330", command=lambda: mostrar_piezas_motor(tabla_principal, i330_piezas)).grid(row=0, column=0, pady=5, padx=5)
+    tk.Button(lf_botonera, text="Inox 300", command=lambda: mostrar_piezas_motor(tabla_principal, i300_piezas)).grid(row=0, column=1, pady=5, padx=5)
+    tk.Button(lf_botonera, text="Inox 250", command=lambda: mostrar_piezas_motor(tabla_principal, i250_piezas)).grid(row=0, column=2, pady=5, padx=5)
 
-    ttk.Button(botonera_armadofinal, text="Pintada 330", command= lambda: mostrar_piezas_motor(tabla_principal, p330_piezas)).grid(row=2, column=0, pady=5, padx=5)
-    ttk.Button(botonera_armadofinal, text="Pintada 300", command= lambda: mostrar_piezas_motor(tabla_principal, p300_piezas)).grid(row=2, column=1, pady=5, padx=5)
-    ttk.Button(botonera_armadofinal, text="ECO", command= lambda: mostrar_piezas_motor(tabla_principal, iEco_piezas)).grid(row=2, column=2, pady=5, padx=5)
+    tk.Button(lf_botonera, text="Pintada 330", command=lambda: mostrar_piezas_motor(tabla_principal, p330_piezas)).grid(row=1, column=0, pady=5, padx=5)
+    tk.Button(lf_botonera, text="Pintada 300", command=lambda: mostrar_piezas_motor(tabla_principal, p300_piezas)).grid(row=1, column=1, pady=5, padx=5)
+    tk.Button(lf_botonera, text="ECO", command=lambda: mostrar_piezas_motor(tabla_principal, iEco_piezas)).grid(row=1, column=2, pady=5, padx=5)
 
-    ttk.Separator(botonera_armadofinal, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=3, column=0, sticky="ew", columnspan=4, pady=1, padx=1)
+    ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(row=2, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
-    ttk.Label(armado_final, style="WhiteOnRed.TLabel", text="Maquinas Teminadas", font=("Arial", 12, "bold")).grid(row=6, column=0, columnspan=2)
+    # Sección de Máquinas Terminadas dentro de un Labelframe
+    lf_terminadas = ttk.Labelframe(armado_final, text="Máquinas Terminadas")
+    lf_terminadas.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    ttk.Label(armado_final, text="Modelo", style="WhiteOnRed.TLabel").grid(row=7, column=0)
-    modele_final = ttk.Combobox(armado_final, values=maquinas_terminadas, state="readonly", width=16)
-    modele_final.grid(row=7, column=1)
+    ttk.Label(lf_terminadas, text="Modelo").grid(row=0, column=0)
+    modele_final = ttk.Combobox(lf_terminadas, values=maquinas_terminadas, state="readonly", width=16)
+    modele_final.grid(row=0, column=1, pady=5, padx=5)
 
-    ttk.Label(armado_final, style="WhiteOnRed.TLabel", text="Cantidad").grid(row=8, column=0)
-    cantidad_final = tk.Entry(armado_final, width=10)
-    cantidad_final.grid(row=8, column=1, pady=5, padx=5)
+    ttk.Label(lf_terminadas, text="Cantidad").grid(row=1, column=0)
+    cantidad_final = tk.Entry(lf_terminadas, width=10)
+    cantidad_final.grid(row=1, column=1, pady=5, padx=5)
 
     def armar():
         tipo = modele_final.get()
-        cantiada = int(cantidad_final.get())
-        armado_final_final(tipo, cantiada, historial)
+        cantidad = int(cantidad_final.get())
+        armado_final_final(tipo, cantidad, historial)
 
-    tk.Button(
-        armado_final, 
-        text="Confirmar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
-        command= armar ).grid(row=9, column=1)
+    tk.Button(lf_terminadas, text="Confirmar", background="green", foreground="white", font=('Helvetica', 8, "bold"), command=armar).grid(row=2, column=1, pady=5, padx=5)
 
-    ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=10, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(row=4, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
-    tk.Label(armado_final, text="Mostrar maquinas terminadas").grid(row=11, column=0)
+    # Sección de Mostrar Máquinas Terminadas dentro de un Labelframe
+    lf_mostrar_terminadas = ttk.Labelframe(armado_final, text="Mostrar Máquinas Terminadas")
+    lf_mostrar_terminadas.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    tk.Button(
-        armado_final, 
-        text="Mostrar Maquinas terminadas",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
-        command= lambda: mostrar_piezas_tablas(tabla_principal, query_maquinas_teminadas)).grid(row=12, column=0)
-
-    ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(
-        row=13, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
+    tk.Button(lf_mostrar_terminadas,text="Mostrar Máquinas Terminadas", background="gray", foreground="white", font=('Helvetica', 8, "italic"), command=lambda: mostrar_piezas_tablas(tabla_principal,     query_maquinas_teminadas)).grid(row=0, column=0, pady=5, padx=5, columnspan=2)

@@ -4,6 +4,7 @@ from tkinter import ttk
 from mycode.funciones.add_funcion import ordenar_por, limpiar_tabla
 from mycode.funciones.provedores_funcion import  mostrar_piezas_tablas, mecanizar_carcaza, resibir_afiladores
 
+
 piezas_afilador = ["capuchon_afilador","carcaza_afilador","eje_corto","eje_largo","ruleman608","palanca_afilador","resorte_palanca","resorte_empuje"]
 
 
@@ -71,7 +72,7 @@ def ventana_afilador(parent):
     labelframe_envios.grid(row=6, column=0, columnspan=2, sticky="nsew", pady=5, padx=5)
 
     # Carcaza mecanizadas
-    ttk.Label(labelframe_envios, text="ingrese Cantidad De Carcaza mecanizadas", font=("Arial", 10, "bold")).grid(row=0, column=0)
+    ttk.Label(labelframe_envios, text="ingrese Cantidad De Carcaza mecanizadas", font=("Arial", 10, "bold")).grid(row=0, columnspan=2)
     cantidad_ingresada_carcaza = ttk.Entry(labelframe_envios)
     cantidad_ingresada_carcaza.grid(row=2, column=0, pady=2)
 
