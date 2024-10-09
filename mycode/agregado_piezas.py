@@ -11,6 +11,9 @@ from mycode.piezas.plastico import plastico
 from mycode.piezas.hierro import hierro
 
 def agregado_piezas(notebook_principal):
+    
+    stylo_ventana = ttk.Style()
+    stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
     # Cargar la imagen usando PIL y redimensionarla
     img_original = Image.open(r"img\img_aluminio.png")
     img_redimensionada = img_original.resize((90, 90))  # Ajustar el tamaño (ancho, alto)
@@ -34,17 +37,17 @@ def agregado_piezas(notebook_principal):
 
 
     # Crear una nueva pestaña en el notebook principal
-    pestania_principal = ttk.Frame(notebook_principal)
+    pestania_principal = ttk.Frame(notebook_principal, style='Pestania.TFrame')
     notebook_principal.add(pestania_principal, text='Agregado de Piezas')
 
     # Crear un Frame para el contenido de las pestañas
-    contenido_frame = ttk.Frame(pestania_principal)
+    contenido_frame = ttk.Frame(pestania_principal, style='Pestania.TFrame')
     contenido_frame.grid(row=0, column=2, sticky="nsew")
 
 
     # Crear un Frame para contener las pestañas verticales
-    vertical_frame = ttk.Frame(pestania_principal, width=200,)
-    vertical_frame.grid(row=0, column=1, sticky="ns", padx=50)
+    vertical_frame = ttk.Frame(pestania_principal, width=200, style='Pestania.TFrame' )
+    vertical_frame.grid(row=0, column=1, sticky="ns", padx=50, pady=20)
 
     # Crear botones para las pestañas verticales, incluyendo la imagen redimensionada
     #boton1 = ttk.Button(vertical_frame, text="Acero", command=lambda: mostrar_contenido(contenido_frame, 'acero_dulce'))

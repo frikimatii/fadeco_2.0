@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import sqlite3
-from mycode.funciones.control_funciones import limpiar_tabla, mostrar_piezas_tablas, accion_embalar, accion_venta, consultar_piezas_sector_motor, consultar_piezas_sector, consultar_maquinas_final, on_averiguar_click, abrir_archivo_reporte
+from mycode.funciones.control_funciones import limpiar_tabla, mostrar_piezas_tablas, accion_embalar, accion_venta, consultar_piezas_sector_motor, consultar_piezas_sector, consultar_maquinas_final, verificar_disponibilidad_maquinas,  abrir_archivo_txt
 from mycode.funciones.add_funcion import ordenar_por
 
 
@@ -24,11 +24,6 @@ query_calcomanias = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR
 tipo_caja = ["330", "300", "250", "eco"]
 
 tipo_prearmado = ("inoxidable 330", "inoxidable 300", "inoxidable 250", "pintada 330", "pintada 300", "inoxidable eco")
-
-
-meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-]
-
 
 
 calco_eco = {
@@ -96,37 +91,34 @@ calco_inox_330 ={
 
 calco_inox_330 =["garantia","manual_instruciones","etiqueta_peligro","F_circulo","F_cuadrado","circulo_argentina","etiqueta_cable","fadeco_330_4estrella"]
 
-
-
 def control(ventana):
 
+    pestania = ttk.Frame(ventana, style='Pestania.TFrame')
+    ventana.add(pestania, text="Control-Condulta")
 
-    pestania = ttk.Frame(ventana)
-    ventana.add(pestania, text="Control")
-
-    index = ttk.Frame(pestania)
+    index = ttk.Frame(pestania, style='Pestania.TFrame')
     index.grid(row=0, column=0)
 
-    tk.Label(index, text="Control - Consultorio").grid(row=0,columnspan=6 )
+    tk.Label(index, text="Control - Consultorio" , background= '#192965', foreground='white', font=("Arial", 23, "bold")).grid(row=0,columnspan=6 )
 
-    box1 = tk.Frame(index)
+    box1 = tk.Frame(index, background= '#192965')
     box1.grid(row=1, column=0, padx=15, sticky="nw")
-    tk.Label(box1, text="Tabla de piezas", font=("Arial", 16, "bold")).grid(row=0,column=0 , sticky="w")
+    tk.Label(box1, text="Tabla de piezas", font=("Arial", 18, "bold"), background= '#192965', foreground='white').grid(row=0,column=0 , sticky="w")
 
     tabla_principal = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
     tabla_principal.heading("Pieza", text="Pieza", command= lambda: ordenar_por(tabla_principal, "Pieza", False))
     tabla_principal.heading("Cantidad", text="Cantidad",command= lambda: ordenar_por(tabla_principal, "Cantidad", False))
     tabla_principal.column("#0", width=0,stretch=tk.NO)
     tabla_principal.column("Pieza", width=200)
-    tabla_principal.column("Cantidad", width=30)
-    tabla_principal.config(height=18)
+    tabla_principal.column("Cantidad", width=70)
+    tabla_principal.config(height=15)
     tabla_principal.grid(row=2, column=0, sticky="nsew")
 
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=4, column=0)
 
     tk.Label(box1, text="Historial", font=("Arial", 9, "bold")).grid(row=5, column=0, sticky="w")
 
-    historial = tk.Listbox(box1, width=50, font=("Arial", 10, "bold"), height=7)
+    historial = tk.Listbox(box1, width=50, font=("Arial", 10, "bold"), height=9)
     historial.grid(row=6,column=0)
     
 
@@ -138,7 +130,7 @@ def control(ventana):
     box2.grid(row=1, column=1)  
 
     # Agrupación en un LabelFrame para mostrar máquinas terminadas
-    lf_maquinas_terminadas = ttk.LabelFrame(box2, text="Opciones de Máquinas Terminadas", style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_maquinas_terminadas = ttk.LabelFrame(box2, text="Opciones de Máquinas Terminadas", style="Bold9.TLabelframe", padding=(10, 5))
     lf_maquinas_terminadas.grid(row=0, column=0, padx=5, pady=5)    
 
     # Botón para mostrar máquinas terminadas
@@ -148,7 +140,7 @@ def control(ventana):
     emabalaje.grid(row=2, column=0)
 
     # Agrupación de widgets en un LabelFrame
-    lf_maquinas_terminadas = ttk.LabelFrame(emabalaje, text="Maquinas embaladas",   style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_maquinas_terminadas = ttk.LabelFrame(emabalaje, text="Maquinas embaladas", style="Bold9.TLabelframe", padding=(10, 5))
     lf_maquinas_terminadas.grid(row=0, column=0, sticky="n", padx=5, pady=5)
 
     # Etiqueta de descripción
@@ -194,7 +186,7 @@ def control(ventana):
     ventas.grid(row=3, column=0)
     
     # Agrupación de widgets en un LabelFrame para ventas
-    lf_ventas = ttk.LabelFrame(ventas, text="Maquinas Vendidas", style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_ventas = ttk.LabelFrame(ventas, text="Maquinas Vendidas", style="Bold9.TLabelframe", padding=(10, 5))
     lf_ventas.grid(row=0, column=0, sticky="n", padx=5, pady=5)
     
     # Etiqueta de descripción
@@ -238,7 +230,7 @@ def control(ventana):
     consultorio.grid(row=1, column=2, padx=10, pady=10)
 
     # LabelFrame para la sección de Motores
-    lf_motores = ttk.LabelFrame(consultorio, text="Consultorio de Motores", style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_motores = ttk.LabelFrame(consultorio, text="Consultorio de Motores", style="Bold9.TLabelframe", padding=(10, 5))
     lf_motores.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
     # Etiqueta y combobox en la sección de Motores
@@ -265,7 +257,7 @@ def control(ventana):
     ttk.Separator(lf_motores, orient="horizontal").grid(row=4, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
 
     # LabelFrame para la sección de Prearmado
-    lf_prearmado = ttk.LabelFrame(consultorio, text="Consultorio de Prearmado", style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_prearmado = ttk.LabelFrame(consultorio, text="Consultorio de Prearmado", style="Bold9.TLabelframe", padding=(10, 5))
     lf_prearmado.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
     # Etiqueta y combobox en la sección de Prearmado
@@ -292,7 +284,7 @@ def control(ventana):
     ttk.Separator(lf_prearmado, orient="horizontal").grid(row=4, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
 
     # LabelFrame para la sección de Armado Final
-    lf_armadofinal = ttk.LabelFrame(consultorio, text="Consultorio de Armado Final", style="WhiteOnRed.TLabelframe", padding=(10, 5))
+    lf_armadofinal = ttk.LabelFrame(consultorio, text="Consultorio de Armado Final", style="Bold9.TLabelframe", padding=(10, 5))
     lf_armadofinal.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
 
     # Etiqueta y combobox en la sección de Armado Final
@@ -319,96 +311,69 @@ def control(ventana):
     ttk.Separator(lf_armadofinal, orient="horizontal").grid(row=4, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
 
 
-
-
-    pedidos = ttk.Frame(index, style='Pestania.TFrame')
-    pedidos.grid(row=1, column=3, padx=10, pady=10) 
-
-    # Agrupación en un LabelFrame para la consulta de pedidos
-    lf_consulta_pedidos = ttk.LabelFrame(pedidos, text="Consulta de Pedidos", style="WhiteOnRed.TLabelframe", padding=(10, 5))
-    lf_consulta_pedidos.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")  
-
-    # Título y etiquetas para los tipos de pedidos
-    ttk.Label(lf_consulta_pedidos, text=f"Consulta de pedido", style="WhiteOnRed.TLabel", font= ("Arial", 20, "bold")).grid(row=0, column=0, columnspan=2, pady=10)  
-
-    # Etiquetas para los tipos de pedidos y prioridades
-    labels = ["Inoxidable 330", "Inoxidable 300", "Inoxidable 250", "Pintada 330", "Pintada 300",   "Inoxidable Eco"]
-    for i, label in enumerate(labels):
-        ttk.Label(lf_consulta_pedidos, text=label, style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=i + 1, column=0, padx=1, pady=1, sticky="se")
-        ttk.Label(lf_consulta_pedidos, text="Prioridad", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=i + 1, column=2, padx=1, pady=1, sticky="se")  
-
-    # Campos de entrada para las cantidades y prioridades
-    entries = {}
-    priorities = {}
-    for i, label in enumerate(labels):
-        entries[label] = ttk.Entry(lf_consulta_pedidos, width=7)
-        entries[label].grid(row=i + 1, column=1, sticky="nw")
-        priorities[label] = ttk.Entry(lf_consulta_pedidos, width=7)
-        priorities[label].grid(row=i + 1, column=3, sticky="nw")    
-
-    # Botón para averiguar el resultado final
+    pedidos_frame = ttk.LabelFrame(index, text="Consulta de Pedido", padding=(10, 10), style="Bold9.TLabelframe" )
+    pedidos_frame.grid(row=1, column=3, padx=10, pady=10)
+    
+    # Títulos
+    ttk.Label(pedidos_frame, text="Máquinas Pedidas", style="WhiteOnRed.TLabel", font=("Arial", 20, "bold")).grid(row=0, column=0, columnspan=2, pady=(0, 10))
+    
+    # Etiquetas de las máquinas
+    etiquetas_maquinas = [
+        "Inoxidable 330",
+        "Inoxidable 300",
+        "Inoxidable 250",
+        "Pintada 330",
+        "Pintada 300",
+        "Inoxidable Eco"
+    ]
+    
+    for idx, etiqueta in enumerate(etiquetas_maquinas, start=2):
+        ttk.Label(pedidos_frame, text=etiqueta, style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=idx, column=0, padx=1, pady=1, sticky="se")
+    
+    # Entradas para las cantidades
+    entradas_maquinas = []
+    
+    for idx in range(len(etiquetas_maquinas)):
+        entry = ttk.Entry(pedidos_frame, width=7)
+        entry.grid(row=idx + 2, column=1, sticky="nw")
+        entradas_maquinas.append(entry)
+    
+    # Función para ejecutar la consulta
+    def ejecutar_consulta():
+        cantidades = {
+            "inox330": int(entradas_maquinas[0].get() or 0),
+            "inox300": int(entradas_maquinas[1].get() or 0),
+            "inox250": int(entradas_maquinas[2].get() or 0),
+            "pintada330": int(entradas_maquinas[3].get() or 0),
+            "pintada300": int(entradas_maquinas[4].get() or 0),
+            "ecoInox": int(entradas_maquinas[5].get() or 0)
+        }
+        verificar_disponibilidad_maquinas(cantidades, historial)
+    
+    # Botón para consultar
     resultado_final = tk.Button(
-        lf_consulta_pedidos,
+        pedidos_frame,
         text="Averiguar",
         background="#530075",
         foreground="white",
         padx=7,
         pady=2,
         font=('Helvetica', 9, "bold"),
-        command=lambda: on_averiguar_click(
-            entries["Inoxidable 330"], entries["Inoxidable 300"], entries["Inoxidable 250"], 
-            entries["Pintada 330"], entries["Pintada 300"], entries["Inoxidable Eco"], 
-            priorities["Inoxidable 330"], priorities["Inoxidable 300"], priorities["Inoxidable 250"], 
-            priorities["Pintada 330"], priorities["Pintada 300"], priorities["Inoxidable Eco"], 
-            tabla_principal, historial
-        )
+        command=ejecutar_consulta
     )
-    resultado_final.grid(row=7, column=0, columnspan=2, pady=10)    
-
-    # Botón para abrir la tabla y mostrar los resultados
-    ttk.Button(lf_consulta_pedidos, text="Abrir registro", command=lambda: abrir_archivo_reporte()).    grid(row=8, column=0, columnspan=2, padx=4, pady=4) 
-
-
-
-
-    # Separador
-    ttk.Separator(lf_consulta_pedidos, orient="horizontal").grid(row=9, column=0, columnspan=2, sticky="ew", padx=3, pady=10)
-
-    # Agrupación en un LabelFrame para el cierre del mes
-    lf_finde_mes = ttk.LabelFrame(pedidos, text="Cierre Del Mes", style="WhiteOnRed.TLabelframe", padding=(10, 5))
-    lf_finde_mes.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
-
-    # Etiqueta y combobox para seleccionar el mes
-    ttk.Label(lf_finde_mes, text="Mes", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=0, column=0, padx=2, pady=2)
-    meses_opcional = ttk.Combobox(lf_finde_mes, values=meses, state="readonly", width=12)
-    meses_opcional.grid(row=0, column=1, padx=2, pady=2)
-
-    # Botón para terminar el mes
-    cierre_mes = tk.Button(
-        lf_finde_mes,
-        text="Terminar El Mes",
+    resultado_final.grid(row=8, column=0, columnspan=2, padx=2, pady=5)
+    
+    # Botón para abrir el archivo de texto
+    btn_abrir_archivo = tk.Button(
+        pedidos_frame,
+        text="Abrir registro",
         background="#530075",
         foreground="white",
-        padx=5,
+        padx=7,
         pady=2,
-        font=('Helvetica', 8, "bold"),
-        command=lambda: actualizar_cantidad_a_cero(total, meses_opcional, lista_acciones)
+        font=('Helvetica', 9, "bold"),
+        command=abrir_archivo_txt  # Llama a la función para abrir el archivo
     )
-    cierre_mes.grid(row=1, column=0, columnspan=2, padx=3, pady=3)
-
-    # Etiqueta para mostrar el total
-    total = ttk.Label(lf_finde_mes, text="", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold"))
-    total.grid(row=2, column=0, columnspan=2, padx=3, pady=3)
-
-    # Botón para mostrar el registro
-    mostrar_registro = tk.Button(
-        lf_finde_mes,
-        text="Mostrar Registro",
-        background="#530075",
-        foreground="white",
-        padx=20,
-        pady=7,
-        font=('Helvetica', 8, "bold"),
-        command=lambda: abrir_archivo_registro()
-    )
-    mostrar_registro.grid(row=3, column=0, columnspan=2, pady=10)
+    btn_abrir_archivo.grid(row=9, column=0, columnspan=2, padx=5, pady=5)
+    
+    

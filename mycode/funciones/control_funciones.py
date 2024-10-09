@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
 import os
+from datetime import datetime
 
 
 
@@ -87,10 +88,12 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                     if pieza_og in piezas_mapeo:
                         pieza_fresada = piezas_mapeo[pieza_og]
                         # Actualizar las cantidades en la base de datos
-                        cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD - ? WHERE MAQUINA= ?", (cantidad_og, pieza_og))
                         cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD + ? WHERE MAQUINA= ?", (cantidad_og, pieza_fresada))
                         
                         historial.insert(0, f"Se fresaron {cantidad_og} unidades de {pieza_og}.")
+                        
+                        cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD - ? WHERE MAQUINA =?", (cantidad_og, pieza_og))
+                        
                     else:
                         historial.insert(0, f"No se pudo encontrar un mapeo para la pieza {pieza_og}.")
                 else:
@@ -208,7 +211,6 @@ motor_250 = {
     "motor250_220w": 1,#
     "oring":1,#
     "rulemanR6": 1#
-
 }
 motor_eco = {
     "polea_grande": 1, #
@@ -483,6 +485,8 @@ base_pre_inox_armadaeco = {
     }
     
 
+
+
 def stock_de_prearmado(modelo):
     try:
         conn = sqlite3.connect("dbfadeco.db")
@@ -607,7 +611,6 @@ def consultar_piezas_sector(entry_cantidad, tabla_consultas, lista_acciones, tip
         for pieza, cantidad_faltante in piezas_faltantes.items():
             # Agregar las filas al treeview
             tabla_consultas.insert("", tk.END, values=(pieza, cantidad_faltante), tags=("blue",))
-
 
 
 
@@ -774,6 +777,7 @@ eco__ = {
 }
 
 
+base_pre = ["Base_Pre_armado_i330","Base_Pre_armado_i300","Base_Pre_armado_i250", "Base_Pre_armado_p330",  "Base_Pre_armado_p300",  "Base_Pre_armado_ECO"]
 
 
 
@@ -908,150 +912,208 @@ def consultar_maquinas_final(entry_cantidad, tabla_consultas, lista_acciones, ti
 
 #-------------------------------------------------------------------------------------------
 
+# Diccionarios con las piezas necesarias para cada modelo
 
 
-
-
-def obtener_stock_piezas():
-    try:
-        conn = sqlite3.connect("dbfadeco.db")
-        cursor = conn.cursor()
-        cursor.execute("SELECT PIEZAS, CANTIDAD FROM piezas_terminadas")
-        datos_piezas = dict(cursor.fetchall())
-        return datos_piezas
-    except sqlite3.Error as e:
-        print(f"Error al obtener datos de la base de datos: {e}")
-        return {}
-    finally:
-        conn.close()
-
-def obtener_base_piezas_modelo(modelo):
-    # Asegúrate de que estas variables estén definidas en otro lugar de tu código
-    bases_prearmadas = {
-        "inoxidable 330": inox_330__,
-        "inoxidable 300": inox_300__,
-        "inoxidable 250": inox_250__,
-        "pintada 330": pintada_330__,
-        "pintada 300": pintada_300__,
-        "inoxidable eco": eco__,
-    }
-    return bases_prearmadas.get(modelo, {})
-
-def verificar_disponibilidad_pedido(pedido_maquinas, modelos_prioridad):
-    stock_piezas = obtener_stock_piezas()
-    piezas_faltantes_totales = {}
-    piezas_faltantes_por_modelo = {}
-
-    for modelo in modelos_prioridad:
-        if modelo not in pedido_maquinas:
-            continue
-
-        cantidad_pedido = pedido_maquinas[modelo]
-        try:
-            cantidad_pedido = int(cantidad_pedido) if str(cantidad_pedido).isdigit() else 0
-        except ValueError:
-            cantidad_pedido = 0
-        
-        base_piezas_modelo = obtener_base_piezas_modelo(modelo)
-        if not base_piezas_modelo:
-            print(f"Modelo '{modelo}' no reconocido.")
-            continue
-
-        piezas_faltantes_por_modelo[modelo] = {}
-        
-        for pieza, cantidad_necesaria in base_piezas_modelo.items():
-            try:
-                cantidad_necesaria = int(cantidad_necesaria) if str(cantidad_necesaria).isdigit() else 0
-            except ValueError:
-                cantidad_necesaria = 0
-                
-            cantidad_disponible = int(stock_piezas.get(pieza, 0))
-            cantidad_requerida = cantidad_necesaria * cantidad_pedido
-
-            if cantidad_disponible < cantidad_requerida:
-                cantidad_faltante = cantidad_requerida - cantidad_disponible
-                piezas_faltantes_por_modelo[modelo][pieza] = cantidad_faltante
-                piezas_faltantes_totales[pieza] = piezas_faltantes_totales.get(pieza, 0) + cantidad_faltante
-
-                stock_piezas[pieza] = 0
-
-            else:
-                stock_piezas[pieza] -= cantidad_requerida
-
-    if not piezas_faltantes_totales:
-        return True, {}
-    else:
-        return False, {
-            "totales": piezas_faltantes_totales,
-            "por_modelo": piezas_faltantes_por_modelo
+full_piezas = {
+    "inox330":{
+        "armado": {
+            "brazo_330": 1, "cubrecuchilla_330": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,"teletubi_330": 1, "cuchilla_330": 1, "cuadrado_regulador": 1, "vela_final_330": 1, "cubre_motor_rectangulo":1,"cubre_motor_cuadrado": 1, "planchada_final_330": 1, "varilla_brazo_330": 1, "resorte_brazo": 1, "tapa_afilador": 1,"pipas": 2, "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i330": 1
+        },
+        "pre_armado": {
+                "BaseInox_330": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4,"movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1,"cable_220w": 1, "varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2,"capacitores": 1, "caja_330_armada": 1
+        },
+        "motor": {
+            "cajas_torneadas_330": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2,"corona_330": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring": 1, "ruleman6000": 1
         }
+},
 
-def on_averiguar_click(entry_i330, entry_i300, entry_i250, entry_p330, entry_p300, entry_ieco, priority_i330, priority_i300, priority_i250, priority_p330, priority_p300, priority_ieco, tree, listbox):
-    for item in tree.get_children():
-        tree.delete(item)
-    
-    listbox.delete(0, 'end')
+"inox300": {
+    "armado": {
+        "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,  "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300": 1,   "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300": 1,    "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,       "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,  "perilla_afilador":   1, "base_afilador_300": 1, "piedra_afilador": 1,    "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i300": 1
+    },
+    "pre_armado": {
+         "BaseInox_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_300": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "caja_300_armada": 1
+    },
+    "motor": {
+         "cajas_torneadas_300": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2, "corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring":1, "ruleman6000": 1
 
-    # Obtener las prioridades
-    prioridades = {
-        "inoxidable 330": int(priority_i330.get() or 0),
-        "inoxidable 300": int(priority_i300.get() or 0),
-        "inoxidable 250": int(priority_i250.get() or 0),
-        "pintada 330": int(priority_p330.get() or 0),
-        "pintada 300": int(priority_p300.get() or 0),
-        "inoxidable eco": int(priority_ieco.get() or 0),
+        }
+},
+
+
+
+"pintada300": {
+    "armado": {
+        "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_pintada":1, "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300":1, "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300":1, "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,"tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1, "base_afilador_300": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_p300": 1
+    },
+    "pre_armado": {
+        "BasePintada_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1,"tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1,"resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w":  1,"varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "bandeja_300": 1,"caja_300_armada": 1
+    },
+    "motor": {
+        "cajas_torneadas_300": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2,"corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring":1, "ruleman6000": 1,
     }
+},
 
-    # Ordenar los modelos por prioridad (más alto primero)
-    modelos_prioridad = sorted(prioridades.keys(), key=lambda x: prioridades[x])
-    
-    pedido_maquinas = {
-        "inoxidable 330": entry_i330.get(),
-        "inoxidable 300": entry_i300.get(),
-        "inoxidable 250": entry_i250.get(),
-        "pintada 330": entry_p330.get(),
-        "pintada 300": entry_p300.get(),
-        "inoxidable eco": entry_ieco.get(),
+"pintada330": {
+    "armado": {
+        "brazo_330": 1,"cubrecuchilla_330": 1,"velero": 1,"perilla_brazo": 1,"cabezal_pintada": 1,"teletubi_330": 1,"cuchilla_330": 1,"cuadrado_regulador": 1,"vela_final_330": 1,"cubre_motor_rectangulo": 1,"cubre_motor_cuadrado": 1,"planchada_final_330": 1,"varilla_brazo_330": 1,"resorte_brazo": 1,"tapa_afilador": 1,"pipas": 2,"tubo_manija": 1,"afilador_final": 1,"perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1,"pinche_frontal": 1,"pinche_lateral": 1,"Base_Pre_armado_p330": 1
+    },
+    "pre_armado": {
+        "BasePintada_330": 1,"aro_numerador": 1,"espiral": 1,"perilla_numerador": 1,"tapita_perilla": 2,"patas": 4,"movimiento": 1,"eje_rectificado": 1,"resorte_movimiento": 1,"tornillo_guia": 1,"guia_u": 1,"teclas": 1,"cable_220w": 1,"varilla_330": 1,"carros": 1,"rueditas": 4,"resorte_carro": 2,"capacitores": 1,"bandeja_330": 1,"caja_330_armada": 1
+    },
+    "motor": { 
+        "cajas_torneadas_330": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2, "corona_330": 1,"seguer": 1,"sinfin": 1,"motor_220w": 1,"oring":1, "ruleman6000": 1,
     }
+},
 
-    se_puede_armar, piezas_faltantes = verificar_disponibilidad_pedido(pedido_maquinas, modelos_prioridad)
 
-    reporte_piezas_faltantes = ""
-    if se_puede_armar:
-        listbox.insert(0, "El pedido se puede armar.")
-        reporte_piezas_faltantes += "El pedido se puede armar.\n"
-    else:
-        listbox.insert(0, "No hay suficientes piezas para armar el pedido.")
-        reporte_piezas_faltantes += "No hay suficientes piezas para armar el pedido.\n"
+"ecoInox": {
+    "armado": {
+        "brazo_330": 1, "cubrecuchilla_330": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1, "teletubi_doblado_eco": 1, "cuchilla_330": 1, "vela_final_330": 1, "cuadrado_regulador": 1, "planchada_final_330": 1, "varilla_brazo_330": 1, "resorte_brazo": 1, "tapa_afilador_eco": 1, "pitito_teletubi_eco": 1, "pipas": 2, "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "pinche_lateral": 1, "pinche_frontal": 1, "Base_Pre_armado_ECO": 1
+    },
+    "pre_armado": {
+         "BaseECO": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "cable_eco_220w": 1, "varilla_330": 1, "carros": 1, "resorte_carro": 2, "rueditas": 4 , "caja_eco_armada": 1
+    },
+    "motor": {
+        "polea_grande": 1,  "polea_chica": 1, "tornillo_teletubi_eco": 2, "capacitor_eco": 1, "conector_hembra": 1, "cable_corto_eco": 1, "motor_eco": 1, "caja_soldada_eco": 1,  "tapa_correa_eco": 1, "correa_eco": 1, "capuchon_motor_dodo": 1, "teclas": 1, "buje_eje_eco": 1, "rectangulo_plastico_eco": 1
+    }
+},
+"inox250": {
+    "armado": {
+         "brazo_250": 1, "cubrecuchilla_250": 1, "velero": 1, "perilla_brazo": 1, "cabezal_250": 1, "teletubi_250": 1, "cuchilla_250": 1, "cuadrado_regulador": 1, "vela_final_250": 1, "cubre_motor_rectangulo": 1, "planchada_final_250": 1, "varilla_brazo_250": 1, "resorte_brazo": 1, "tapa_afilador_250": 1, "pipas": 2, "tubo_manija_250": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "capuchon_250": 1, "pinche_frontal_250": 1, "pinche_lateral_250": 1, "Base_Pre_armado_i250": 1 
+    },
+    "pre_armado": {
+         "BaseInox_250": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_250": 1, "carros": 1, "rueditas": 4, "capacitores_250": 1, "caja_250_armada": 1
+    },
+    "motor": {
+        "cajas_torneadas_250": 1, "eje_250": 1, "manchon_250": 1, "ruleman_6004": 1, "ruleman_6204": 2, "corona_250": 1, "seguer": 1, "sinfin": 1, "motor250_220w": 1, "oring":1, "rulemanR6": 1
+    }
+}
+}
+
+import os
+import sqlite3
+from datetime import datetime
+import tkinter as tk
+from tkinter import messagebox
+
+
+# Cambiar el nombre del archivo a resultados_pedidos.txt
+ARCHIVO_RESULTADOS = "resultados_pedidos.txt"
+
+def verificar_disponibilidad_maquinas(cantidades, historial):
+    requerimientos = {}
+
+    # Sumar requerimientos para cada modelo
+    for modelo, cantidad in cantidades.items():
+        if modelo not in full_piezas:
+            print(f"Modelo {modelo} no reconocido.")
+            return
         
-        # Mostrar el total de piezas faltantes
-        listbox.insert('end', "Piezas faltantes (total):")
-        reporte_piezas_faltantes += "Piezas faltantes (total):\n"
-        for pieza, cantidad_faltante in piezas_faltantes["totales"].items():
-            listbox.insert('end', f"  - {pieza}: Faltan {cantidad_faltante}")
-            reporte_piezas_faltantes += f"  - {pieza}: Faltan {cantidad_faltante}\n"
+        for etapa, componentes in full_piezas[modelo].items():
+            for componente, cantidad_requerida in componentes.items():
+                cantidad_total_necesaria = cantidad_requerida * cantidad
+                requerimientos.setdefault(etapa, {}).setdefault(componente, 0)
+                requerimientos[etapa][componente] += cantidad_total_necesaria
 
-        # Mostrar desglose por modelo
-        listbox.insert('end', "\nDesglose por modelo:")
-        reporte_piezas_faltantes += "\nDesglose por modelo:\n"
-        for modelo, piezas_modelo in piezas_faltantes["por_modelo"].items():
-            listbox.insert('end', f"\nFaltan piezas para el modelo {modelo}:")
-            reporte_piezas_faltantes += f"\nFaltan piezas para el modelo {modelo}:\n"
-            for pieza, cantidad_faltante in piezas_modelo.items():
-                listbox.insert('end', f"  - {pieza}: Faltan {cantidad_faltante}")
-                reporte_piezas_faltantes += f"  - {pieza}: Faltan {cantidad_faltante}\n"
+    # Comprobar la disponibilidad de las piezas
+    try:
+        with sqlite3.connect("dbfadeco.db") as conn:
+            cursor = conn.cursor()
 
-    guardar_reporte_en_txt(reporte_piezas_faltantes)
-    return reporte_piezas_faltantes
+            # Crear un string de placeholders para la consulta
+            piezas_a_verificar = [componente for etapa in requerimientos for componente in requerimientos[etapa]]
+            placeholders = ', '.join('?' for _ in piezas_a_verificar)
 
-def guardar_reporte_en_txt(reporte):
-    with open("reporte_piezas_faltantes.txt", "w") as file:
-        file.write(reporte)
+            cursor.execute(f"SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS IN ({placeholders})", piezas_a_verificar)
+            resultados = cursor.fetchall()
 
-def abrir_archivo_reporte():
-    # Función para abrir el archivo creado
-    archivo = "reporte_piezas_faltantes.txt"
-    if os.path.exists(archivo):
-        os.startfile(archivo)  # Solo en Windows
+            # Diccionario para las cantidades disponibles
+            cantidades_disponibles = {pieza: cantidad for pieza, cantidad in resultados}
+
+            piezas_faltantes = {}
+            for etapa, componentes in requerimientos.items():
+                for componente, cantidad_total_necesaria in componentes.items():
+                    cantidad_disponible = cantidades_disponibles.get(componente, 0)
+                    if cantidad_disponible < cantidad_total_necesaria:
+                        faltante = cantidad_total_necesaria - cantidad_disponible
+                        piezas_faltantes.setdefault(etapa, {})[componente] = faltante
+
+            # Llamar a la función que genera el archivo de resultados
+            guardar_resultados(cantidades, piezas_faltantes, historial)
+
+    except sqlite3.Error as e:
+        print(f"Error al acceder a la base de datos: {e}")
+
+def guardar_resultados(cantidades, piezas_faltantes, historial):
+    total_maquinas = sum(cantidades.values())
+    piezas_agrupadas = {}
+
+    # Abrir el archivo en la carpeta "pedidos"
+    with open(ARCHIVO_RESULTADOS, 'w', encoding='utf-8') as archivo:
+        fecha_actual = datetime.now().strftime("%d-%m-%y")
+        
+        archivo.write("====================================\n")
+        archivo.write("          RESULTADOS DE PEDIDO     \n")
+        archivo.write(f"Fecha del Pedido: {fecha_actual}\n")
+        archivo.write("====================================\n\n")
+        archivo.write("Máquinas Pedidas:\n")
+
+        historial.insert(tk.END, f"Máquinas Pedidas: ({total_maquinas}) Abra el archivo 'abrir registro'")
+
+        for modelo, cantidad in sorted(cantidades.items()):
+            archivo.write(f"→ {modelo.capitalize():<20} {cantidad:>5} unidades\n")
+            historial.insert(tk.END, f"{modelo.capitalize()}: {cantidad}")
+
+        archivo.write("\n")
+        archivo.write(f"\nTotal De Maquinas = {total_maquinas}\n")
+
+        if piezas_faltantes:
+            archivo.write("\nPiezas Faltantes por Etapa:\n")
+            archivo.write("===============================================================\n")
+            for etapa, componentes in piezas_faltantes.items():
+                if componentes:
+                    archivo.write(f"\nEtapa: {etapa.capitalize()}:\n")
+                    archivo.write("--------------------------------------------------------\n")
+                    for componente, faltante in sorted(componentes.items()):
+                        piezas_agrupadas[componente] = piezas_agrupadas.get(componente, 0) + faltante
+                        if ("Base_Pre_armado_" in componente or
+                            componente in ["caja_250_armada", "caja_300_armada", "caja_330_armada", "caja_eco_armada"]):
+                            mensaje = f"**->>> {componente.capitalize():<27} Faltan {faltante:>7} unidades <<<-**"
+                            archivo.write(mensaje + "\n")
+                        else:
+                            mensaje = f"- {componente.capitalize():<27} Faltan {faltante:>7} unidades"
+                            archivo.write(mensaje + "\n")
+
+            archivo.write("====================================\n")
+        else:
+            mensaje = "✅ Se pueden armar todas las máquinas.\n"
+            archivo.write(mensaje)
+            historial.insert(0, mensaje)
+
+    # Verificar que el archivo se haya creado correctamente
+    if os.path.exists(ARCHIVO_RESULTADOS):
+        print(f"Archivo guardado correctamente: {ARCHIVO_RESULTADOS}")
     else:
-        print("El archivo no existe.")
+        print("Error: El archivo no se pudo guardar.")
+
+def abrir_archivo_txt():
+    try:
+        # Verificar si el archivo existe
+        if not os.path.exists(ARCHIVO_RESULTADOS):
+            messagebox.showerror("Error", f"El archivo no se encontró en la ruta: {ARCHIVO_RESULTADOS}. Asegúrate de que el archivo se haya creado correctamente.")
+            return
+        
+        # Imprimir la ruta del archivo para verificar
+        print(f"Intentando abrir el archivo en la ruta: {ARCHIVO_RESULTADOS}")
+
+        # Si el archivo existe, intenta abrirlo
+        os.startfile(ARCHIVO_RESULTADOS)
+    except Exception as e:
+        messagebox.showerror("Error", f"No se pudo abrir el archivo: {e}")
+
+
+
+
+##36.36

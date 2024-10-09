@@ -1,0 +1,72 @@
+====================================
+          RESULTADOS DE PEDIDO     
+Fecha del Pedido: 08-10-24
+====================================
+
+Máquinas Pedidas:
+→ Ecoinox                  0 unidades
+→ Inox250                  0 unidades
+→ Inox300                  1 unidades
+→ Inox330                  0 unidades
+→ Pintada300               0 unidades
+→ Pintada330               0 unidades
+
+
+Total De Maquinas = 1
+
+Piezas Faltantes por Etapa:
+===============================================================
+
+Etapa: Armado:
+--------------------------------------------------------
+**->>> Base_pre_armado_i300        Faltan       1 unidades <<<-**
+- Base_afilador_300           Faltan       1 unidades
+- Brazo_300                   Faltan       1 unidades
+- Cubre_300                   Faltan       1 unidades
+- Cubre_motor_cuadrado        Faltan       1 unidades
+- Cubre_motor_rectangulo      Faltan       1 unidades
+- Cuchilla_300                Faltan       1 unidades
+- Perilla_afilador            Faltan       1 unidades
+- Perilla_brazo               Faltan       1 unidades
+- Perilla_cubrecuchilla       Faltan       2 unidades
+- Piedra_afilador             Faltan       1 unidades
+- Pinche_frontal              Faltan       1 unidades
+- Pinche_lateral              Faltan       1 unidades
+- Pipas                       Faltan       2 unidades
+- Planchada_final_300         Faltan       1 unidades
+- Resorte_brazo               Faltan       1 unidades
+- Teletu_300                  Faltan       1 unidades
+- Varilla_brazo_300           Faltan       1 unidades
+- Vela_final_300              Faltan       1 unidades
+
+Etapa: Pre_armado:
+--------------------------------------------------------
+- Baseinox_300                Faltan       1 unidades
+- Cable_220w                  Faltan       1 unidades
+**->>> Caja_300_armada             Faltan       1 unidades <<<-**
+- Capacitores                 Faltan       1 unidades
+- Eje_rectificado             Faltan       1 unidades
+- Espiral                     Faltan       1 unidades
+- Guia_u                      Faltan       1 unidades
+- Movimiento                  Faltan       1 unidades
+- Patas                       Faltan       4 unidades
+- Perilla_numerador           Faltan       1 unidades
+- Resorte_carro               Faltan       2 unidades
+- Resorte_movimiento          Faltan       1 unidades
+- Rueditas                    Faltan       4 unidades
+- Tapita_perilla              Faltan       2 unidades
+- Teclas                      Faltan       1 unidades
+
+Etapa: Motor:
+--------------------------------------------------------
+- Cajas_torneadas_300         Faltan       1 unidades
+- Eje                         Faltan       1 unidades
+- Manchon                     Faltan       1 unidades
+- Motor_220w                  Faltan       1 unidades
+- Oring                       Faltan       1 unidades
+- Ruleman6000                 Faltan       1 unidades
+- Ruleman_6005                Faltan       1 unidades
+- Ruleman_6205                Faltan       2 unidades
+- Seguer                      Faltan       1 unidades
+- Sinfin                      Faltan       1 unidades
+====================================

@@ -88,13 +88,16 @@ def mostrar_categoria(tabla, detalles, pieza, imagen_label, query):
 
 
 def ventana_soldador(parent):
-    frame = ttk.Frame(parent)
+    frame = ttk.Frame(parent, style='Pestania.TFrame')
+    
+    stylo_ventana = ttk.Style()
+    stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
 
-    box1 = ttk.Frame(frame)
+    box1 = ttk.Frame(frame, style='Pestania.TFrame')
     box1.grid(row=0, column=0, sticky="nsew")
 
 
-    ttk.Label(box1, text="Tabla con piezas de Chapa", font=("Arial", 15, "bold")).grid(row=0, column=0, sticky="w", pady=15)
+    ttk.Label(box1, text="Tabla con piezas de Chapa y Piezas", font=("Arial", 15, "bold"), background='#192965', foreground='white').grid(row=0, column=0, sticky="w", pady=15)
 
 
     mostrar_piezas = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
@@ -116,11 +119,11 @@ def ventana_soldador(parent):
 
 
 
-    box2 = tk.Frame(frame)
+    box2 = tk.Frame(frame, background= '#192965')
     box2.grid(row=0, column=1)
     
     soldador = tk.Frame(box2)
-    soldador.grid(row=0, column=0)
+    soldador.grid(row=0, column=0, padx=10 , pady=10)
     
     # Sección de Stock
     stock_frame = ttk.LabelFrame(soldador, text="Stock Soldador", padding=7, relief="groove", style="Bold9.TLabelframe")
@@ -170,7 +173,7 @@ def ventana_soldador(parent):
     
     # Título con estilo
 
-    ttk.Label(cabezales_terminados, text="Cabezales", font=("Arial", 14, "bold"), style='WhiteOnRed.TLabel').grid(row=0,    column=0, columnspan=3, pady=5)
+    ttk.Label(cabezales_terminados, text="Cabezales", font=("Arial", 16, "bold"), style='WhiteOnRed.TLabel', background= '#192965', foreground="white").grid(row=0, column=0, columnspan=3, pady=5)
     
     # Sección de stock de cabezales con bordes
     stock_cabezal = ttk.LabelFrame(cabezales_terminados, text="Piezas De Cabezales", padding=5, relief="solid",  style="Bold9.TLabelframe")

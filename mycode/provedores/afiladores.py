@@ -18,12 +18,12 @@ query_piezas_carcaza = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS 
 
 
 def ventana_afilador(parent):
-    frame = ttk.Frame(parent)
+    frame = ttk.Frame(parent, style='Pestania.TFrame')
 
-    box1 = ttk.Frame(frame)
+    box1 = ttk.Frame(frame, style='Pestania.TFrame')
     box1.grid(row=0, column=0, sticky="nsew")
 
-    ttk.Label(box1, text="Tabla con piezas de Carmelo", font=("Arial", 15, "bold")).grid(row=0, column=0, sticky="w", pady=15)
+    ttk.Label(box1, text="Tabla P/ De Afiladores", font=("Arial", 15, "bold"), background= '#192965', foreground='white').grid(row=0, column=0, sticky="w", pady=15)
 
 
     mostrar_piezas = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))

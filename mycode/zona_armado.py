@@ -2,7 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 import sqlite3
 
-from mycode.funciones.zona_armado_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_piezas_motor, manejar_inventario, pre_armado_, armado_final_final
+from mycode.funciones.zona_armado_funcion import limpiar_tabla, mostrar_piezas_tablas, mostrar_piezas_motor, manejar_inventario, pre_armado_, armado_final_final, actualizar_cantidad_a_cero, grafica_mes, grafico_maquinas, cierre_anual
+
+meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]
 
 
 caja_330 = ["corona_330", "cajas_torneadas_330", "eje", "manchon", "ruleman_6005",  "ruleman_6205", "seguer", "sinfin", "motor_220w", "oring", "ruleman6000"]
@@ -219,21 +222,19 @@ quety_cajas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MEC
 maquinas_terminadas = ["inox_330", "inox_300", "inox_250", "pintada_330", "pintada_300", "eco"]
 
 
-query_maquinas_teminadas = "SELECT MAQUINA, CANTIDAD FROM maquinas"
+query_maquinas_teminadas = "SELECT MAQUINAS, CANTIDAD FROM maquinas_mes "
 
 def zona_armado(ventana):
-    pestania = ttk.Frame(ventana)
+    pestania = ttk.Frame(ventana, style='Pestania.TFrame')
     ventana.add(pestania, text="Zona De Armado")
 
-    index = ttk.Frame(pestania)
+    index = ttk.Frame(pestania, style='Pestania.TFrame')
     index.grid(row=0, column=0)
 
-    tk.Label(index, text="Armado").grid(row=0,columnspan=3, sticky="nsew")
-
-    box1 = tk.Frame(index)
+    box1 = tk.Frame(index, background= '#192965')
     box1.grid(row=1, column=0)
 
-    tk.Label(box1, text="Tabla de piezas para el armado").grid(row=0,column=0)
+    tk.Label(box1, text="Tabla de piezas para el armado",font=("Arial", 15, "bold"), background= '#192965', foreground='white').grid(row=0,column=0)
 
     tabla_principal = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
     tabla_principal.heading("Pieza", text="Pieza")
@@ -244,18 +245,17 @@ def zona_armado(ventana):
     tabla_principal.config(height=17)
     tabla_principal.grid(row=2, column=0, padx=10)
 
-    tk.Label(box1, text="Limpiar tabla").grid(row=3, column=0)
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=4, column=0)
-    tk.Label(box1, text="Historial").grid(row=5, column=0)
+    tk.Label(box1, text="Historial").grid(row=5, column=0, sticky="nw", padx=20)
 
     historial = tk.Listbox(box1, width=50)
     historial.grid(row=6,column=0)
 
 
-    box2 = tk.Frame(index)
+    box2 = tk.Frame(index, background= '#192965')
     box2.grid(row=1, column=1)
 
-    tk.Label(box2, text="ZOna de armado").grid(row=0, columnspan=4)
+    tk.Label(box2, text="Zona de armado", font=("Arial", 28, "bold"), background= '#192965', foreground='white').grid(row=0, columnspan=4)
 
     
 
@@ -350,15 +350,17 @@ def zona_armado(ventana):
 
 
 
-    pre_armado = tk.Frame(box2)
+
+
+    pre_armado = tk.Frame(box2, background='#192965')
     pre_armado.grid(row=1, column=2)
 
 
-    lf_pre_armado = ttk.Labelframe(pre_armado, text="Zona de Pre Armado", padding=(10, 10))
+    lf_pre_armado = ttk.Labelframe(pre_armado, text="Zona de Pre Armado", padding=(10, 10), style="Bold9.TLabelframe")
     lf_pre_armado.grid(row=1, column=2, padx=10, pady=10, sticky="nsew")
 
     # Labelframe para la consulta de piezas del pre-armado
-    lf_consulta_piezas = ttk.Labelframe(lf_pre_armado, text="Consulta de Piezas del Pre-Armado", padding=(10, 10))
+    lf_consulta_piezas = ttk.Labelframe(lf_pre_armado, text="Consulta de Piezas del Pre-Armado", padding=(10, 10), style="Bold9.TLabelframe")
     lf_consulta_piezas.grid(row=0, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     # Botones para mostrar piezas según el tipo de pre-armado
@@ -374,7 +376,7 @@ def zona_armado(ventana):
         row=1, column=0, sticky="ew", columnspan=2, pady=5, padx=5)
 
     # Labelframe para la selección del modelo y cantidad
-    lf_seleccion_modelo = ttk.Labelframe(lf_pre_armado, text="Maquinas Pre-Armadas", padding=(10, 10))
+    lf_seleccion_modelo = ttk.Labelframe(lf_pre_armado, text="Maquinas Pre-Armadas", padding=(10, 10), style="Bold9.TLabelframe")
     lf_seleccion_modelo.grid(row=2, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     # Selección del modelo de la máquina
@@ -411,7 +413,7 @@ def zona_armado(ventana):
         row=3, column=0, sticky="ew", columnspan=2, pady=5, padx=5)
 
     # Labelframe para la consulta de pre-armado terminados
-    lf_consulta_terminados = ttk.Labelframe(lf_pre_armado, text="Consulta de Pre Armado Terminados", padding=(10, 10))
+    lf_consulta_terminados = ttk.Labelframe(lf_pre_armado, text="Consulta de Pre Armado Terminados", padding=(10, 10), style="Bold9.TLabelframe")
     lf_consulta_terminados.grid(row=4, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     ttk.Label(lf_consulta_terminados, text="Pre Armado Terminados", style="WhiteOnRed.TLabel", font=("Arial", 14, "bold")).grid(row=0, column=0, columnspan=2, padx=5, pady=5)
@@ -433,10 +435,10 @@ def zona_armado(ventana):
 
     armado_final = tk.Frame(box2)
     armado_final.grid(row=1, column=3)
-    tk.Label(armado_final, text="Zona de Armado").grid(row=0, column=0, columnspan=2)
+    tk.Label(armado_final, text="Zona de Armado", background= '#192965', foreground='white', font=("Arial", 15, "bold")).grid(row=0, column=0, columnspan=2)
 
     # Sección de Botonera dentro de un Labelframe
-    lf_botonera = ttk.Labelframe(armado_final, text="Piezas por modelo")
+    lf_botonera = ttk.Labelframe(armado_final, text="Piezas por modelo", style="Bold9.TLabelframe")
     lf_botonera.grid(row=1, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     tk.Button(lf_botonera, text="Inox 330", command=lambda: mostrar_piezas_motor(tabla_principal, i330_piezas)).grid(row=0, column=0, pady=5, padx=5)
@@ -450,7 +452,7 @@ def zona_armado(ventana):
     ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(row=2, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
     # Sección de Máquinas Terminadas dentro de un Labelframe
-    lf_terminadas = ttk.Labelframe(armado_final, text="Máquinas Terminadas")
+    lf_terminadas = ttk.Labelframe(armado_final, text="Máquinas Terminadas", style="Bold9.TLabelframe")
     lf_terminadas.grid(row=3, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
     ttk.Label(lf_terminadas, text="Modelo").grid(row=0, column=0)
@@ -471,7 +473,71 @@ def zona_armado(ventana):
     ttk.Separator(armado_final, orient="horizontal", style="Separador2.TSeparator").grid(row=4, column=0, sticky="ew", columnspan=2, pady=3, padx=3)
 
     # Sección de Mostrar Máquinas Terminadas dentro de un Labelframe
-    lf_mostrar_terminadas = ttk.Labelframe(armado_final, text="Mostrar Máquinas Terminadas")
+    lf_mostrar_terminadas = ttk.Labelframe(armado_final, text="Mostrar Máquinas Terminadas", style="Bold9.TLabelframe")
     lf_mostrar_terminadas.grid(row=5, column=0, columnspan=2, padx=5, pady=5, sticky="ew")
 
-    tk.Button(lf_mostrar_terminadas,text="Mostrar Máquinas Terminadas", background="gray", foreground="white", font=('Helvetica', 8, "italic"), command=lambda: mostrar_piezas_tablas(tabla_principal,     query_maquinas_teminadas)).grid(row=0, column=0, pady=5, padx=5, columnspan=2)
+    tk.Button(lf_mostrar_terminadas,text="Máquinas Terminadas", background="gray", foreground="white", font=('Helvetica', 8, "italic"), command=lambda: mostrar_piezas_tablas(tabla_principal,     query_maquinas_teminadas)).grid(row=0, column=0, pady=5, padx=5)
+
+    tk.Button(lf_mostrar_terminadas,text="Grafico de Maquinas", background="gray", foreground="white", font=('Helvetica', 8, "italic"), command=lambda:grafico_maquinas()).grid(row=0, column=1, pady=5,padx=5)
+
+
+
+    findemes = tk.Frame(armado_final,bg='#192965')
+    findemes.grid(row=6, column=0, padx=20)
+
+    
+    
+    # Agrupación en un LabelFrame para el cierre del mes
+    lf_finde_mes = ttk.LabelFrame(findemes, text="Cierre Del Mes", style="Bold9.TLabelframe", padding=(10, 5))
+    lf_finde_mes.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+
+    # Etiqueta y combobox para seleccionar el mes
+    ttk.Label(lf_finde_mes, text="Mes", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=0, column=0, padx=2, pady=2)
+    meses_opcional = ttk.Combobox(lf_finde_mes, values=meses, state="readonly", width=12)
+    meses_opcional.grid(row=0, column=1, padx=2, pady=2)
+
+    # Botón para terminar el mes
+    cierre_mes = tk.Button(
+        lf_finde_mes,
+        text="Terminar El Mes",
+        background="#530075",
+        foreground="white",
+        padx=5,
+        pady=2,
+        font=('Helvetica', 8, "bold"),
+        command=lambda: actualizar_cantidad_a_cero(total, meses_opcional, historial)
+    )
+    cierre_mes.grid(row=1, column=0, columnspan=2, padx=3, pady=3)
+    # Etiqueta para mostrar el total
+    total = ttk.Label(lf_finde_mes, text="", style="WhiteOnRed.TLabel", font=("Arial", 12, "bold"))
+    total.grid(row=2, column=0, columnspan=2, padx=3, pady=3)
+
+    # Botón para mostrar el registro
+    mostrar_registro = tk.Button(
+        lf_finde_mes,
+        text="Mostrar Grafica del Año",
+        background="#530075",
+        foreground="white",
+        padx=20,
+        pady=7,
+        font=('Helvetica', 8, "bold"),
+        command=lambda: grafica_mes()
+    )
+    mostrar_registro.grid(row=3, column=0, columnspan=2, pady=10)
+    
+    fin_anual = tk.Button(
+        lf_finde_mes,
+        text="Cerra el Año",
+        background="blue",
+        foreground="white",
+        padx=20,
+        pady=7,
+        font=('Helvetica', 9, "bold"),
+        command= lambda: cierre_anual(info_fin)
+    )
+    fin_anual.grid(row=4, column=0, columnspan=2, pady=10)
+
+    info_fin = tk.Label(lf_finde_mes, text=".")
+    info_fin.grid(row=5, column=0)
+    
+    

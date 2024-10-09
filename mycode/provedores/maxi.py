@@ -75,20 +75,23 @@ def mostrar_categoria(tabla, detalles, pieza, imagen_label, query, pulidor ):
 
 
 def ventana_maxi(parent):
-    frame = ttk.Frame(parent)
+    
+    stylo_ventana = ttk.Style()
+    stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
+    frame = ttk.Frame(parent, style='Pestania.TFrame')
 
-    box1 = ttk.Frame(frame)
+    box1 = ttk.Frame(frame, style='Pestania.TFrame')
     box1.grid(row=0, column=0, sticky="nsew")
 
-    ttk.Label(box1, text="Tabla con piezas de Maxi", font=("Arial", 25, "bold")).grid(row=0, column=0, sticky="w", pady=15)
+    ttk.Label(box1, text="Tabla P/ De Maxi", font=("Arial", 25, "bold"), background= '#192965', foreground='white').grid(row=0, column=0, sticky="w", pady=15)
 
 
     mostrar_piezas = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
     mostrar_piezas.heading("Pieza", text="Pieza", command= lambda: ordenar_por(mostrar_piezas, "Pieza", False))
     mostrar_piezas.heading("Cantidad", text="Cantidad", command= lambda: ordenar_por(mostrar_piezas, "Cantidad", False))
     mostrar_piezas.column("#0", width=0, stretch=tk.NO)
-    mostrar_piezas.column("Pieza", width=250)
-    mostrar_piezas.column("Cantidad", width=110)
+    mostrar_piezas.column("Pieza", width=150)
+    mostrar_piezas.column("Cantidad", width=60)
     mostrar_piezas.config(height=20)
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
@@ -99,8 +102,8 @@ def ventana_maxi(parent):
     historial.grid(row=4,column=0)
 
 
-    box2 = tk.Frame(frame)
-    box2.grid(row=0, column=1, padx=40)
+    box2 = tk.Frame(frame, background= '#192965')
+    box2.grid(row=0, column=1, padx=30)
     # Crear un Labelframe para Maxi
     maxi_frame = ttk.Labelframe(box2, text="Maxi", padding="7", style="Bold9.TLabelframe")
     maxi_frame.grid(row=0, column=0, padx=20, pady=20)
@@ -133,7 +136,7 @@ def ventana_maxi(parent):
     
 
     box_info = tk.Frame(box2)
-    box_info.grid(row=1, column=0)
+    box_info.grid(row=0, column=1)
 
     tk.Label(box_info, text="Informacion de la pieza", font=("Arial", 14, "bold")).grid(row=0, column=0)
 

@@ -1,7 +1,10 @@
 import tkinter as tk 
 from tkinter import ttk
 from tkinter import messagebox
+import matplotlib.pyplot as plt
 import sqlite3
+from datetime import datetime
+
 
 def limpiar_tabla(tabla):
     for item in tabla.get_children():
@@ -524,6 +527,8 @@ def armado_final_final(modelo, cantidad, historia):
     
     # Actualizar la cantidad del modelo armado en la base de datos
     cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD + ? WHERE MAQUINA = ?", (cantidad, modelo))
+    
+    cursor.execute("UPDATE maquinas_mes SET CANTIDAD = CANTIDAD + ? WHERE MAQUINAS = ?", (cantidad, modelo))
     historia.insert(0, f"Se armó {cantidad} máquina(s) del modelo {modelo}.")
     
     conn.commit()
@@ -531,3 +536,193 @@ def armado_final_final(modelo, cantidad, historia):
 
     # Notificar al usuario del éxito
     messagebox.showinfo("Éxito", f"{cantidad} máquina(s) del modelo {modelo} se armaron con éxito.")
+
+
+
+
+
+
+
+
+def actualizar_cantidad_a_cero(label, meses_opcional, listbox):
+    try:
+        confirmacion = messagebox.askyesno("Confirmar", "¿Estás seguro de que deseas cerrar el Mes?")
+        if not confirmacion:
+            listbox.insert(0, "Operación cancelada.")
+            return
+
+        conn = sqlite3.connect("dbfadeco.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT MAQUINAS, CANTIDAD FROM maquinas_mes")
+        piezas_cantidades = cursor.fetchall()  
+
+        cursor.execute("SELECT SUM(CANTIDAD) FROM maquinas_mes")
+        total_anterior = cursor.fetchone()[0]
+
+        if total_anterior is None:
+            total_anterior = 0
+
+        datos_graficos = {
+            "mes": meses_opcional.get(),
+            "piezas_cantidades": piezas_cantidades,
+            "total": total_anterior
+        }
+
+
+        nuevo_texto = f"En {datos_graficos['mes']} Se armaron: {datos_graficos['total']} maquinas"
+        label.config(text=nuevo_texto)
+        listbox.insert(0, "Base de Datos Actualizada... ")
+
+        cursor.execute("UPDATE maquinas_mes SET CANTIDAD = 0")
+
+        conn.commit()
+
+        messagebox.showinfo("Operación completada", f"{nuevo_texto}")
+
+        mes = datos_graficos['mes']
+        total = datos_graficos['total']
+        cursor.execute("SELECT COUNT(*) FROM registros WHERE MES = ?", (mes,))
+        existe_registro = cursor.fetchone()[0]
+
+        if existe_registro > 0:
+            cursor.execute("UPDATE registros SET CANTIDAD = ? WHERE MES = ?", (total, mes))
+
+        conn.commit()
+        return datos_graficos
+
+    except sqlite3.Error as e:
+        print(f"Error al actualizar la cantidad a cero: {e}")
+        messagebox.showerror("Error", f"Hubo un error al actualizar la cantidad a cero: {e}")
+
+    finally:
+        conn.close()
+
+
+
+def grafica_mes():
+    try:
+        conn = sqlite3.connect("dbfadeco.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT MES, CANTIDAD FROM registros")
+        resultados = cursor.fetchall()  
+        meses = [fila[0] for fila in resultados] 
+        totales = [fila[1] for fila in resultados]  
+
+
+        cursor.execute("SELECT SUM(CANTIDAD) FROM registros")
+        total = cursor.fetchone()[0]
+
+
+        plt.figure(figsize=(8,5))
+
+        plt.gcf().canvas.manager.set_window_title("Gráfico de Registro por Mes")
+
+        barras = plt.bar(meses, totales, label=f"Total Anual= {total}")
+        
+        plt.xlabel("Meses")
+        plt.ylabel("Cantidad")
+        plt.title("Registro de maquinas Armadas ANUAL")
+        plt.xticks(rotation=-25)  
+        plt.yticks([50, 75, 100, 150, 200, 300])
+
+        plt.legend()
+
+        # Añadir números en las barras
+        for barra in barras:
+            yval = barra.get_height()
+            plt.text(barra.get_x() + barra.get_width()/2, yval, int(yval), ha='center', va='bottom')
+
+        plt.show()
+
+    except sqlite3.Error as e:
+        print(f"Error al acceder a los registros: {e}")
+        messagebox.showerror("Error", f"Hubo un error al acceder a los registros: {e}")
+    finally:
+        conn.close()
+
+
+
+
+
+def grafico_maquinas():
+    try:
+        # Conectar a la base de datos
+        conn = sqlite3.connect("dbfadeco.db")
+        cursor = conn.cursor()
+
+        # Obtener las máquinas y sus cantidades
+        cursor.execute("SELECT MAQUINAS, CANTIDAD FROM maquinas_mes")
+        resultados = cursor.fetchall()  
+        tipo = [fila[0] for fila in resultados]  # Lista de tipos de máquinas
+        cantidad = [fila[1] for fila in resultados]  # Lista de cantidades
+
+        # Cambiar el título de la ventana del gráfico
+        plt.gcf().canvas.manager.set_window_title("Gráfico de Maquinas")
+
+        # Obtener el total de máquinas
+        cursor.execute("SELECT SUM(CANTIDAD) FROM maquinas_mes")
+        total = cursor.fetchone()[0]
+
+        # Crear el gráfico de barras
+        plt.bar(tipo, cantidad, label=f" TOTAL= {total}")
+
+        # Añadir etiquetas de texto sobre cada barra para mostrar la cantidad
+        for i, v in enumerate(cantidad):
+            plt.text(i, v + 2, str(v), ha='center', fontweight='bold')  # 'i' es la posición en el eje X, 'v' es la altura de la barra
+
+        # Configurar etiquetas y título
+        plt.xlabel("Maquinas")
+        plt.ylabel("Cantidad")
+        plt.title("Maquinas del Mes")
+        plt.xticks(rotation=-15)
+        plt.yticks([10, 20, 50, 100])
+        plt.legend()
+
+        # Mostrar el gráfico
+        plt.show()
+
+    except sqlite3.Error as e:
+        print(f"Error al acceder a los registros: {e}")
+        messagebox.showerror("Error", f"Hubo un error al acceder a los registros: {e}")
+    finally:
+        # Cerrar la conexión a la base de datos
+        conn.close()
+
+
+def cierre_anual(text):
+    try:
+        # Conectar a la base de datos
+        conn = sqlite3.connect("dbfadeco.db")
+        cursor = conn.cursor()
+
+        # Sumar todas las cantidades del año
+        cursor.execute("SELECT SUM(CANTIDAD) FROM registros")
+        total_anual = cursor.fetchone()[0]
+
+        if total_anual is not None:
+            # Mostrar el total de máquinas del año en el Label 'text'
+            text.config(text=f"Total de máquinas del año: {total_anual}")
+
+            # Obtener el año actual
+            anio_actual = datetime.now().year
+
+            # Guardar el total anual en la tabla 'registros_anuales'
+            cursor.execute("INSERT INTO registros_anuales (ANIO, TOTAL) VALUES (?, ?)", (anio_actual, total_anual))
+
+            # Reiniciar todas las cantidades a cero
+            cursor.execute("UPDATE registros SET CANTIDAD = 0")
+            conn.commit()
+
+            messagebox.showinfo("Cierre Anual", "Las cantidades de los meses se han reiniciado a cero.")
+        else:
+            messagebox.showinfo("Cierre Anual", "No hay registros disponibles para cerrar.")
+
+    except sqlite3.Error as e:
+        print(f"Error al realizar el cierre anual: {e}")
+        messagebox.showerror("Error", f"Hubo un error al realizar el cierre anual: {e}")
+    finally:
+        # Cerrar la conexión a la base de datos
+        if conn:
+            conn.close()

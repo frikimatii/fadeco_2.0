@@ -211,6 +211,7 @@ def accion_balancin(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                         "chapaU_inox": "chapa_U_inox",
                         "chapaU_pintada": "chapa_U_pintada",
                         "chapaU_inox_250": "chapa_U_inox_250",
+                        "teletubi_eco": "teletubi_doblado_eco"
                     }
                     if piezas_og in piezas_mapeo:
                         pieza_fresada = piezas_mapeo[piezas_og]
@@ -307,6 +308,7 @@ def accion_torno(cantidad_ingresada, pieza_seleccionada, treeview, historial):
         conn.close()  # Cerrar la conexión a la base de datos
 
 piezas_augeriado_extra = ["brazo_330", "brazo_300", "brazo_250"]
+
 def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial):
     cantidad_og = cantidad_ingresada.get()
     piezas_og = pieza_seleccionada.get()
@@ -330,6 +332,9 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
             elif piezas_og == "cuadrado_regulador":
                 cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS =?", (piezas_og,))
                 resultado = cursor.fetchone()
+            elif piezas_og in piezas_augeriado_extra_1:
+                cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS =?", (piezas_og,))
+                resultado = cursor.fetchone()
             else:
                 historial.insert(0, f"La pieza {piezas_og} no está registrada en ninguna categoría válida.")
                 return
@@ -348,7 +353,10 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         historial.insert(0, f"Se completaron {cantidad_og} unidades de {piezas_og}.")
-                    
+                    elif piezas_og in piezas_augeriado_extra_1:
+                        cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
+                        historial.insert(0, f"Se completaron {cantidad_og} unidades de {piezas_og}.")
                     limpiar_tabla(treeview)
                 else:
                     historial.insert(0, f"No hay suficientes unidades de {piezas_og} en stock.")
