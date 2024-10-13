@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-from mycode.funciones.add_funcion import on_item_selected, limpiar_tabla, mostrar_categoria, agregar_piezas, mostrar_datos, ordenar_por
+from mycode.funciones.add_funcion import on_item_selected, limpiar_tabla, mostrar_categoria, agregar_piezas, mostrar_datos, ordenar_por, eliminar_piezas
 
 def hierro(parent):
     stylo_ventana = ttk.Style()
@@ -61,7 +61,7 @@ def hierro(parent):
     btn_agregar = tk.Button(box_btn, width=10, text="Agregar", font=("Arial", 14, "bold"), bg="green", fg="white", command=lambda: agregar_piezas(pieza_seleccionada, entry_cantidad_piezas, mostrar_piezas, historial, "Hierro", "piezas_brutas"))
     btn_agregar.grid(row=0, column=1, pady=10, padx=5)
 
-    btn_eliminar = tk.Button(box_btn, width=10, text="Eliminar", font=("Arial", 14, "bold"), bg="red", fg="white")
+    btn_eliminar = tk.Button(box_btn, width=10, text="Eliminar", font=("Arial", 14, "bold"), bg="red", fg="white", command=lambda: eliminar_piezas(pieza_seleccionada, entry_cantidad_piezas, mostrar_piezas, historial, "Hierro", "piezas_brutas"))
     btn_eliminar.grid(row=0, column=0, pady=10, padx=5)
 
     ttk.Separator(box_acciones, orient=tk.HORIZONTAL).grid(row=4, column=0, columnspan=3, sticky="EW", padx=2, pady=7)

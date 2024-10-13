@@ -1116,4 +1116,70 @@ def abrir_archivo_txt():
 
 
 
+def drup_basurero(pieza, cant_entry, tabladb):
+    pieza_nombre = pieza.cget("text").strip()
+    cantidad_str = cant_entry.get().strip()
+
+    if cantidad_str.isdigit():
+        cantidad = int(cantidad_str)
+
+        if cantidad < 0:
+            messagebox.showerror("Error", "La Cantidad no Puede Ser Negativa")
+            return
+
+        confirmacion = messagebox.askyesno("Confirmar", f"Desea Eliminar {cantidad} unidades de {pieza_nombre}")
+
+        if confirmacion:
+            try:
+                conn = sqlite3.connect("dbfadeco.db")
+                cursor = conn.cursor()
+
+                # Buscar primero en la tabla principal
+                cursor.execute(f"SELECT CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
+                resultado = cursor.fetchone()
+
+                if resultado:
+                    # Si se encuentra la pieza, verificar que la cantidad no será negativa
+                    cantidad_actual = resultado[0]
+                    if cantidad_actual < cantidad:
+                        messagebox.showerror("Error", f"No se puede eliminar {cantidad} unidades. Hay {cantidad_actual} disponibles.")
+                    else:
+                        nueva_cantidad = cantidad_actual - cantidad
+                        cursor.execute(f"UPDATE {tabladb} SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
+                        messagebox.showinfo("Éxito", f"Se eliminaron {cantidad} unidades de {pieza_nombre}.")
+                        accion.insert(0, f"Eliminación exitosa: se eliminaron {cantidad} unidades de {pieza_nombre}.")
+                else:
+                    # Si no se encuentra en la tabla principal, buscar en 'piezas_terminadas'
+                    cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
+                    resultado = cursor.fetchone()
+
+                    if resultado:
+                        # Si se encuentra en 'piezas_terminadas', verificar la cantidad antes de eliminar
+                        cantidad_actual = resultado[0]
+                        if cantidad_actual < cantidad:
+                            messagebox.showerror("Error", f"No se puede eliminar {cantidad} unidades. Solo hay {cantidad_actual} disponibles en piezas terminadas.")
+                        else:
+                            nueva_cantidad = cantidad_actual - cantidad
+                            cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
+                            messagebox.showinfo("Éxito", f"Se eliminaron {cantidad} unidades de {pieza_nombre}")
+
+                    else:
+                        # Si no se encuentra en ninguna tabla, mostrar un mensaje de error
+                        messagebox.showerror("Error", f"La pieza {pieza_nombre} no se pudo encontrar")
+
+                conn.commit()
+            except sqlite3.DataError as e:
+                messagebox.showerror("Error", f"Error en la base de datos: {e}")
+            finally:
+                conn.close()
+        else:
+            print("Operación Cancelada")
+    else: 
+        messagebox.showerror("Error", "La Cantidad ingresada no es un número válido")
+    
+    cant_entry.delete(0, 'end')
+
+
+
+
 ##36.36

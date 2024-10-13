@@ -130,24 +130,6 @@ def ventana_niquelado(parent):
     ).grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="w")
 
 
-    box_info = tk.Frame(box4)
-    box_info.grid(row=4, column=1)
 
-    tk.Label(box_info, text="Informacion de la pieza", font=("Arial", 14, "bold")).grid(row=0, column=0)
-
-    detalles = ttk.Labelframe(box_info, text="Detalles...", padding=10, relief="ridge", style="Bold9.TLabelframe")
-    detalles.grid(row=1, column=0)
-
-    piezas = tk.Label(detalles, text="", font=("Arial", 8, "bold"))
-    piezas.grid(row=0, column=0, sticky="w")
-
-    info_pieza = tk.Label(detalles, text="...", font=("Arial", 10, "bold") ,wraplength=150)
-    info_pieza.grid(row=1, column=0)
-
-    img_pieza = tk.Frame(detalles)
-    img_pieza.grid(row=2, column=0)
-
-    imagen_piezas = tk.Label(img_pieza)
-    imagen_piezas.grid(row=0, column=0)
 
     return frame

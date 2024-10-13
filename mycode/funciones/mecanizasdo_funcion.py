@@ -289,7 +289,7 @@ def accion_torno(cantidad_ingresada, pieza_seleccionada, treeview, historial):
                             cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
                             cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
 
-                        historial.insert(0, f"Se doblaron {cantidad_og} unidades de {pieza_og}.")
+                        historial.insert(0, f"Se Tornearon {cantidad_og} unidades de {pieza_og}.")
                     else:
                         historial.insert(0, f"No hay suficientes unidades de {pieza_og} en stock.")
                 else:
@@ -385,7 +385,7 @@ def accion_fresa(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         cantidad_og = int(cantidad_og)
         
         # Confirmar la acción con el usuario
-        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el Fresar {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
             cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
@@ -438,7 +438,7 @@ def accion_lijar(pieza_seleccionada, cantidad_seleccionada, treeview, historial)
             return
         cantidad_og = int(cantidad_og)
 
-        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a lijar {cantidad_og} unidades de {pieza_og}?")
 
         if confirmar:
             cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
@@ -474,7 +474,7 @@ def accion_soldar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         cantidad_og = int(cantidad_og)
         
         # Confirmar la acción con el usuario
-        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el Soldar {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
             if pieza_og == "cuadrado_regulador":
@@ -544,7 +544,7 @@ def accion_pulir(pieza_seleccionada, cantidad_seleccionada, treeview, historial)
             return
         cantidad_og = int(cantidad_og)
 
-        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a pintar {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askyesno("Confirmar Acción", f"¿Está seguro de que quiere mandar a Pulir {cantidad_og} unidades de {pieza_og}?")
 
         if confirmar:
             cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))

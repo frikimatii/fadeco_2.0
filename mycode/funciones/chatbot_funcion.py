@@ -4,17 +4,13 @@ from tkinter import ttk
 
 def obtener_piezas():
     
-    lista = []
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
     cursor.execute("SELECT PIEZAS FROM piezas_terminadas")
     lista_de_piezas = cursor.fetchall()
     conn.close()
 
-    return lista_de_piezas
-
-obtener_piezas()
-
+    return lista_de_piezas 
 
 
 def chat_proceso_pieza(pieza_combobox, resultado_label):

@@ -11,7 +11,7 @@ from mycode.inicio import inicio
 root = tk.Tk()
 root.title("FadeCo Stok")
 root.geometry("1300x720")  # wxh
-root.iconbitmap("..\Fadeco_stock\img\FLogo.ico")
+root.iconbitmap("C:\Fadeco_stock\img\FLogo.ico")
 
 
 # Crear el Notebook para manejar las pestañas

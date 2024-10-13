@@ -1,8 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
 import sqlite3
-from mycode.funciones.control_funciones import limpiar_tabla, mostrar_piezas_tablas, accion_embalar, accion_venta, consultar_piezas_sector_motor, consultar_piezas_sector, consultar_maquinas_final, verificar_disponibilidad_maquinas,  abrir_archivo_txt
+from mycode.funciones.control_funciones import limpiar_tabla, mostrar_piezas_tablas, accion_embalar, accion_venta, consultar_piezas_sector_motor, consultar_piezas_sector, consultar_maquinas_final, verificar_disponibilidad_maquinas,  abrir_archivo_txt, drup_basurero
 from mycode.funciones.add_funcion import ordenar_por
+
+from mycode.funciones.chatbot_funcion import obtener_piezas
+
+pieza_a_eliminar = obtener_piezas()
+
+pieza_a_eliminar.sort()
 
 
 tipo_maquina = ["inox_330","inox_300" ,"inox_250", "pintada_330", "pintada_300", "eco"]
@@ -121,10 +127,7 @@ def control(ventana):
     historial = tk.Listbox(box1, width=50, font=("Arial", 10, "bold"), height=9)
     historial.grid(row=6,column=0)
     
-
-
-
-
+    
     # Creación del Frame principal box2
     box2 = ttk.Frame(index, style='Pestania.TFrame')
     box2.grid(row=1, column=1)  
@@ -180,7 +183,6 @@ def control(ventana):
 
 
 
-    
     # Creación del Frame ventas
     ventas = ttk.Frame(box2, style='Pestania.TFrame')
     ventas.grid(row=3, column=0)
@@ -308,15 +310,18 @@ def control(ventana):
     ).grid(row=3, column=0, columnspan=2, pady=10)
 
     # Separador en la sección de Armado Final
-    ttk.Separator(lf_armadofinal, orient="horizontal").grid(row=4, column=0, columnspan=2, sticky="ew", padx=5, pady=5)
+    ttk.Separator(lf_armadofinal, orient="horizontal").grid(row=4, column=0, columnspan=2)
+    # Frame principal
+    frame_principal = tk.Frame(index, padx=10, pady=10)
+    frame_principal.grid(row=1, column=4, padx=10, pady=10)  # Ubicado en la columna 4
 
+    # LabelFrame de Consulta de Pedido
+    pedidos_frame = ttk.LabelFrame(frame_principal, text="Consulta de Pedido", padding=(5, 5), style="Bold9.TLabelframe")
+    pedidos_frame.grid(row=0, column=0, padx=7, pady=7, sticky="ew")  # Primer LabelFrame dentro del frame principal
 
-    pedidos_frame = ttk.LabelFrame(index, text="Consulta de Pedido", padding=(10, 10), style="Bold9.TLabelframe" )
-    pedidos_frame.grid(row=1, column=3, padx=10, pady=10)
-    
     # Títulos
-    ttk.Label(pedidos_frame, text="Máquinas Pedidas", style="WhiteOnRed.TLabel", font=("Arial", 20, "bold")).grid(row=0, column=0, columnspan=2, pady=(0, 10))
-    
+    ttk.Label(pedidos_frame, text="Máquinas Pedidas", style="WhiteOnRed.TLabel", font=("Arial", 20, "bold")).grid(row=0, column=0, columnspan=2,    pady=(0, 5))
+
     # Etiquetas de las máquinas
     etiquetas_maquinas = [
         "Inoxidable 330",
@@ -326,18 +331,18 @@ def control(ventana):
         "Pintada 300",
         "Inoxidable Eco"
     ]
-    
+
     for idx, etiqueta in enumerate(etiquetas_maquinas, start=2):
-        ttk.Label(pedidos_frame, text=etiqueta, style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=idx, column=0, padx=1, pady=1, sticky="se")
-    
+        ttk.Label(pedidos_frame, text=etiqueta, style="WhiteOnRed.TLabel", font=("Arial", 12, "bold")).grid(row=idx, column=0, padx=1, pady=1,  sticky="se")
+
     # Entradas para las cantidades
     entradas_maquinas = []
-    
+
     for idx in range(len(etiquetas_maquinas)):
         entry = ttk.Entry(pedidos_frame, width=7)
         entry.grid(row=idx + 2, column=1, sticky="nw")
         entradas_maquinas.append(entry)
-    
+
     # Función para ejecutar la consulta
     def ejecutar_consulta():
         cantidades = {
@@ -349,7 +354,7 @@ def control(ventana):
             "ecoInox": int(entradas_maquinas[5].get() or 0)
         }
         verificar_disponibilidad_maquinas(cantidades, historial)
-    
+
     # Botón para consultar
     resultado_final = tk.Button(
         pedidos_frame,
@@ -362,7 +367,7 @@ def control(ventana):
         command=ejecutar_consulta
     )
     resultado_final.grid(row=8, column=0, columnspan=2, padx=2, pady=5)
-    
+
     # Botón para abrir el archivo de texto
     btn_abrir_archivo = tk.Button(
         pedidos_frame,
@@ -375,5 +380,21 @@ def control(ventana):
         command=abrir_archivo_txt  # Llama a la función para abrir el archivo
     )
     btn_abrir_archivo.grid(row=9, column=0, columnspan=2, padx=5, pady=5)
-    
-    
+
+
+    # LabelFrame de Gestión de Piezas
+    drup = tk.LabelFrame(frame_principal, text="Gestión de Piezas", padx=10, pady=10)  # Segundo LabelFrame dentro del frame principal
+    drup.grid(row=1, column=0, padx=7, pady=7, sticky="ew")  # Ubicado debajo del pedidos_frame
+
+    tk.Label(drup, text="Basureso", font=("Ariel", 15, "bold")).grid(row=0, column=0, padx=5, pady=5)
+
+    tk.Label(drup, text="Seleccione una pieza para eliminar").grid(row=1, column=0, padx=5, pady=5)
+
+    pieza_eliminar = ttk.Combobox(drup, values=pieza_a_eliminar)  # Lista de valores como ejemplo
+    pieza_eliminar.grid(row=2, column=0, padx=5, pady=5)
+
+    cantidad_ingresada = tk.Entry(drup)
+    cantidad_ingresada.grid(row=3, column=0, padx=5, pady=5)
+
+    btn_drup = tk.Button(drup, text="Eliminar", bg="red", fg="white", font=("Arial", 16, "bold"), command=lambda: drup_basurero(pieza_eliminar, cantidad_ingresada, "piezas_terminadas"))
+    btn_drup.grid(row=4, column=0)
