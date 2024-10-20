@@ -12,7 +12,7 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
 
-    # Consulta para obtener datos basados en TIPO_DE_MATERIAL
+    
     query = f"""
     SELECT PIEZAS, CANTIDAD, 'brutas' AS source 
     FROM {tabladb} 
@@ -26,12 +26,12 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
     datos = cursor.fetchall()
     conn.close()
 
-    # Limpiar la tabla antes de insertar nuevos datos
+
     limpiar_tabla(tabla)
 
-    # Insertar datos en la tabla
+
     for dato in datos:
-        tabla.insert("", tk.END, values=dato[:2])  # Solo insertar PIEZAS y CANTIDAD, ignorando 'source'
+        tabla.insert("", tk.END, values=dato[:2])  
 
     def on_item_selected(event):
         selected_item = tabla.selection()

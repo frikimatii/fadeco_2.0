@@ -5,26 +5,46 @@ from mycode.funciones.add_funcion import ordenar_por
 from PIL import Image, ImageTk
 
 
-lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
+lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
 
-lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","ChapaBase_330Eco","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250","bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "pieza_caja_eco"]
+lista_piezas_plegadora.sort()
 
-piezas_corte = [ "planchuela_250", "planchuela_300", "planchuela_330", "varilla_300", "varilla_330", "varilla_250", "portaeje", "eje_rectificado", "varilla_brazo_330" ,"varilla_brazo_300" ,"varilla_brazo_250" ,"tubo_manija" ,"tubo_manija_250" ,"cuadrado_regulador" ,"palanca_afilador" ,"eje_corto" ,"eje_largo" ,"buje_eje_eco" ,"teletubi_eco", "guia_u", "chapa_cubre_cabezal_inox", "chapa_cubre_cabezal_pintada", "chapa_cubre_cabezal_inox_250"]
+
+lista_piezas_plasma = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "planchada_330", "planchada_300", "planchada_250", "vela_330", "vela_300", "vela_250","bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "pieza_caja_eco", "media_luna"]
+
+lista_piezas_plasma.sort()
+
+piezas_corte = [ "planchuela_250", "planchuela_300", "planchuela_330", "varilla_300", "varilla_330", "varilla_250", "portaeje", "eje_rectificado", "varilla_brazo_330" ,"varilla_brazo_300" ,"varilla_brazo_250" ,"tubo_manija" ,"tubo_manija_250" ,"cuadrado_regulador" ,"palanca_afilador" ,"eje_corto" ,"eje_largo" ,"buje_eje_eco" ,"teletubi_eco", "guia_u", "chapa_cubre_cabezal_inox", "chapa_cubre_cabezal_pintada", "chapa_cubre_cabezal_inox_250", "planchuela_inferior", "planchuela_interna"]
+
+piezas_corte.sort()
 
 piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje", "guia_u", "teletubi_eco", "chapaU_inox", "chapaU_pintada", "chapaU_inox_250", "eje_corto", "eje_largo"]
 
+piezas_balancin.sort()
+
 piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
 
-piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco", "caja_330_armada", "caja_300_armada", "caja_250_armada", "caja_eco_armada"]
+piezas_para_augeriar.sort()
+
+piezas_torno = ["buje_eje_eco", "eje", "eje_250", "manchon", "manchon_250", "rueditas", "tornillo_guia", "carros", "carros_250","movimiento", "caja_300", "caja_330", "caja_250", "cubrecuchilla_300", "teletubi_300", "tornillo_teletubi_eco", "caja_330_armada", "caja_300_armada", "caja_250_armada", "caja_eco_armada", "tapa_afilador_eco_torno"]
+
+piezas_torno.sort()
 
 piezas_para_lijar = ["aro_numerador", "carcaza_afilador"]
 
+piezas_para_lijar.sort()
+
 piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planchada_300","planchada_250"]
 
-piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "pieza_caja_eco", "cuadrado_regulador"] 
+piezas_para_fresar.sort()
+
+piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "caja_soldada_eco", "cuadrado_regulador", "cabezal_inox", "cabezal_pintada", "cabezal_eco"] 
+
+piezas_para_soldar.sort()
 
 piezas_pulir = [ "cabezal_250" ,"cabezal_inox"]
 
+piezas_pulir.sort()
 
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
@@ -73,30 +93,31 @@ def mecanizado(ventana):
     stylo_ventana = ttk.Style()
     stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
 
-    pestania = ttk.Frame(ventana, style='Pestania.TFrame')
+    pestania = ttk.Frame(ventana)
     ventana.add(pestania, text="Mecanizado")
 
-    index = ttk.Frame(pestania, style='Pestania.TFrame')
+    index = ttk.Frame(pestania,)
     index.grid(row=0, column=0)
 
-    tk.Label(index, text="Mecanizado", font=("Arial", 25, "bold", 'underline'),bg="#192965", fg="white").grid(row=0,columnspan=6 )
+    ttk.Label(index, text="Mecanizado", font=("Arial", 25, "bold", 'underline'),).grid(row=0,columnspan=6 )
 
-    box1 = tk.Frame(index,bg="#192965")
-    box1.grid(row=1, column=0, padx=15, sticky="nw")
-    tk.Label(box1, text="Tabla de piezas Mecanizado", font=("Arial", 16, "bold"),bg="#192965", fg="white").grid(row=0,column=0 , sticky="w")
+    box1 = ttk.Frame(index,)
+    box1.grid(row=1, column=0, padx=5, sticky="nw")
+    
+    ttk.Label(box1, text="Tabla de piezas Mecanizado", font=("Arial", 16, "bold", "underline"),).grid(row=0,column=0 , sticky="w")
 
     tabla_principal = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
     tabla_principal.heading("Pieza", text="Pieza", command= lambda: ordenar_por(tabla_principal, "Pieza", False))
-    tabla_principal.heading("Cantidad", text="Cantidad",command= lambda: ordenar_por(tabla_principal, "Cantidad", False))
+    tabla_principal.heading("Cantidad", text="Cant.",command= lambda: ordenar_por(tabla_principal, "Cantidad", False))
     tabla_principal.column("#0", width=0,stretch=tk.NO)
-    tabla_principal.column("Pieza", width=240)
-    tabla_principal.column("Cantidad", width=50)
+    tabla_principal.column("Pieza", width=220)
+    tabla_principal.column("Cantidad", width=40)
     tabla_principal.config(height=18)
     tabla_principal.grid(row=2, column=0, sticky="nsew")
 
-    ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=4, column=0)
+    ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal),bootstyle="warning").grid(row=4, column=0, pady=5)
 
-    tk.Label(box1, text="Historial", font=("Arial", 9, "bold")).grid(row=5, column=0, sticky="w")
+    ttk.Label(box1, text="Historial", font=("Arial", 9, "bold"),).grid(row=5, column=0, sticky="w")
 
     historial = tk.Listbox(box1, width=50, font=("Arial", 10, "bold"), height=7)
     historial.grid(row=6,column=0)
@@ -105,15 +126,15 @@ def mecanizado(ventana):
     
     
     
-    box2 = tk.Frame(index)
-    box2.grid(row=1, column=1, padx=5, pady=5)
+    box2 = ttk.Frame(index ,)
+    box2.grid(row=1, column=1, padx=3, pady=3)
 
-    img_plegadora = Image.open(r"img\dobladora.png")
+    img_plegadora = Image.open(r"C:\Fadeco_stock\img\dobladora.png")
     img_redimencionada = img_plegadora.resize((50, 50))
     img_plgadora_ = ImageTk.PhotoImage(img_redimencionada)
 
     # Configuración del marco mecánizmo
-    mecanizsmo = ttk.Frame(box2, style='Pestania.TFrame')
+    mecanizsmo = ttk.Frame(box2,)
     mecanizsmo.grid(row=0, column=0, sticky="nw")
 
     # Configuración del marco plegadora
@@ -122,15 +143,15 @@ def mecanizado(ventana):
     style.configure("WhiteOnRed.TLabel", font=("Arial", 9, "bold"))
     # Configuración del marco plegadora
 
-    plegadora = ttk.Frame(mecanizsmo, style='Pestania.TFrame')
-    plegadora.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+    plegadora = ttk.Frame(mecanizsmo, bootstyle="light", padding=4)
+    plegadora.grid(row=0, column=0, columnspan=2)
 
     # Paned Window
     panel = ttk.PanedWindow(plegadora, orient=tk.VERTICAL)
     panel.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Frame Plegadora
-    frame_plegar = ttk.Labelframe(panel, text="Plegadora", style="Bold9.TLabelframe")
+    frame_plegar = ttk.Labelframe(panel, text="Plegadora",)
     panel.add(frame_plegar)
 
     ttk.Label(frame_plegar, text="Piezas a plegar", style='WhiteOnRed.TLabel').grid(row=0, column=0)
@@ -143,32 +164,28 @@ def mecanizado(ventana):
     cantidad_ingresada = ttk.Entry(frame_plegar, width=10, font=("Arial", 12, "bold"))
     cantidad_ingresada.grid(row=1, column=1)
 
-    tk.Button(
+    ttk.Button(
         frame_plegar,
         text="DOBLAR",
-        background="green",
-        foreground="white",
-        padx=5,
-        pady=2,
-        font=('Helvetica', 8, "bold"),
+        bootstyle="success",
         command=lambda: accion_plegadora(cantidad_ingresada, piezas_a_plegar, tabla_principal, historial)
-    ).grid(row=2, column=1, padx=2, pady=2)
+    ).grid(row=2, column=1, padx=5, pady=5)
 
     # Frame Stock del Plegado
-    frame_stock = ttk.Labelframe(panel, text="Stock del Plegado", style="Bold9.TLabelframe")
+    frame_stock = ttk.Labelframe(panel, text="Stock del Plegado",)
     panel.add(frame_stock)
 
     ttk.Button(
         frame_stock,
         text="Stock Bruto",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_parar_doblar)
     ).grid(row=0, column=0, pady=3, padx=3)
 
     ttk.Button(
         frame_stock,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_dobladas)
     ).grid(row=0, column=1, pady=3, padx=3)
 
@@ -181,7 +198,7 @@ def mecanizado(ventana):
     
 
     # Carga y redimensionamiento de la imagen del Plasma
-    img_plasma = Image.open(r"img\plasma.png")
+    img_plasma = Image.open(r"C:\Fadeco_stock\img\plasma.png")
     img_redimensionada_plasma = img_plasma.resize((50, 50))
     img_plasma_ = ImageTk.PhotoImage(img_redimensionada_plasma)
 
@@ -189,7 +206,7 @@ def mecanizado(ventana):
 
 
     # Frame para Plasma
-    plasma = ttk.Frame(mecanizsmo, style='Color.TFrame')
+    plasma = ttk.Frame(mecanizsmo, bootstyle="light", padding=4)
     plasma.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
 
     # Panel2 dentro de Plasma
@@ -197,7 +214,7 @@ def mecanizado(ventana):
     panel2.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Frame Plasma con su etiqueta
-    frame_plasma = ttk.Labelframe(panel2, text="Plasma", style="Bold9.TLabelframe")
+    frame_plasma = ttk.Labelframe(panel2, text="Plasma",)
     panel2.add(frame_plasma)
 
     ttk.Label(frame_plasma, text="Piezas para Cortar", style="WhiteOnRed.TLabel").grid(row=0, column=0)
@@ -213,33 +230,29 @@ def mecanizado(ventana):
     cantidad_ingresada_plasma.grid(row=1, column=1)
 
     # Botón para ejecutar la acción de cortar con Plasma
-    tk.Button(
+    ttk.Button(
         frame_plasma,
-        text="Plasma",
-        background="green",
-        foreground="white",
-        padx=5,
-        pady=2,
-        font=('Helvetica', 8, "bold"),
+        text="PLASMA",
+        bootstyle="success",
         command=lambda: accion_plasmas(cantidad_ingresada_plasma, piezas_a_cortar_plasma, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
+    ).grid(row=3, column=1, padx=5, pady=5)
 
     # Frame para el stock del Plasma
-    frame_stock2 = ttk.Labelframe(panel2, text="Stock para el Plasma", style="Bold9.TLabelframe")
+    frame_stock2 = ttk.Labelframe(panel2, text="Stock para el Plasma",)
     panel2.add(frame_stock2)
 
     # Botones para mostrar el stock bruto y el stock terminado
     ttk.Button(
         frame_stock2,
         text="Stock Bruto",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostar_piezas_para_plasma)
     ).grid(row=1, column=0, pady=3, padx=3)
 
     ttk.Button(
         frame_stock2,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_piezas_plasma_terminadas)
     ).grid(row=1, column=1, pady=3, padx=3)
 
@@ -251,20 +264,20 @@ def mecanizado(ventana):
 
 
 
-    imagen_sierra = Image.open(r"img\sierra.png")
+    imagen_sierra = Image.open(r"C:\Fadeco_stock\img\sierra.png")
     img_redimensionada_sierra = imagen_sierra.resize((50, 50))
     img_sierra_ = ImageTk.PhotoImage(img_redimensionada_sierra)
 
     # Frame para Sierra
-    cut = ttk.Frame(mecanizsmo, style='Color.TFrame')
-    cut.grid(row=2, column=0, padx=5, pady=5, columnspan=2)
+    cut = ttk.Frame(mecanizsmo, bootstyle="light", padding=4)
+    cut.grid(row=2, column=0,columnspan=2)
 
     # Labelframe para la sección de corte
-    frame_sierra = ttk.Labelframe(cut, text="Sierra", style="Bold9.TLabelframe")
-    frame_sierra.grid(row=0, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_sierra = ttk.Labelframe(cut, text="PIEZAS CORTADAS",)
+    frame_sierra.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Etiqueta y Combobox para seleccionar piezas a cortar
-    ttk.Label(frame_sierra, text="Piezas para Cortar", style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    ttk.Label(frame_sierra, text="Piezas De Corte", style='WhiteOnRed.TLabel').grid(row=1, column=0)
     piezas_a_corte = ttk.Combobox(frame_sierra, values=piezas_corte, state="readonly", width=17, font= ("Arial", 12, "bold"))
     piezas_a_corte.grid(row=2, column=0)
 
@@ -274,26 +287,22 @@ def mecanizado(ventana):
     cantidad_ingresada_corte.grid(row=2, column=1)
 
     # Botón para ejecutar la acción de cortar
-    tk.Button(
+    ttk.Button(
         frame_sierra,
         text="Cortar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        bootstyle="success",
         command=lambda: accion_corte(cantidad_ingresada_corte, piezas_a_corte, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
+    ).grid(row=3, column=1, padx=5, pady=5)
 
 
     # Labelframe para el stock de piezas a cortar
-    frame_stock_sierra = ttk.Labelframe(cut, text="Stock de Sierra", style="Bold9.TLabelframe")
-    frame_stock_sierra.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_sierra = ttk.Labelframe(cut, text="Stock de Piezas Cortadas",)
+    frame_stock_sierra.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     ttk.Button(
         frame_stock_sierra,
         text="Stock Bruto",
-        style="Estilo4.TButton", 
+        bootstyle="info-outline", 
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_piezas_para_cortar)
     ).grid(row=1, column=0, pady=3, padx=3)
 
@@ -307,25 +316,25 @@ def mecanizado(ventana):
     
     
     
-    box3 = tk.Frame(index) 
-    box3.grid(row=1, column=2)
+    box3 = ttk.Frame(index,bootstyle="dark") 
+    box3.grid(row=1, column=2, padx=3, pady=3)
     
-    mecanizsmo2 = ttk.Frame(box3, style='Pestania.TFrame')
+    mecanizsmo2 = ttk.Frame(box3,)
     mecanizsmo2.grid(row=0, column=1, sticky="nw")
 
 
 
-    imagen_augeriado = Image.open(r"img\augeriado.png")
+    imagen_augeriado = Image.open(r"C:\Fadeco_stock\img\augeriado.png")
     img_redimensionada_augeriado = imagen_augeriado.resize((50, 50))
     img_augeriado_ = ImageTk.PhotoImage(img_redimensionada_augeriado)
 
 
     # Frame principal para Augeriado
-    augeriado = ttk.Frame(mecanizsmo2, style='Color.TFrame')
-    augeriado.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
+    augeriado = ttk.Frame(mecanizsmo2, bootstyle="light", padding=4)
+    augeriado.grid(row=0, column=0, padx=5, pady=5,columnspan=2)
 
     # Labelframe para la sección de Augeriado
-    frame_augeriado = ttk.Labelframe(augeriado, text="Augeriado", style="Bold9.TLabelframe")
+    frame_augeriado = ttk.Labelframe(augeriado, text="Augeriado",)
     frame_augeriado.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
 
@@ -341,32 +350,28 @@ def mecanizado(ventana):
     cantidad_ingresada_agujeriado.grid(row=2, column=1)
 
     # Botón para ejecutar la acción de augeriar
-    tk.Button(
+    ttk.Button(
         frame_augeriado,
-        text="Balancín",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="AUGERIADO",
+        bootstyle="success",
         command=lambda: accion_augeriado(cantidad_ingresada_agujeriado, piezas_a_augeriado, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
+    ).grid(row=3, column=1, padx=5, pady=5)
 
     # Labelframe para el stock de piezas a augeriar
-    frame_stock_augeriado = ttk.Labelframe(augeriado, text="Stock de Augeriado", style="Bold9.TLabelframe")
-    frame_stock_augeriado.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_augeriado = ttk.Labelframe(augeriado, text="Stock de Augeriado",)
+    frame_stock_augeriado.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     ttk.Button(
         frame_stock_augeriado,
         text="Stock Bruto",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostra_pieza_agujeriar)
     ).grid(row=1, column=0, pady=3, padx=3)
 
     ttk.Button(
         frame_stock_augeriado,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_pieza_agujeriar_terminadad)
     ).grid(row=1, column=1, pady=3, padx=3)
 
@@ -378,16 +383,16 @@ def mecanizado(ventana):
 
 
     # Carga y redimensionamiento de la imagen del Torno
-    imagen_torno = Image.open(r"img\torno.png")
+    imagen_torno = Image.open(r"C:\Fadeco_stock\img\torno.png")
     img_redimensionada_torno = imagen_torno.resize((50, 50))
     img_torno_ = ImageTk.PhotoImage(img_redimensionada_torno)
 
     # Frame principal para Torno
-    torno = ttk.Frame(mecanizsmo2, style='Color.TFrame')
-    torno.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
+    torno = ttk.Frame(mecanizsmo2, bootstyle="light", padding=5)
+    torno.grid(row=1, column=0, padx=5, pady=5,columnspan=2)
 
     # Labelframe para la sección de Torno
-    frame_torno = ttk.Labelframe(torno, text="Torno", style="Bold9.TLabelframe")
+    frame_torno = ttk.Labelframe(torno, text="Torno",)
     frame_torno.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
 
@@ -402,32 +407,28 @@ def mecanizado(ventana):
     cantidad_torneada.grid(row=2, column=1)
 
     # Botón para ejecutar la acción de tornear
-    tk.Button(
+    ttk.Button(
         frame_torno,
-        text="Tornear",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="TORNEAR",
+        bootstyle="success",
         command=lambda: accion_torno(cantidad_torneada, piezas_a_torner, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2)
+    ).grid(row=3, column=1, padx=5, pady=5)
 
     # Labelframe para el stock de piezas tornear
-    frame_stock_torno = ttk.Labelframe(torno, text="Stock de Torno", style="Bold9.TLabelframe")
-    frame_stock_torno.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_torno = ttk.Labelframe(torno, text="Stock de Torno",)
+    frame_stock_torno.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     ttk.Button(
         frame_stock_torno,
         text="Stock Bruto",
-        style="Estilo4.TButton", 
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostar_piezas_para_tornear)
     ).grid(row=1, column=0, pady=3, padx=3)
 
     ttk.Button(
         frame_stock_torno,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_piezas_torneada)
     ).grid(row=1, column=1, pady=3, padx=3)
 
@@ -441,16 +442,16 @@ def mecanizado(ventana):
 
 
     # Carga y redimensionamiento de la imagen de la Fresa
-    imagen_fresa = Image.open(r"img\fresado.png")
+    imagen_fresa = Image.open(r"C:\Fadeco_stock\img\fresado.png")
     img_redimensionada_fresa = imagen_fresa.resize((50, 50))
     img_fresa_ = ImageTk.PhotoImage(img_redimensionada_fresa)
 
     # Frame principal para Fresa
-    fresa = ttk.Frame(mecanizsmo2, style='Color.TFrame')
-    fresa.grid(row=2, column=0, padx=5, pady=5, columnspan=2)
+    fresa = ttk.Frame(mecanizsmo2, bootstyle="light", padding=5)
+    fresa.grid(row=2, column=0, padx=5, pady=5,columnspan=2)
 
     # Labelframe para la sección de Fresa
-    frame_fresa = ttk.Labelframe(fresa, text="Fresa", style="Bold9.TLabelframe")
+    frame_fresa = ttk.Labelframe(fresa, text="Fresa",)
     frame_fresa.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Etiqueta y Combobox para seleccionar piezas a fresar
@@ -464,33 +465,29 @@ def mecanizado(ventana):
     cantidad_fresa.grid(row=2, column=1)
 
     # Botón para ejecutar la acción de fresar
-    tk.Button(
+    ttk.Button(
         frame_fresa,
-        text="Fresar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="FRESAR",
+        bootstyle="success",
         command=lambda: accion_fresa(cantidad_fresa, piezas_a_fresa, tabla_principal, historial)
     ).grid(row=3, column=1, padx=2, pady=2)
 
     # Labelframe para el stock de piezas fresar
-    frame_stock_fresa = ttk.Labelframe(fresa, text="Stock de Fresa", style="Bold9.TLabelframe")
-    frame_stock_fresa.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_fresa = ttk.Labelframe(fresa, text="Stock de Fresa",)
+    frame_stock_fresa.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
 
     ttk.Button(
         frame_stock_fresa,
         text="Stock Bruto",
-        style="Estilo4.TButton", 
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_velas_planchada_cortada)
     ).grid(row=1, column=0, pady=3, padx=3)
 
     ttk.Button(
         frame_stock_fresa,
         text="Stock Terminado",
-        style="Estilo4.TButton", 
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_velas_planchada_fresada)
     ).grid(row=1, column=1, pady=3, padx=3)
 
@@ -505,32 +502,32 @@ def mecanizado(ventana):
 
 
 
-    box4 = tk.Frame(index )
-    box4.grid(row=1, column=3)
+    box4 = ttk.Frame(index ,bootstyle="dark")
+    box4.grid(row=1, column=3,padx=3, pady=3)
     
 
     # Carga y redimensionamiento de imágenes
-    imagen_soldador = Image.open(r"img\soldador.png")
+    imagen_soldador = Image.open(r"C:\Fadeco_stock\img\soldador.png")
     img_redimensionada_soldador = imagen_soldador.resize((50, 50))
     img_soldador_ = ImageTk.PhotoImage(img_redimensionada_soldador)
 
-    imagen_pulido = Image.open(r"img\pulido.png")
+    imagen_pulido = Image.open(r"C:\Fadeco_stock\img\pulido.png")
     img_redimensionada_pulido = imagen_pulido.resize((50, 50))
     img_pulido_ = ImageTk.PhotoImage(img_redimensionada_pulido)
 
-    imagen_balancin = Image.open(r"img\balancin.png")
+    imagen_balancin = Image.open(r"C:\Fadeco_stock\img\balancin.png")
     img_redimensionada_balancin = imagen_balancin.resize((50, 50))
     img_balancin_ = ImageTk.PhotoImage(img_redimensionada_balancin)
 
-    mecanizado5 = ttk.Frame(box4, style='Pestania.TFrame')
+    mecanizado5 = ttk.Frame(box4,)
     mecanizado5.grid(row=0, column=0, sticky="nw")
     
         # Frame principal para Soldador
-    soldador = ttk.Frame(mecanizado5, style='Color.TFrame')
-    soldador.grid(row=0, column=0, padx=5, pady=5, columnspan=2, sticky="nsew")
+    soldador = ttk.Frame(mecanizado5, bootstyle="light", padding=4)
+    soldador.grid(row=0, column=0, padx=5, pady=5, columnspan=2)
 
     # Labelframe para la sección de Soldador
-    frame_soldador = ttk.Labelframe(soldador, text="Soldador", style="Bold9.TLabelframe")
+    frame_soldador = ttk.Labelframe(soldador, text="Soldador",)
     frame_soldador.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Etiqueta y Combobox para seleccionar piezas a soldar
@@ -544,33 +541,29 @@ def mecanizado(ventana):
     cantidad_sold.grid(row=2, column=1, sticky="ew")
 
     # Botón para ejecutar la acción de soldar
-    tk.Button(
+    ttk.Button(
         frame_soldador,
-        text="Soldar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="SOLDAR",
+        bootstyle="success",
         command=lambda: accion_soldar(cantidad_sold, piezas_a_soldar, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=2, pady=2, sticky="ew")
+    ).grid(row=3, column=1, padx=5, pady=5)
 
     # Labelframe para el stock de piezas soldar
-    frame_stock_soldador = ttk.Labelframe(soldador, text="Stock de Soldador", style="Bold9.TLabelframe")
-    frame_stock_soldador.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_soldador = ttk.Labelframe(soldador, text="Stock de Soldador",)
+    frame_stock_soldador.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     # Botones para stock
     ttk.Button(
         frame_stock_soldador,
         text="Stock Bruto",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_para_soldador_)
     ).grid(row=1, column=0, pady=3, padx=3, sticky="ew")
 
     ttk.Button(
         frame_stock_soldador,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_soldador_)
     ).grid(row=1, column=1, pady=3, padx=3, sticky="ew")
 
@@ -583,15 +576,17 @@ def mecanizado(ventana):
 
     # Repetir la misma estructura para Pulido y Balancín
     # Frame principal para Pulido
-    pulido = ttk.Frame(mecanizado5, style='Color.TFrame')
-    pulido.grid(row=1, column=0, padx=5, pady=5, columnspan=2, sticky="nsew")
+    pulido = ttk.Frame(mecanizado5, bootstyle="light", padding=4)
+    pulido.grid(row=1, column=0, padx=5, pady=5, columnspan=2)
 
     # Labelframe para la sección de Pulido
-    frame_pulido = ttk.Labelframe(pulido, text="Pulido", style="Bold9.TLabelframe")
+    frame_pulido = ttk.Labelframe(pulido, text="Pulido",)
     frame_pulido.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Etiqueta y Combobox para seleccionar piezas a pulir
-    ttk.Label(frame_pulido, text="Piezas A Pulir", style='WhiteOnRed.TLabel').grid(row=1, column=0, sticky="ew")
+    ttk.Label(frame_pulido, text="Piezas A Pulir", style='WhiteOnRed.TLabel').grid(row=1, column=0)
+    
+    
     piezas_a_pulido = ttk.Combobox(frame_pulido, values=piezas_pulir, state="readonly", width=17, font=("Arial", 12, "bold"))
     piezas_a_pulido.grid(row=2, column=0, sticky="ew")
 
@@ -601,33 +596,29 @@ def mecanizado(ventana):
     cantidad_pulido.grid(row=2, column=1, sticky="ew")
 
     # Botón para ejecutar la acción de pulir
-    tk.Button(
+    ttk.Button(
         frame_pulido,
-        text="Pulir",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="PULIR",
+        bootstyle="success",
         command=lambda: accion_pulir(piezas_a_pulido, cantidad_pulido, tabla_principal, historial)
-    ).grid(row=3, column=1, padx=5, pady=2, sticky="ew")
+    ).grid(row=3, column=1, padx=5, pady=2,)
 
     # Labelframe para el stock de piezas pulir
-    frame_stock_pulido = ttk.Labelframe(pulido, text="Stock de Pulido", style="Bold9.TLabelframe")
-    frame_stock_pulido.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_pulido = ttk.Labelframe(pulido, text="Stock de Pulido",)
+    frame_stock_pulido.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     # Botones para stock
     ttk.Button(
         frame_stock_pulido,
         text="Stock Bruto",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_para_pulir)
     ).grid(row=1, column=0, pady=3, padx=3, sticky="ew")
 
     ttk.Button(
         frame_stock_pulido,
         text="Stock Terminado",
-        style="Estilo4.TButton",
+        bootstyle="info-outline",
         command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_pulido)
     ).grid(row=1, column=1, pady=3, padx=3, sticky="ew")
 
@@ -638,11 +629,11 @@ def mecanizado(ventana):
     box4.img_pulido_ = img_pulido_
 
     # Frame principal para Balancín
-    balancin = ttk.Frame(mecanizado5, style='Color.TFrame')
+    balancin = ttk.Frame(mecanizado5, bootstyle="light", padding=5)
     balancin.grid(row=2, column=0, padx=5, pady=5, columnspan=2, sticky="nsew")
 
     # Labelframe para la sección de Balancín
-    frame_balancin = ttk.Labelframe(balancin, text="Balancín", style="Bold9.TLabelframe")
+    frame_balancin = ttk.Labelframe(balancin, text="Balancín",)
     frame_balancin.grid(row=0, column=0, columnspan=2, sticky="nsew")
 
     # Etiqueta y Combobox para seleccionar piezas a balancinear
@@ -656,34 +647,30 @@ def mecanizado(ventana):
     cantidad_balancin.grid(row=2, column=1, sticky="ew")
 
     # Botón para ejecutar la acción de balancinar
-    tk.Button(
+    ttk.Button(
         frame_balancin,
         text="Balancinar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
-        command=lambda: accion_balancinar(cantidad_balancin, piezas_a_balancin, tabla_principal, historial)
+        bootstyle="success",
+        command=lambda: accion_balancin(cantidad_balancin, piezas_a_balancin, tabla_principal, historial)
     ).grid(row=3, column=1, padx=5, pady=2, sticky="ew")
 
     # Labelframe para el stock de piezas balancinar
-    frame_stock_balancin = ttk.Labelframe(balancin, text="Stock de Balancín", style="Bold9.TLabelframe")
-    frame_stock_balancin.grid(row=1, column=0, columnspan=2, sticky="nsew", padx=5, pady=5)
+    frame_stock_balancin = ttk.Labelframe(balancin, text="Stock de Balancín",)
+    frame_stock_balancin.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
     # Botones para stock
     ttk.Button(
         frame_stock_balancin,
         text="Stock Bruto",
-        style="Estilo4.TButton",
-        command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_para_balancin)
+        bootstyle="info-outline",
+        command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_balancin_bruto)
     ).grid(row=1, column=0, pady=3, padx=3, sticky="ew")
 
     ttk.Button(
         frame_stock_balancin,
         text="Stock Terminado",
-        style="Estilo4.TButton",
-        command=lambda: mostrar_piezas_tablas(tabla_principal, querty_mostrar_balancin)
+        bootstyle="info-outline",
+        command=lambda: mostrar_piezas_tablas(tabla_principal, query_mostrar_piezas_balancin_terminado)
     ).grid(row=1, column=1, pady=3, padx=3, sticky="ew")
 
     # Añadir la imagen del Balancín al frame de stock

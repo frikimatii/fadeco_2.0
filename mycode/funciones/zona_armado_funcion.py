@@ -10,15 +10,30 @@ def limpiar_tabla(tabla):
     for item in tabla.get_children():
         tabla.delete(item)
 
-def mostrar_piezas_tablas(treeview, quety):
+def mostrar_piezas_tablas(treeview, query):
+    # Conectar con la base de datos y obtener los datos
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
-    cursor.execute(quety)
+    cursor.execute(query)
     datos = cursor.fetchall()
     conn.close()
+
+    # Limpiar la tabla antes de insertar nuevos datos
     limpiar_tabla(treeview)
+
+
+    # Insertar los datos en el Treeview y aplicar etiquetas de color
     for dato in datos:
-        treeview.insert("", tk.END, values=(dato))
+        pieza, cantidad = dato  # Asegurarse que la consulta traiga estos dos valores
+        if int(cantidad) >= 10:
+            treeview.insert("", tk.END, values=dato)  # Etiqueta para más de 10
+        else:
+            treeview.insert("", tk.END, values=dato)  # Etiqueta para menos de 10
+    
+    # Forzar la actualización visual del Treeview
+    treeview.update_idletasks()
+    
+    
 
 def mostrar_piezas_motor(treeview, piezas):
     # Conectar a la base de datos
@@ -53,7 +68,7 @@ def manejar_inventario(modelo, cantidad, historial):
             "corona_330": 1,
             "seguer": 1,
             "sinfin": 1,
-            "motor_220w": 1,
+            "motor_220v": 1,
             "oring": 1,
             "ruleman6000": 1
         },
@@ -66,7 +81,7 @@ def manejar_inventario(modelo, cantidad, historial):
             "corona_300": 1,
             "seguer": 1,
             "sinfin": 1,
-            "motor_220w": 1,
+            "motor_220v": 1,
             "oring": 1,
             "ruleman6000": 1
         },
@@ -88,7 +103,7 @@ def manejar_inventario(modelo, cantidad, historial):
             "polea_chica": 1,
             "tornillo_teletubi_eco": 2,
             "teclas": 1,
-            "capacitor_eco": 1,
+            "capacitores": 1,
             "conector_hembra": 1,
             "cable_corto_eco": 1,
             "motor_eco": 1,

@@ -10,34 +10,32 @@ from mycode.provedores.afiladores import ventana_afilador
 
 def def_provedor(notebook_principal):
     
-    stylo_ventana = ttk.Style()
-    stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
     
-    pestania_principal = ttk.Frame(notebook_principal, style='Pestania.TFrame')
+    pestania_principal = ttk.Frame(notebook_principal,)
     notebook_principal.add(pestania_principal, text="Provedores")
 
-    contenido_frame = ttk.Frame(pestania_principal, style='Pestania.TFrame')
+    contenido_frame = ttk.Frame(pestania_principal,)
     contenido_frame.grid(row=0, column=2, sticky="nsew")
 
-    vertical_frame = ttk.Frame(pestania_principal, width=200, style='Pestania.TFrame')
-    vertical_frame.grid(row=0, column=1, padx=50)
+    vertical_frame = ttk.Frame(pestania_principal, width=200,)
+    vertical_frame.grid(row=0, column=1, padx=30)
 
-    soldador = ttk.Button(vertical_frame, text="Soldador", padding=20, width=11, command= lambda: mostrar_contenido(contenido_frame, "soldadura"))
+    soldador = ttk.Button(vertical_frame, text="Soldador/Cabezales",padding=20, width=20, command= lambda: mostrar_contenido(contenido_frame, "soldadura"), bootstyle="light")
     soldador.grid(row=1, column=0, pady=10)
 
-    carmerlo = ttk.Button(vertical_frame, text="Carmelo",padding=20, width=11, command= lambda: mostrar_contenido(contenido_frame, "carmelo"))
+    carmerlo = ttk.Button(vertical_frame, text="Carmelo",padding=20, width=20, command= lambda: mostrar_contenido(contenido_frame, "carmelo"),bootstyle="light")
     carmerlo.grid(row=2, column=0, pady=10)
 
-    maxi = ttk.Button(vertical_frame, text="Maxi",padding=20, width=11, command= lambda: mostrar_contenido(contenido_frame, "maxi"))
+    maxi = ttk.Button(vertical_frame, text="Maxi",padding=20, width=20, command= lambda: mostrar_contenido(contenido_frame, "maxi"),bootstyle="light")
     maxi.grid(row=3, column=0, pady=10)
 
-    pintura = ttk.Button(vertical_frame, text="Pintura",padding=20, width=11, command= lambda: mostrar_contenido(contenido_frame, "pintura"))
+    pintura = ttk.Button(vertical_frame, text="Pintura",padding=20, width=20, command= lambda: mostrar_contenido(contenido_frame, "pintura"),bootstyle="light")
     pintura.grid(row=4, column=0, pady=10)
 
-    niquelado = ttk.Button(vertical_frame, text="Niqueado",padding=20,width=11, command= lambda: mostrar_contenido(contenido_frame , "niquelado"))
+    niquelado = ttk.Button(vertical_frame, text="Niqueado",padding=20,width=20, command= lambda: mostrar_contenido(contenido_frame , "niquelado"),bootstyle="light")
     niquelado.grid(row=5, column=0, pady=10)
 
-    afiladores = ttk.Button(vertical_frame, text="Afilador",padding=20, width=11, command= lambda: mostrar_contenido(contenido_frame, "afiladores"))
+    afiladores = ttk.Button(vertical_frame, text="Afilador",padding=20, width=20, command= lambda: mostrar_contenido(contenido_frame, "afiladores"),bootstyle="light")
     afiladores.grid(row=6, column=0, pady=10)
 
 

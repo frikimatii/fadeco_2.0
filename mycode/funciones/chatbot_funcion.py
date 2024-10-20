@@ -2,8 +2,7 @@ import sqlite3
 import tkinter as tk 
 from tkinter import ttk
 
-def obtener_piezas():
-    
+def obtenerpiezas():
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
     cursor.execute("SELECT PIEZAS FROM piezas_terminadas")
@@ -89,7 +88,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
     ],
 
     "BaseECO": [
-        "ChapaBase_330Eco", 
+        "ChapaBase_330Inox", 
         "lateral_i330_eco", 
         "lateral_i330_sintecla", 
         "planchuela_330", 
@@ -119,14 +118,15 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         "ChapaBase_300Inox": ["Proceso para llegar a la pieza lograda: ", "Proceso: AGREGADO PIEZAS/Chapa MECANIZADO: plegado, plamas"],
         
         "ChapaBase_300Pintada": ["Proceso para llegar a la pieza lograda: ", "Proceso: AGREGADO PIEZAS/Chapa MECANIZADO: plegado, plamas"],
-        
-        "ChapaBase_330Eco": ["Proceso para llegar a la pieza lograda: ", "Proceso: AGREGADO PIEZAS/Chapa MECANIZADO: plegado, plamas"],
+
         
         "ChapaBase_330Inox": ["Proceso para llegar a la pieza lograda: ", "Proceso: AGREGADO PIEZAS/Chapa MECANIZADO: plegado, plamas"],
         
         "ChapaBase_330Pintada": ["Proceso para llegar a la pieza lograda: ", "Proceso: AGREGADO PIEZAS/Chapa MECANIZADO: plegado, plamas"],
         
         "F_circulo": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
+        
+        "F_cuadrado": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
         "afilador_final": ["nesesita las piezas", "Piezas:  capuchon_afilador", "carcaza_afilador", "eje_corto", "eje_largo", "ruleman608", "palanca_afilador", "resorte_palanca", "resorte_empuje" , "se encuentra en PROVEDORES/Afilador"],
         
@@ -177,7 +177,13 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         
         "caja_eco_armada": ["CAJA TORNEADA LISTO PARA EL PRE ARMADO"],
         
-        "caja_soldada_eco": ["Proceso para llegar a esa pieza lograda: ", "AGREGADO DE PIEZAS/Chapa o MECANIZADO/plasma, MECANIZADO/soldador, PROVEDOR/pintura", "Piezas: AGREGADO DE PIEZAS/pieza_caja_eco,  MECANIZADO/ piezas_caja_eco, PROVEDOR/pieza_soldada_eco"],
+        "caja_soldada_eco": [
+            "Proceso para llegar a esa pieza lograda: ", 
+            "Piezas: AGREGADO DE PIEZAS/pieza_caja_eco o MECANIZADO/plasma",
+            "PIezas: MECANIZADO/plasma/media_luna",
+            "Piezas: MECANIZADO/sierra/panchuela_inferior"
+            "Piezas: MECANIZADO/sierra/panchuela_interior"
+            "PIEZA_FINAL:  MECANIZADO/soldador/Caja_soldada_eco"],
         
         "cajas_torneadas_250": ["Se encuentra en: ", "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno  PROVEDORES/maxi, carmelo. "],
         
@@ -189,7 +195,6 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         
         "calco_verde_eco": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
-        "capacitor_eco": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
         "capacitores": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
@@ -260,6 +265,8 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         "eje_rectificado": ["Se obtiene en: ", "MECANIZADO/sierra PROVEDOR/niquelado"],
         
         "espiral": ["se encuentra en: ", "AGREGANDO DE PIEZAS/Plastico"],
+        
+        "etiqueta_peligro": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
                 
         "etiqueta_cable": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
 
@@ -299,15 +306,17 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
 
         "lateral_p330_sintecla": ["Se obtiene en: ", "MECANIZADO/plasma MECANIZADO/plegadora PROVEDORES/soldador PROVEDOR/pintura"],
         
+        "media_luna": ["Media_luna"],    
+        
         "manchon": ["Se obtiene en: ", "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno"],
         
         "manchon_250": ["Se obtiene en: ", "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno"],
         
         "manual_instruciones":  ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
-        "motor250_220w": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
+        "motor250_220v": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
-        "motor_220w": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
+        "motor_220v": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
         "motor_eco": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
@@ -352,6 +361,11 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         "planchuela_330": ["Se obtiene en:" , "MECANIZADO/sierra MECANIZADO/balancin", "PROVEDOR/soldador PROVEDOR/maxi,carmelo o pintura"],
         
         "planchuela_250": ["Se obtiene en:" , "MECANIZADO/sierra MECANIZADO/balancin", "PROVEDOR/soldador PROVEDOR/maxi,carmelo o pintura"],
+        
+        "planchuela_inferior": ["Se obtiene en:"],
+        
+        "planchuela_interior": ["Se obtiene en:"],
+        
         
         "polea_chica": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         

@@ -44,7 +44,7 @@ bases_dicc = {
         "portaeje":"portaeje",
     },
     "ECO":{
-        "chapa_principal": "ChapaBase_330Eco",
+        "chapa_principal": "ChapaBase_330Inox",
         "lateral_con_tecla":"lateral_i330_eco",
         "lateral_sin_tecla":"lateral_i330_sintecla",
         "plachuela":"planchuela_330",
@@ -94,7 +94,7 @@ BasePintada_300 = [
     "portaeje"
 ]
 BaseECO = [
-    "ChapaBase_330Eco",
+    "ChapaBase_330Inox",
     "lateral_i330_eco",
     "lateral_i330_sintecla",
     "planchuela_330",

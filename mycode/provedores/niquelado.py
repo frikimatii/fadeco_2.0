@@ -17,14 +17,15 @@ niquelado = [
     "tubo_manija_250",
     "palanca_afilador"
 ]
+niquelado.sort()
 
 def ventana_niquelado(parent):
-    frame = ttk.Frame(parent, style='Pestania.TFrame')
+    frame = ttk.Frame(parent)
 
-    box1 = ttk.Frame(frame, style='Pestania.TFrame')
+    box1 = ttk.Frame(frame)
     box1.grid(row=0, column=0, sticky="nsew")
 
-    ttk.Label(box1, text="Tabla P/ De Niquelado", font=("Arial", 15, "bold"), background= '#192965', foreground='white').grid(row=0, column=0, sticky="w", pady=15)
+    ttk.Label(box1, text="Tabla P/ De Niquelado", font=("Arial", 15, "bold"), foreground='white').grid(row=0, column=0, sticky="w", pady=15)
 
 
     mostrar_piezas = ttk.Treeview(box1, columns=("Pieza", "Cantidad"))
@@ -37,7 +38,7 @@ def ventana_niquelado(parent):
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
 
-    ttk.Button(box1, text="Limpiar Tabla", command= lambda: limpiar_tabla(mostrar_piezas)).grid(row=2, columnspan=2 )
+    ttk.Button(box1, text="Limpiar Tabla", command= lambda: limpiar_tabla(mostrar_piezas), bootstyle="primary").grid(row=2, columnspan=2, pady=5 )
 
 
     tk.Label(box1, text="Historial" ,font=("Arial", 9, "bold")).grid(row=3, column=0, sticky="sw")
@@ -46,45 +47,42 @@ def ventana_niquelado(parent):
 
 
 
-    box4 = tk.Frame(frame)
-    box4.grid(row=0, column=3, padx=40)
+    box4 = ttk.Frame(frame, bootstyle="light")
+    box4.grid(row=0, column=3, padx=40, pady=20)
 
 
     # Labelframe para Niquelado/ Rectificado
-    labelframe_niquelado = ttk.Labelframe(box4, text="Niquelado/ Rectificado",style="Bold9.TLabelframe" , padding=20)
-    labelframe_niquelado.grid(row=3, column=0, columnspan=2, pady=5)
+    labelframe_niquelado = ttk.Labelframe(box4, text="Niquelado/ Rectificado",padding=20, border=20)
+    labelframe_niquelado.grid(row=3, column=0, padx=20, pady=20)
 
     # Opciones de Stock
-    labelframe_stock = ttk.Labelframe(labelframe_niquelado, text="Opciones de Stock", style="Bold9.TLabelframe", padding=10)
+    labelframe_stock = ttk.Labelframe(labelframe_niquelado, text="Opciones de Stock", padding=10)
     labelframe_stock.grid(row=1, column=0, columnspan=3, pady=5)
 
     grupbtn = tk.Frame(labelframe_stock)
-    grupbtn.grid(row=0, column=0, columnspan=3)
+    grupbtn.grid(row=0, column=0, columnspan=3, padx=5,pady=5)
 
     ttk.Button(
         grupbtn,
-        text="Stock en bruto",
+        text="Stock en bruto",bootstyle="primary",
         command=lambda: mostrar_piezas_tablas(mostrar_piezas, quety_niquelado_bruto)
-    ).grid(row=0, column=0)
+    ).grid(row=0, column=0, padx=3, pady=3)
 
     ttk.Button(
         grupbtn,
-        text="Stock en niquelado",
+        text="Stock en niquelado",bootstyle="primary",
         command=lambda: mostrar_piezas_tablas(mostrar_piezas, quety_niquelado_en_niquelado)
-    ).grid(row=0, column=1)
+    ).grid(row=0, column=1, padx=3, pady=3)
 
     ttk.Button(
         grupbtn,
-        text="Stock en fabrica",
+        text="Stock en fabrica",bootstyle="primary",
         command=lambda: mostrar_piezas_tablas(mostrar_piezas, quety_niquelado_en_fabrica)
-    ).grid(row=1, columnspan=2)
+    ).grid(row=1, columnspan=2, padx=3, pady=3)
 
-    ttk.Separator(labelframe_stock, orient="horizontal").grid(
-        row=2, column=0, columnspan=3, padx=5, pady=5
-    )
 
     # Piezas a Niquelar/ Rectificar
-    labelframe_piezas_niquelar = ttk.Labelframe(labelframe_niquelado, text="Piezas A Niquelar/ Rectificado", style="Bold9.TLabelframe" )
+    labelframe_piezas_niquelar = ttk.Labelframe(labelframe_niquelado, text="Piezas A Niquelar/ Rectificado", padding=10)
     labelframe_piezas_niquelar.grid(row=2, column=0, columnspan=3, pady=10)
 
     ttk.Label(labelframe_piezas_niquelar, text="Piezas", style="WhiteOnRed.TLabel").grid(row=0, column=0, sticky="w")
@@ -93,21 +91,16 @@ def ventana_niquelado(parent):
 
     ttk.Label(labelframe_piezas_niquelar, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=1, column=0, sticky="w")
     cantidad_a_niquelar = ttk.Entry(labelframe_piezas_niquelar, style='WhiteOnRed.TEntry', width=10)
-    cantidad_a_niquelar.grid(row=1, column=1, sticky="w", pady=1)
+    cantidad_a_niquelar.grid(row=1, column=1, sticky="e", pady=1)
 
-    tk.Button(
+    ttk.Button(
         labelframe_piezas_niquelar,
-        text="Enviar",
-        background="green",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="Enviar",bootstyle="warning",
         command=lambda: mandar_a_niquelar(lista_piezas, cantidad_a_niquelar, mostrar_piezas, historial)
-    ).grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="w")
+    ).grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="e")
 
     # Piezas Terminadas
-    labelframe_piezas_terminadas = ttk.Labelframe(labelframe_niquelado, text="Piezas Terminadas", style="Bold9.TLabelframe", padding=10)
+    labelframe_piezas_terminadas = ttk.Labelframe(labelframe_niquelado, text="Piezas Terminadas", padding=10)
     labelframe_piezas_terminadas.grid(row=4, column=0, columnspan=3, pady=10)
 
     ttk.Label(labelframe_piezas_terminadas, text="Piezas", style="WhiteOnRed.TLabel").grid(row=0, column=0, sticky="w")
@@ -116,20 +109,12 @@ def ventana_niquelado(parent):
 
     ttk.Label(labelframe_piezas_terminadas, text="Cantidad", style="WhiteOnRed.TLabel").grid(row=1, column=0, sticky="w")
     cantidad_a_niquelado = ttk.Entry(labelframe_piezas_terminadas, style='WhiteOnRed.TEntry', width=10)
-    cantidad_a_niquelado.grid(row=1, column=1, sticky="w", pady=1)
+    cantidad_a_niquelado.grid(row=1, column=1, sticky="e", pady=1)
 
-    tk.Button(
+    ttk.Button(
         labelframe_piezas_terminadas,
-        text="Recibido",
-        background="blue",
-        foreground="white",
-        padx=4,
-        pady=1,
-        font=('Helvetica', 8, "bold"),
+        text="Recibido",bootstyle="success",
         command=lambda: resibir_niquelado(lista_piezas_nique, cantidad_a_niquelado, mostrar_piezas, historial)
-    ).grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="w")
-
-
-
+    ).grid(row=2, column=1, columnspan=2, padx=2, pady=2, sticky="e")
 
     return frame

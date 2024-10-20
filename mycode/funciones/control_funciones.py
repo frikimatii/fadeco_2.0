@@ -5,8 +5,6 @@ import sqlite3
 import os
 from datetime import datetime
 
-
-
 tipo_maquina = ["inox_330","inox_300" ,"inox_250", "pintada_330", "pintada_300", "eco"]
 
 def limpiar_tabla(tabla):
@@ -22,7 +20,6 @@ def mostrar_piezas_tablas(treeview, quety):
     limpiar_tabla(treeview)
     for dato in datos:
         treeview.insert("", tk.END, values=(dato))
-
 
 def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     cantidad_og = cantidad_ingresada.get()
@@ -111,9 +108,6 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     finally:
         conn.close()  # Cerrar la conexión a la base de datos
 
-
-
-
 def accion_venta(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     cantidad_og = cantidad_ingresada.get()
     pieza_og = pieza_seleccionar.get()
@@ -168,9 +162,6 @@ def accion_venta(cantidad_ingresada, pieza_seleccionar, treeview, historial):
     finally:
         conn.close()  # Cerrar la conexión a la base de datos
 
-
-
-
 motor_330 = {
     "cajas_torneadas_330": 1,#
     "eje": 1,#
@@ -180,7 +171,7 @@ motor_330 = {
     "corona_330": 1,#
     "seguer": 1,#
     "sinfin": 1,#
-    "motor_220w": 1,
+    "motor_220v": 1,
     "oring":1,
     "ruleman6000": 1
 }
@@ -195,7 +186,7 @@ motor_300 =  {
     "corona_300": 1,#
     "seguer": 1,#
     "sinfin": 1,#
-    "motor_220w": 1,#
+    "v": 1,#
     "oring":1,            #
     "ruleman6000": 1#
 }
@@ -208,7 +199,7 @@ motor_250 = {
     "corona_250": 1,#
     "seguer": 1,#
     "sinfin": 1,#
-    "motor250_220w": 1,#
+    "motor250_220v": 1,#
     "oring":1,#
     "rulemanR6": 1#
 }
@@ -216,7 +207,7 @@ motor_eco = {
     "polea_grande": 1, #
     "polea_chica": 1,#
     "tornillo_teletubi_eco": 2,#
-    "capacitor_eco": 1,#
+    "capacitores": 1,#
     "conector_hembra": 1,#
     "cable_corto_eco": 1,#
     "motor_eco": 1,#
@@ -268,10 +259,6 @@ def contar_motores_disponibles(modelo_motor):
 
     return cantidad_minima
 
-
-
-
-
 def obtener_cantidad_piezas_motor():
     try:
         conn = sqlite3.connect("dbfadeco.db")
@@ -291,8 +278,6 @@ def obtener_cantidad_piezas_motor():
         cantidades_disponibles[pieza] = cantidad
 
     return cantidades_disponibles
-
-
 
 def verificar_posibilidad_construccion_motor(cantidad_deseada, modelo_seleccionado):
     # Obtener la base según el modelo
@@ -335,7 +320,6 @@ def verificar_posibilidad_construccion_motor(cantidad_deseada, modelo_selecciona
     else:
         return False, piezas_faltantes
 
-
 def consultar_piezas_sector_motor(entry_cantidad, tabla_consultas, lista_acciones, tipo_pre_combox):
     # Esta función realiza la consulta y actualiza la interfaz gráfica
     for item in tabla_consultas.get_children():
@@ -355,8 +339,6 @@ def consultar_piezas_sector_motor(entry_cantidad, tabla_consultas, lista_accione
         for pieza, cantidad_faltante in piezas_faltantes.items():
             # Agregar las filas al treeview
             tabla_consultas.insert("", tk.END, values=(pieza, cantidad_faltante), tags=("blue",))
-
-
 
 base_pre_inox_armada330 = {
        "BaseInox_330": 1,
@@ -485,8 +467,6 @@ base_pre_inox_armadaeco = {
     }
     
 
-
-
 def stock_de_prearmado(modelo):
     try:
         conn = sqlite3.connect("dbfadeco.db")
@@ -525,9 +505,6 @@ def stock_de_prearmado(modelo):
 
     return cantidad_minima
 
-
-
-
 def obtener_cantidad_piezas_prearmado():
     try:
         conn = sqlite3.connect("dbfadeco.db")
@@ -547,7 +524,6 @@ def obtener_cantidad_piezas_prearmado():
         cantidades_disponibles[pieza] = cantidad
 
     return cantidades_disponibles
-
 
 def verificar_posibilidad_construccion(cantidad_deseada, modelo_seleccionado):
     # Obtener la base según el modelo
@@ -612,8 +588,6 @@ def consultar_piezas_sector(entry_cantidad, tabla_consultas, lista_acciones, tip
             # Agregar las filas al treeview
             tabla_consultas.insert("", tk.END, values=(pieza, cantidad_faltante), tags=("blue",))
 
-
-
 inox_330__ = {
     "brazo_330": 1,
     "cubrecuchilla_330": 1,
@@ -639,8 +613,7 @@ inox_330__ = {
     "Base_Pre_armado_i330": 1,
     "piedra_afilador": 1,
     "pinche_frontal": 1,
-    "pinche_lateral": 1
-}
+    "pinche_lateral": 1}
 inox_300__ = {
     "brazo_300": 1,
     "cubre_300": 1,
@@ -666,8 +639,7 @@ inox_300__ = {
     "Base_Pre_armado_i300": 1,
     "piedra_afilador": 1,
     "pinche_frontal": 1,
-    "pinche_lateral": 1
-}
+    "pinche_lateral": 1}
 inox_250__ = {
     "brazo_250": 1,
     "cubrecuchilla_250": 1,
@@ -693,8 +665,7 @@ inox_250__ = {
     "piedra_afilador": 1,
     "capuchon_250": 1,
     "pinche_frontal_250": 1,
-    "pinche_lateral_250": 1
-}
+    "pinche_lateral_250": 1}
 pintada_330__ = {
     "brazo_330": 1,
     "cubrecuchilla_330": 1,
@@ -747,8 +718,7 @@ pintada_300__= {
     "Base_Pre_armado_p300": 1,
     "piedra_afilador": 1,
     "pinche_frontal": 1,
-    "pinche_lateral": 1
-}
+    "pinche_lateral": 1}
 eco__ = {
     "brazo_330": 1,
     "cubrecuchilla_330": 1,
@@ -773,13 +743,9 @@ eco__ = {
     "Base_Pre_armado_ECO": 1,
     "piedra_afilador": 1,
     "pinche_lateral": 1,
-    "pinche_frontal": 1
-}
-
+    "pinche_frontal": 1}
 
 base_pre = ["Base_Pre_armado_i330","Base_Pre_armado_i300","Base_Pre_armado_i250", "Base_Pre_armado_p330",  "Base_Pre_armado_p300",  "Base_Pre_armado_ECO"]
-
-
 
 def maquinas_dis(modelo_maquina):
     try:
@@ -817,10 +783,6 @@ def maquinas_dis(modelo_maquina):
 
     return cantidad_minima
 
-
-
-
-
 def obtener_maquina_final():
     try:
         conn = sqlite3.connect("dbfadeco.db")
@@ -840,7 +802,6 @@ def obtener_maquina_final():
         cantidades_disponibles[pieza] = cantidad
 
     return cantidades_disponibles
-
 
 def verificar_posibilidad_maquina_teminada(cantidad_deseada, modelo_seleccionado):
     # Obtener la base según el modelo
@@ -885,7 +846,6 @@ def verificar_posibilidad_maquina_teminada(cantidad_deseada, modelo_seleccionado
     else:
         return False, piezas_faltantes
 
-
 def consultar_maquinas_final(entry_cantidad, tabla_consultas, lista_acciones, tipo_pre_combox):
     # Esta función realiza la consulta y actualiza la interfaz gráfica
     for item in tabla_consultas.get_children():
@@ -906,14 +866,9 @@ def consultar_maquinas_final(entry_cantidad, tabla_consultas, lista_acciones, ti
             # Agregar las filas al treeview
             tabla_consultas.insert("", tk.END, values=(pieza, cantidad_faltante), tags=("blue",))
 
-
-
-
-
 #-------------------------------------------------------------------------------------------
 
 # Diccionarios con las piezas necesarias para cada modelo
-
 
 full_piezas = {
     "inox330":{
@@ -924,80 +879,65 @@ full_piezas = {
                 "BaseInox_330": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4,"movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1,"cable_220w": 1, "varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2,"capacitores": 1, "caja_330_armada": 1
         },
         "motor": {
-            "cajas_torneadas_330": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2,"corona_330": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring": 1, "ruleman6000": 1
+            "cajas_torneadas_330": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2,"corona_330": 1, "seguer": 1, "sinfin": 1, "motor_220v": 1, "oring": 1, "ruleman6000": 1
         }
-},
-
-"inox300": {
-    "armado": {
-        "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,  "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300": 1,   "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300": 1,    "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,       "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,  "perilla_afilador":   1, "base_afilador_300": 1, "piedra_afilador": 1,    "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i300": 1
     },
-    "pre_armado": {
-         "BaseInox_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_300": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "caja_300_armada": 1
-    },
-    "motor": {
-         "cajas_torneadas_300": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2, "corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring":1, "ruleman6000": 1
-
+    "inox300": {
+        "armado": {
+            "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,  "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300": 1,   "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300": 1,    "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,       "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,  "perilla_afilador":   1, "base_afilador_300": 1, "piedra_afilador": 1,    "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i300": 1
+        },
+        "pre_armado": {
+            "BaseInox_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_300": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "caja_300_armada": 1
+        },
+        "motor": {
+            "cajas_torneadas_300": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2, "corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220v": 1, "oring":1, "ruleman6000": 1
+            }
+        },
+    "pintada300": {
+        "armado": {
+            "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_pintada":1, "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300":1, "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300":1, "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,"tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1, "base_afilador_300": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_p300": 1
+        },
+        "pre_armado": {
+            "BasePintada_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1,"tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1,"resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w":  1,"varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "bandeja_300": 1,"caja_300_armada": 1
+        },
+        "motor": {
+            "cajas_torneadas_300": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2,"corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220v": 1, "oring":1, "ruleman6000": 1,
         }
-},
-
-
-
-"pintada300": {
-    "armado": {
-        "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_pintada":1, "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300":1, "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300":1, "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,"tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1, "base_afilador_300": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_p300": 1
     },
-    "pre_armado": {
-        "BasePintada_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1,"tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1,"resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w":  1,"varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "bandeja_300": 1,"caja_300_armada": 1
+    "pintada330": {
+        "armado": {
+            "brazo_330": 1,"cubrecuchilla_330": 1,"velero": 1,"perilla_brazo": 1,"cabezal_pintada": 1,"teletubi_330": 1,"cuchilla_330": 1,"cuadrado_regulador": 1,"vela_final_330": 1,"cubre_motor_rectangulo": 1,"cubre_motor_cuadrado": 1,"planchada_final_330": 1,"varilla_brazo_330": 1,"resorte_brazo": 1,"tapa_afilador": 1,"pipas": 2,"tubo_manija": 1,"afilador_final": 1,"perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1,"pinche_frontal": 1,"pinche_lateral": 1,"Base_Pre_armado_p330": 1
+        },
+    "   pre_armado": {
+            "BasePintada_330": 1,"aro_numerador": 1,"espiral": 1,"perilla_numerador": 1,"tapita_perilla": 2,"patas": 4,"movimiento": 1,"eje_rectificado": 1,"resorte_movimiento": 1,"tornillo_guia": 1,"guia_u": 1,"teclas": 1,"cable_220w": 1,"varilla_330": 1,"carros": 1,"rueditas": 4,"resorte_carro": 2,"capacitores": 1,"bandeja_330": 1,"caja_330_armada": 1
+        },
+        "motor": { 
+            "cajas_torneadas_330": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2, "corona_330": 1,"seguer": 1,"sinfin": 1,"motor_220v": 1,"oring":1, "ruleman6000": 1,
+        }
     },
-    "motor": {
-        "cajas_torneadas_300": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2,"corona_300": 1, "seguer": 1, "sinfin": 1, "motor_220w": 1, "oring":1, "ruleman6000": 1,
-    }
-},
-
-"pintada330": {
-    "armado": {
-        "brazo_330": 1,"cubrecuchilla_330": 1,"velero": 1,"perilla_brazo": 1,"cabezal_pintada": 1,"teletubi_330": 1,"cuchilla_330": 1,"cuadrado_regulador": 1,"vela_final_330": 1,"cubre_motor_rectangulo": 1,"cubre_motor_cuadrado": 1,"planchada_final_330": 1,"varilla_brazo_330": 1,"resorte_brazo": 1,"tapa_afilador": 1,"pipas": 2,"tubo_manija": 1,"afilador_final": 1,"perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1,"pinche_frontal": 1,"pinche_lateral": 1,"Base_Pre_armado_p330": 1
+    "ecoInox": {
+        "armado": {
+            "brazo_330": 1, "cubrecuchilla_330": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1, "teletubi_doblado_eco": 1, "cuchilla_330": 1, "vela_final_330": 1, "cuadrado_regulador": 1, "planchada_final_330": 1, "varilla_brazo_330": 1, "resorte_brazo": 1, "tapa_afilador_eco": 1, "pitito_teletubi_eco": 1, "pipas": 2, "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "pinche_lateral": 1, "pinche_frontal": 1, "Base_Pre_armado_ECO": 1
+        },
+        "pre_armado": {
+             "BaseECO": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "cable_eco_220w": 1, "varilla_330": 1, "carros": 1, "resorte_carro": 2, "rueditas": 4 , "caja_eco_armada": 1
+        },
+        "motor": {
+            "polea_grande": 1,  "polea_chica": 1, "tornillo_teletubi_eco": 2, "capacitores": 1, "conector_hembra": 1, "cable_corto_eco": 1, "motor_eco": 1, "caja_soldada_eco": 1,  "tapa_correa_eco": 1, "correa_eco": 1, "capuchon_motor_dodo": 1, "teclas": 1, "buje_eje_eco": 1, "rectangulo_plastico_eco": 1
+        }
     },
-    "pre_armado": {
-        "BasePintada_330": 1,"aro_numerador": 1,"espiral": 1,"perilla_numerador": 1,"tapita_perilla": 2,"patas": 4,"movimiento": 1,"eje_rectificado": 1,"resorte_movimiento": 1,"tornillo_guia": 1,"guia_u": 1,"teclas": 1,"cable_220w": 1,"varilla_330": 1,"carros": 1,"rueditas": 4,"resorte_carro": 2,"capacitores": 1,"bandeja_330": 1,"caja_330_armada": 1
-    },
-    "motor": { 
-        "cajas_torneadas_330": 1,"eje": 1,"manchon": 1,"ruleman_6005": 1, "ruleman_6205": 2, "corona_330": 1,"seguer": 1,"sinfin": 1,"motor_220w": 1,"oring":1, "ruleman6000": 1,
-    }
-},
-
-
-"ecoInox": {
-    "armado": {
-        "brazo_330": 1, "cubrecuchilla_330": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1, "teletubi_doblado_eco": 1, "cuchilla_330": 1, "vela_final_330": 1, "cuadrado_regulador": 1, "planchada_final_330": 1, "varilla_brazo_330": 1, "resorte_brazo": 1, "tapa_afilador_eco": 1, "pitito_teletubi_eco": 1, "pipas": 2, "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "pinche_lateral": 1, "pinche_frontal": 1, "Base_Pre_armado_ECO": 1
-    },
-    "pre_armado": {
-         "BaseECO": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "cable_eco_220w": 1, "varilla_330": 1, "carros": 1, "resorte_carro": 2, "rueditas": 4 , "caja_eco_armada": 1
-    },
-    "motor": {
-        "polea_grande": 1,  "polea_chica": 1, "tornillo_teletubi_eco": 2, "capacitor_eco": 1, "conector_hembra": 1, "cable_corto_eco": 1, "motor_eco": 1, "caja_soldada_eco": 1,  "tapa_correa_eco": 1, "correa_eco": 1, "capuchon_motor_dodo": 1, "teclas": 1, "buje_eje_eco": 1, "rectangulo_plastico_eco": 1
-    }
-},
-"inox250": {
-    "armado": {
-         "brazo_250": 1, "cubrecuchilla_250": 1, "velero": 1, "perilla_brazo": 1, "cabezal_250": 1, "teletubi_250": 1, "cuchilla_250": 1, "cuadrado_regulador": 1, "vela_final_250": 1, "cubre_motor_rectangulo": 1, "planchada_final_250": 1, "varilla_brazo_250": 1, "resorte_brazo": 1, "tapa_afilador_250": 1, "pipas": 2, "tubo_manija_250": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "capuchon_250": 1, "pinche_frontal_250": 1, "pinche_lateral_250": 1, "Base_Pre_armado_i250": 1 
-    },
-    "pre_armado": {
-         "BaseInox_250": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_250": 1, "carros": 1, "rueditas": 4, "capacitores_250": 1, "caja_250_armada": 1
-    },
-    "motor": {
-        "cajas_torneadas_250": 1, "eje_250": 1, "manchon_250": 1, "ruleman_6004": 1, "ruleman_6204": 2, "corona_250": 1, "seguer": 1, "sinfin": 1, "motor250_220w": 1, "oring":1, "rulemanR6": 1
+    "inox250": {
+        "armado": {
+             "brazo_250": 1, "cubrecuchilla_250": 1, "velero": 1, "perilla_brazo": 1, "cabezal_250": 1, "teletubi_250": 1, "cuchilla_250": 1, "cuadrado_regulador": 1, "vela_final_250": 1, "cubre_motor_rectangulo": 1, "planchada_final_250": 1, "varilla_brazo_250": 1, "resorte_brazo": 1, "tapa_afilador_250": 1, "pipas": 2, "tubo_manija_250": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "capuchon_250": 1, "pinche_frontal_250": 1, "pinche_lateral_250": 1, "Base_Pre_armado_i250": 1 
+        },
+        "pre_armado": {
+             "BaseInox_250": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_250": 1, "carros": 1, "rueditas": 4, "capacitores_250": 1, "caja_250_armada": 1
+        },
+        "motor": {
+            "cajas_torneadas_250": 1, "eje_250": 1, "manchon_250": 1, "ruleman_6004": 1, "ruleman_6204": 2, "corona_250": 1, "seguer": 1, "sinfin": 1, "motor250_220v": 1, "oring":1, "rulemanR6": 1
+        }   
     }
 }
-}
-
-import os
-import sqlite3
-from datetime import datetime
-import tkinter as tk
-from tkinter import messagebox
-
 
 # Cambiar el nombre del archivo a resultados_pedidos.txt
 ARCHIVO_RESULTADOS = "resultados_pedidos.txt"
@@ -1115,71 +1055,57 @@ def abrir_archivo_txt():
 
 
 
-
-def drup_basurero(pieza, cant_entry, tabladb):
-    pieza_nombre = pieza.cget("text").strip()
+def drup_basurero(pieza_combobox, cant_entry, tabladb, historial):
+    pieza_nombre = pieza_combobox.get().strip()  # Obtener el valor seleccionado del Combobox
     cantidad_str = cant_entry.get().strip()
 
     if cantidad_str.isdigit():
         cantidad = int(cantidad_str)
 
         if cantidad < 0:
-            messagebox.showerror("Error", "La Cantidad no Puede Ser Negativa")
+            messagebox.showerror("Error", "La cantidad no puede ser negativa.")
             return
 
-        confirmacion = messagebox.askyesno("Confirmar", f"Desea Eliminar {cantidad} unidades de {pieza_nombre}")
+        confirmacion = messagebox.askyesno("Confirmar", f"¿Desea eliminar {cantidad} unidades de {pieza_nombre}?")
 
         if confirmacion:
             try:
-                conn = sqlite3.connect("dbfadeco.db")
-                cursor = conn.cursor()
+                with sqlite3.connect("dbfadeco.db") as conn:
+                    cursor = conn.cursor()
 
-                # Buscar primero en la tabla principal
-                cursor.execute(f"SELECT CANTIDAD FROM {tabladb} WHERE PIEZAS = ?", (pieza_nombre,))
-                resultado = cursor.fetchone()
+                    def eliminar_de_tabla(tabla, pieza, cantidad_a_eliminar):
+                        cursor.execute(f"SELECT CANTIDAD FROM {tabla} WHERE PIEZAS = ?", (pieza,))
+                        resultado = cursor.fetchone()
 
-                if resultado:
-                    # Si se encuentra la pieza, verificar que la cantidad no será negativa
-                    cantidad_actual = resultado[0]
-                    if cantidad_actual < cantidad:
-                        messagebox.showerror("Error", f"No se puede eliminar {cantidad} unidades. Hay {cantidad_actual} disponibles.")
-                    else:
-                        nueva_cantidad = cantidad_actual - cantidad
-                        cursor.execute(f"UPDATE {tabladb} SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
-                        messagebox.showinfo("Éxito", f"Se eliminaron {cantidad} unidades de {pieza_nombre}.")
-                        accion.insert(0, f"Eliminación exitosa: se eliminaron {cantidad} unidades de {pieza_nombre}.")
-                else:
-                    # Si no se encuentra en la tabla principal, buscar en 'piezas_terminadas'
-                    cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza_nombre,))
-                    resultado = cursor.fetchone()
+                        if resultado:
+                            cantidad_actual = resultado[0]
+                            if cantidad_actual < cantidad_a_eliminar:
+                                historial.insert(0, f"No se pueden eliminar {cantidad_a_eliminar} unidades")
+                                messagebox.showerror("Error", f"No se pueden eliminar {cantidad_a_eliminar} unidades. Hay {cantidad_actual} disponibles.")
+                            else:
+                                nueva_cantidad = cantidad_actual - cantidad_a_eliminar
+                                cursor.execute(f"UPDATE {tabla} SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza,))
+                                historial.insert(0, f"Se eliminaron {cantidad_a_eliminar} unidades de {pieza}.")
+                                messagebox.showinfo("Éxito", f"Se eliminaron {cantidad_a_eliminar} unidades de {pieza}.")
+                                return True
+                        return False
 
-                    if resultado:
-                        # Si se encuentra en 'piezas_terminadas', verificar la cantidad antes de eliminar
-                        cantidad_actual = resultado[0]
-                        if cantidad_actual < cantidad:
-                            messagebox.showerror("Error", f"No se puede eliminar {cantidad} unidades. Solo hay {cantidad_actual} disponibles en piezas terminadas.")
-                        else:
-                            nueva_cantidad = cantidad_actual - cantidad
-                            cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza_nombre,))
-                            messagebox.showinfo("Éxito", f"Se eliminaron {cantidad} unidades de {pieza_nombre}")
+                    # Intentar eliminar de la tabla principal
+                    if not eliminar_de_tabla(tabladb, pieza_nombre, cantidad):
+                        # Si no está en la tabla principal, buscar en 'piezas_terminadas'
+                        if not eliminar_de_tabla("piezas_terminadas", pieza_nombre, cantidad):
+                            pass
+                    
+                    conn.commit()
 
-                    else:
-                        # Si no se encuentra en ninguna tabla, mostrar un mensaje de error
-                        messagebox.showerror("Error", f"La pieza {pieza_nombre} no se pudo encontrar")
-
-                conn.commit()
             except sqlite3.DataError as e:
                 messagebox.showerror("Error", f"Error en la base de datos: {e}")
-            finally:
-                conn.close()
         else:
-            print("Operación Cancelada")
-    else: 
-        messagebox.showerror("Error", "La Cantidad ingresada no es un número válido")
+            print("Operación cancelada.")
+    else:
+        messagebox.showerror("Error", "La cantidad ingresada no es un número válido.")
     
     cant_entry.delete(0, 'end')
-
-
 
 
 ##36.36
