@@ -105,7 +105,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         
         "Base_Pre_armado_i300": ["Las Piezas q lleva son:", "BaseInox_300", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_300", "carros", "rueditas", "resorte_carro", "caja_300_armada", "capacitores"],
         
-        "Base_Pre_armado_i250": ["Las Piezas q lleva son:", "BaseInox_250", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_250", "carros", "rueditas", "caja_250_armada", "capacitores_250"],
+        "Base_Pre_armado_i250": ["Las Piezas q lleva son:", "BaseInox_250", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_250", "carros_250", "rueditas", "caja_250_armada", "capacitores_250"],
         
         "Base_Pre_armado_p330": ["Las Piezas q lleva son:",  "BasePintada_330", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_330", "carros", "rueditas", "resorte_carro", "caja_330_armada", "capacitores", "bandeja_330"],
         
@@ -238,7 +238,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         
         "cuadrado_regulador": ["Se encuentra en: ", "MECANIZADO/sierra, MECANIZADO/augeriado, MECANIZADO/soldador"],
         
-        "cubre_300": ["Se Obtiene en: ", "AGREGADO DE PIEZAS/Aluminio  MECANIZADO/torno PROVEDORES/maxi, carmelo"],
+        "cubre_300_torneado": ["Se Obtiene en: ", "AGREGADO DE PIEZAS/Aluminio  MECANIZADO/torno PROVEDORES/maxi, carmelo"],
         
         "cubre_motor_cuadrado": ["se encuentra en: ", "AGREGANDO DE PIEZAS/Plastico"], 
         
@@ -417,7 +417,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         
         "teclas": ["se encuentra en: ", "AGREGANDO DE PIEZAS/shop"],
         
-        "teletu_300": ["Se obtiene en:" "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno", "PROVEDOR/maxi,carmelo"],
+        "teletubi_300_torneado": ["Se obtiene en:" "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno", "PROVEDOR/maxi,carmelo"],
         
         "teletubi_250": ["Se obtiene en:" "AGREGADO DE PIEZAS/Aluminio", "PROVEDOR/maxi,carmelo"],
         

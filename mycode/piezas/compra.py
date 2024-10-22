@@ -23,7 +23,7 @@ def shop(parent):
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
     style_treeview = ttk.Style()
-    style_treeview.configure("Treeview", font=("Arial", 16), rowheight=22, background= 'white',foreground="black",)
+    style_treeview.configure("Treeview", font=("Arial", 14), rowheight=22, background= 'white',foreground="black",)
     style_treeview.configure("Treeview.Heading", font=("Arial", 18, "bold"))
 
     ttk.Button(box1, text="Limpiar Tabla", command= lambda: limpiar_tabla(mostrar_piezas),bootstyle="secondary-outline").grid(row=2, columnspan=2, pady=10)

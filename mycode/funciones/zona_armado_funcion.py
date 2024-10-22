@@ -94,7 +94,7 @@ def manejar_inventario(modelo, cantidad, historial):
             "corona_250": 1,
             "seguer": 1,
             "sinfin": 1,
-            "motor250_200w": 1,
+            "motor250_220v": 1,
             "oring": 1,
             "rulemanR6": 1
         },
@@ -123,7 +123,7 @@ def manejar_inventario(modelo, cantidad, historial):
     cursor = conn.cursor()
     
     for pieza, cantidad_necesaria in piezas_necesarias.items():
-        cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ? AND SECTOR = 'armado_caja'", (pieza,))
+        cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?  ", (pieza,))
         resultado = cursor.fetchone()
         
         if resultado is None or resultado[0] < cantidad_necesaria * cantidad:
@@ -142,11 +142,11 @@ def manejar_inventario(modelo, cantidad, historial):
         return
     
     for pieza, cantidad_necesaria in piezas_necesarias.items():
-        cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ? AND SECTOR = 'armado_caja'", (pieza,))
+        cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (pieza,))
         resultado = cursor.fetchone()
         
         nueva_cantidad = resultado[0] - (cantidad_necesaria * cantidad)
-        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = ? WHERE PIEZAS = ? AND SECTOR = 'armado_caja'", (nueva_cantidad, pieza))
+        cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = ? WHERE PIEZAS = ?", (nueva_cantidad, pieza))
 
     
     piezas_brutas_mapping = {
@@ -223,7 +223,7 @@ def pre_armado_(modelo, cantidad, historial):
             "teclas": 1,
             "cable_220w": 1,
             "varilla_250": 1,
-            "carros": 1,
+            "carros_250": 1,
             "rueditas": 4,
             "caja_250_armada": 1,
             "capacitores_250": 1
@@ -373,11 +373,11 @@ def armado_final_final(modelo, cantidad, historia):
         },
         "inox_300": {
             "brazo_300": 1,
-            "cubre_300": 1,
+            "cubre_300_torneado": 1,
             "velero": 1,
             "perilla_brazo": 1,
             "cabezal_inox": 1,
-            "teletu_300": 1,
+            "teletubi_300_torneado": 1,
             "cuchilla_300": 1,
             "cuadrado_regulador": 1,
             "vela_final_300": 1,
@@ -454,11 +454,11 @@ def armado_final_final(modelo, cantidad, historia):
         },
         "pintada_300": {
             "brazo_300": 1,
-            "cubre_300": 1,
+            "cubre_300_torneado": 1,
             "velero": 1,
             "perilla_brazo": 1,
             "cabezal_pintada": 1,
-            "teletu_300": 1,
+            "teletubi_300_torneado": 1,
             "cuchilla_300": 1,
             "cuadrado_regulador": 1,
             "vela_final_300": 1,

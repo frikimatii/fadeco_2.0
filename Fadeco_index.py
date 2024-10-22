@@ -12,7 +12,7 @@ root = ttk.Window(themename="darkly")
 root.title("Fadeco Stock")
 root.geometry("1335x740")  # wxh
 root.iconbitmap("C:/Fadeco_stock/img/FLogo.ico")  # Ruta del icono
-
+root.state('zoomed')
 # Crear el Notebook para manejar las pestañas
 ventana = ttk.Notebook(root)
 ventana.grid(row=0, column=0, sticky="nsew")
@@ -30,4 +30,4 @@ control(ventana)
 root.mainloop()
 
 
-## pyinstaller --noconsole --icon=C:/Fadeco_stock/img/FLogo.ico index_fadeco.py
+## pyinstaller --noconsole --icon=C:/Fadeco_stock/img/FLogo.ico Fadeco_index.py

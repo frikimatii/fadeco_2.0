@@ -45,7 +45,7 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         cantidad_og = int(cantidad_og)
 
         # Confirmar la acción con el usuario
-        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere Embalar {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
             # Consultar el stock de la pieza seleccionada
@@ -74,7 +74,7 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                     
                     # Mapeo de piezas fresadas
                     piezas_mapeo = {
-                        "inox_250": "inox_250_embalada0",
+                        "inox_250": "inox_250_embalada",
                         "inox_300": "inox_300_embalada",
                         "inox_330": "inox_330_embalada",
                         "pintada_330": "pintada_330_embalada",
@@ -87,7 +87,7 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                         # Actualizar las cantidades en la base de datos
                         cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD + ? WHERE MAQUINA= ?", (cantidad_og, pieza_fresada))
                         
-                        historial.insert(0, f"Se fresaron {cantidad_og} unidades de {pieza_og}.")
+                        historial.insert(0, f"Se Embalaron {cantidad_og} unidades de {pieza_og}.")
                         
                         cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD - ? WHERE MAQUINA =?", (cantidad_og, pieza_og))
                         
@@ -122,7 +122,7 @@ def accion_venta(cantidad_ingresada, pieza_seleccionar, treeview, historial):
         cantidad_og = int(cantidad_og)
         
         # Confirmar la acción con el usuario
-        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere pasar por el balancín {cantidad_og} unidades de {pieza_og}?")
+        confirmar = messagebox.askokcancel("Confirmar Acción", f"¿Está seguro de que quiere Vender {cantidad_og} unidades de {pieza_og}?")
         
         if confirmar:
             cursor.execute("SELECT CANTIDAD FROM maquinas WHERE MAQUINA = ?", (pieza_og,))
@@ -144,7 +144,7 @@ def accion_venta(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                         cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD - ? WHERE MAQUINA= ?", (cantidad_og, pieza_og))
                         cursor.execute("UPDATE maquinas SET CANTIDAD = CANTIDAD + ? WHERE MAQUINA= ?", (cantidad_og, pieza_fresada))
                         
-                        historial.insert(0, f"Se fresaron {cantidad_og} unidades de {pieza_og}.")
+                        historial.insert(0, f"Se Vendieron {cantidad_og} unidades de {pieza_og}.")
                     else:
                         historial.insert(0, f"No se pudo encontrar un mapeo para la pieza {pieza_og}.")
                 else:
@@ -225,7 +225,7 @@ def contar_motores_disponibles(modelo_motor):
         conn = sqlite3.connect("dbfadeco.db")
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'armado_caja' "
+            "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'armado_caja' UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'Pre_armado' AND PIEZAS = 'capacitores' "
         )
         datos = cursor.fetchall()
     except sqlite3.Error as e:
@@ -264,7 +264,7 @@ def obtener_cantidad_piezas_motor():
         conn = sqlite3.connect("dbfadeco.db")
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'armado_caja'"
+            "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'armado_caja' UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'Pre_armado' AND PIEZAS = 'capacitores'"
         )
         datos = cursor.fetchall()
     except sqlite3.Error as e:
@@ -397,7 +397,7 @@ base_pre_inox_armada250 = {
        "teclas": 1,
        "cable_220w": 1,
        "varilla_250": 1,
-       "carros": 1,
+       "carros_250": 1,
        "rueditas": 4,
        "caja_250_armada": 1,
        "capacitores_250": 1
@@ -616,11 +616,11 @@ inox_330__ = {
     "pinche_lateral": 1}
 inox_300__ = {
     "brazo_300": 1,
-    "cubre_300": 1,
+    "cubre_300_torneado": 1,
     "velero": 1,
     "perilla_brazo": 1,
     "cabezal_inox": 1,
-    "teletu_300": 1,
+    "teletubi_300_torneado": 1,
     "cuchilla_300": 1,
     "cuadrado_regulador": 1,
     "vela_final_300": 1,
@@ -695,11 +695,11 @@ pintada_330__ = {
         }
 pintada_300__= {
     "brazo_300": 1,
-    "cubre_300": 1,
+    "cubre_300_torneado": 1,
     "velero": 1,
     "perilla_brazo": 1,
     "cabezal_pintada": 1,
-    "teletu_300": 1,
+    "teletubi_300_torneado": 1,
     "cuchilla_300": 1,
     "cuadrado_regulador": 1,
     "vela_final_300": 1,
@@ -876,7 +876,7 @@ full_piezas = {
             "brazo_330": 1, "cubrecuchilla_330": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,"teletubi_330": 1, "cuchilla_330": 1, "cuadrado_regulador": 1, "vela_final_330": 1, "cubre_motor_rectangulo":1,"cubre_motor_cuadrado": 1, "planchada_final_330": 1, "varilla_brazo_330": 1, "resorte_brazo": 1, "tapa_afilador": 1,"pipas": 2, "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i330": 1
         },
         "pre_armado": {
-                "BaseInox_330": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4,"movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1,"cable_220w": 1, "varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2,"capacitores": 1, "caja_330_armada": 1
+                "BaseInox_330": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4,"movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1,"cable_220w": 1, "varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "caja_330_armada": 1
         },
         "motor": {
             "cajas_torneadas_330": 1, "eje": 1, "manchon": 1, "ruleman_6005": 1, "ruleman_6205": 2,"corona_330": 1, "seguer": 1, "sinfin": 1, "motor_220v": 1, "oring": 1, "ruleman6000": 1
@@ -884,7 +884,7 @@ full_piezas = {
     },
     "inox300": {
         "armado": {
-            "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,  "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300": 1,   "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300": 1,    "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,       "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,  "perilla_afilador":   1, "base_afilador_300": 1, "piedra_afilador": 1,    "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i300": 1
+            "brazo_300": 1, "cubre_300_torneado": 1, "velero": 1, "perilla_brazo": 1, "cabezal_inox": 1,  "teletubi_300_torneado": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300": 1,   "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300": 1,    "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,       "tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,  "perilla_afilador":   1, "base_afilador_300": 1, "piedra_afilador": 1,    "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_i300": 1
         },
         "pre_armado": {
             "BaseInox_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_300": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "caja_300_armada": 1
@@ -895,7 +895,7 @@ full_piezas = {
         },
     "pintada300": {
         "armado": {
-            "brazo_300": 1, "cubre_300": 1, "velero": 1, "perilla_brazo": 1, "cabezal_pintada":1, "teletu_300": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300":1, "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300":1, "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,"tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1, "base_afilador_300": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_p300": 1
+            "brazo_300": 1, "cubre_300_torneado": 1, "velero": 1, "perilla_brazo": 1, "cabezal_pintada":1, "teletubi_300_torneado": 1, "cuchilla_300": 1, "cuadrado_regulador": 1, "vela_final_300":1, "cubre_motor_rectangulo": 1, "cubre_motor_cuadrado": 1, "planchada_final_300":1, "varilla_brazo_300": 1, "resorte_brazo": 1, "tapa_afilador": 1, "pipas": 2,"tubo_manija": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2,"perilla_afilador": 1, "base_afilador_300": 1,"piedra_afilador": 1, "pinche_frontal": 1, "pinche_lateral": 1, "Base_Pre_armado_p300": 1
         },
         "pre_armado": {
             "BasePintada_300": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1,"tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1,"resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w":  1,"varilla_330": 1, "carros": 1, "rueditas": 4, "resorte_carro": 2, "capacitores": 1, "bandeja_300": 1,"caja_300_armada": 1
@@ -908,7 +908,7 @@ full_piezas = {
         "armado": {
             "brazo_330": 1,"cubrecuchilla_330": 1,"velero": 1,"perilla_brazo": 1,"cabezal_pintada": 1,"teletubi_330": 1,"cuchilla_330": 1,"cuadrado_regulador": 1,"vela_final_330": 1,"cubre_motor_rectangulo": 1,"cubre_motor_cuadrado": 1,"planchada_final_330": 1,"varilla_brazo_330": 1,"resorte_brazo": 1,"tapa_afilador": 1,"pipas": 2,"tubo_manija": 1,"afilador_final": 1,"perilla_cubrecuchilla": 2,"perilla_afilador": 1,"base_afilador_330": 1,"piedra_afilador": 1,"pinche_frontal": 1,"pinche_lateral": 1,"Base_Pre_armado_p330": 1
         },
-    "   pre_armado": {
+    "pre_armado": {
             "BasePintada_330": 1,"aro_numerador": 1,"espiral": 1,"perilla_numerador": 1,"tapita_perilla": 2,"patas": 4,"movimiento": 1,"eje_rectificado": 1,"resorte_movimiento": 1,"tornillo_guia": 1,"guia_u": 1,"teclas": 1,"cable_220w": 1,"varilla_330": 1,"carros": 1,"rueditas": 4,"resorte_carro": 2,"capacitores": 1,"bandeja_330": 1,"caja_330_armada": 1
         },
         "motor": { 
@@ -931,7 +931,7 @@ full_piezas = {
              "brazo_250": 1, "cubrecuchilla_250": 1, "velero": 1, "perilla_brazo": 1, "cabezal_250": 1, "teletubi_250": 1, "cuchilla_250": 1, "cuadrado_regulador": 1, "vela_final_250": 1, "cubre_motor_rectangulo": 1, "planchada_final_250": 1, "varilla_brazo_250": 1, "resorte_brazo": 1, "tapa_afilador_250": 1, "pipas": 2, "tubo_manija_250": 1, "afilador_final": 1, "perilla_cubrecuchilla": 2, "perilla_afilador": 1, "base_afilador_250": 1, "piedra_afilador": 1, "capuchon_250": 1, "pinche_frontal_250": 1, "pinche_lateral_250": 1, "Base_Pre_armado_i250": 1 
         },
         "pre_armado": {
-             "BaseInox_250": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_250": 1, "carros": 1, "rueditas": 4, "capacitores_250": 1, "caja_250_armada": 1
+             "BaseInox_250": 1, "aro_numerador": 1, "espiral": 1, "perilla_numerador": 1, "tapita_perilla": 2, "patas": 4, "movimiento": 1, "eje_rectificado": 1, "resorte_movimiento": 1, "tornillo_guia": 1, "guia_u": 1, "teclas": 1, "cable_220w": 1, "varilla_250": 1, "carros_250": 1, "rueditas": 4, "capacitores_250": 1, "caja_250_armada": 1
         },
         "motor": {
             "cajas_torneadas_250": 1, "eje_250": 1, "manchon_250": 1, "ruleman_6004": 1, "ruleman_6204": 2, "corona_250": 1, "seguer": 1, "sinfin": 1, "motor250_220v": 1, "oring":1, "rulemanR6": 1

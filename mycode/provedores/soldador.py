@@ -8,7 +8,7 @@ from mycode.funciones.add_funcion import ordenar_por, limpiar_tabla
 from mycode.funciones.provedores_funcion import limpiar_tabla,  enviar_a_soldar, resibir_bases, mostrar_por_modelo, armar_cabezales, mostrar_piezas_tablas
 
 
-bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300", "cabezal_pintado"]
+bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300"]
 
 
 query_mostrar_piezas_soldador = """
@@ -169,7 +169,7 @@ def ventana_soldador(parent):
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="inox 300", command=lambda: mostrar_por_modelo("inox_300", mostrar_piezas)).grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="inox 250", command=lambda: mostrar_por_modelo("inox_250", mostrar_piezas)).grid(row=1, column=2, padx=5, pady=5, sticky="nsew")
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="Pintada 330", command=lambda: mostrar_por_modelo("pintada_330", mostrar_piezas)).grid  (row=2, column=0, padx=5, pady=5, sticky="nsew")
-    ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="Pintada 300", command=lambda: mostrar_por_modelo("pintada_330", mostrar_piezas)).grid  (row=2, column=1, padx=5, pady=5, sticky="nsew")
+    ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="Pintada 300", command=lambda: mostrar_por_modelo("pintada_300", mostrar_piezas)).grid  (row=2, column=1, padx=5, pady=5, sticky="nsew")
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="ECO", command=lambda: mostrar_por_modelo("ECO", mostrar_piezas)).grid(row=2, column=2, padx=5, pady=5, sticky="nsew")
     
 

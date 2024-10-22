@@ -27,7 +27,7 @@ def chapa(parent):
 
 
     style_treeview = ttk.Style()
-    style_treeview.configure("Treeview", font=("Arial", 16), rowheight=22, background= 'white',foreground="black",)
+    style_treeview.configure("Treeview", font=("Arial", 14), rowheight=22, background= 'white',foreground="black",)
     style_treeview.configure("Treeview.Heading", font=("Arial", 18, "bold"))
 
     # Botón para limpiar la tabla

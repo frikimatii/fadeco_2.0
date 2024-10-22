@@ -15,7 +15,7 @@ caja_330 = ["corona_330", "cajas_torneadas_330", "eje", "manchon", "ruleman_6005
 
 caja_300 = ["corona_300", "cajas_torneadas_300", "eje", "manchon", "ruleman_6005",  "ruleman_6205", "seguer", "sinfin", "motor_220v", "oring", "ruleman6000"]
 
-caja_250 = ["corona_250", "cajas_torneadas_250", "eje_250", "manchon_250", "ruleman_6004",  "ruleman_6204", "seguer", "sinfin", "motor250_200w", "oring", "rulemanR6"]
+caja_250 = ["corona_250", "cajas_torneadas_250", "eje_250", "manchon_250", "ruleman_6004",  "ruleman_6204", "seguer", "sinfin", "motor250_220v", "oring", "rulemanR6"]
 
 eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitores", "conector_hembra", "cable_corto_eco", "motor_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco"]
 
@@ -25,7 +25,7 @@ piezas_inox_armada330 = [ "BaseInox_330", "aro_numerador", "espiral", "perilla_n
 
 piezas_inox_armada300 = [ "BaseInox_300", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_300", "carros", "rueditas", "resorte_carro", "caja_300_armada", "capacitores"]
 
-piezas_inox_armada250 = [ "BaseInox_250", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_250", "carros", "rueditas", "caja_250_armada", "capacitores_250" ]
+piezas_inox_armada250 = [ "BaseInox_250", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_250", "carros_250", "rueditas", "caja_250_armada", "capacitores_250" ]
 
 piezas_pintada_armada330 = [ "BasePintada_330", "aro_numerador", "espiral", "perilla_numerador", "tapita_perilla", "patas", "movimiento", "eje_rectificado", "resorte_movimiento", "tornillo_guia", "guia_u", "teclas", "cable_220w", "varilla_330", "carros", "rueditas", "resorte_carro", "caja_330_armada", "capacitores", "bandeja_330"]
 
@@ -66,11 +66,11 @@ i330_piezas = [
 
 i300_piezas = [
     "brazo_300",
-    "cubre_300",
+    "cubre_300_torneado",
     "velero",
     "perilla_brazo",
     "cabezal_inox",
-    "teletu_300",
+    "teletubi_300_torneado",
     "cuchilla_300",
     "cuadrado_regulador",
     "vela_final_300",
@@ -150,11 +150,11 @@ p330_piezas = [
 
 p300_piezas = [
     "brazo_300",
-    "cubre_300",
+    "cubre_300_torneado",
     "velero",
     "perilla_brazo",
     "cabezal_pintada",
-    "teletu_300",
+    "teletubi_300_torneado",
     "cuchilla_300",
     "cuadrado_regulador",
     "vela_final_300",

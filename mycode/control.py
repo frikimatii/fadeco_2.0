@@ -12,7 +12,7 @@ pieza_a_eliminar.sort()
 
 tipo_maquina = ["inox_330","inox_300" ,"inox_250", "pintada_330", "pintada_300", "eco"]
 
-tipo_enbalada = ["inox_330_embalada","inox_300_embalada" ,"inox_250_embalada", "pintada_330_embalada", "pintada_300", "eco_embalada"]
+tipo_enbalada = ["inox_330_embalada","inox_300_embalada" ,"inox_250_embalada", "pintada_330_embalada", "pintada_300_embalada", "eco_embalada"]
 
 tipo_venta = ["inox_330_venta","inox_300_venta" ,"inox_250_venta", "pintada_330_venta", "pintada_300_venta", "eco_venta"]
 
@@ -162,15 +162,15 @@ def control(ventana):
     ttk.Button(
         lf_maquinas_terminadas,
         text="Embalar", bootstyle="success",padding=3,
-        command=lambda: accion_embalar(entry_cantidad, tipo_maquina_combox,     tabla_principal, historial)
+        command=lambda: accion_embalar(entry_cantidad, tipo_maquina_combox,tabla_principal, historial)
     ).grid(row=4, column=0, columnspan=2, pady=4)
 
     # Etiqueta y botón para mostrar cantidad de máquinas terminadas
-    tk.Label(lf_maquinas_terminadas, wraplength=200, text="Mostrar cantidad de máquinas     terminadas en fábrica").grid(row=5, column=0, columnspan=2)
+    tk.Label(lf_maquinas_terminadas, wraplength=200, text="Mostrar cantidad de máquinas terminadas en fábrica").grid(row=5, column=0, columnspan=2)
     
-    ttk.Button(lf_maquinas_terminadas, text="Stock Embalado",padding=5, bootstyle="info", command=lambda: mostrar_piezas_tablas (tabla_principal, query_maquinas_enbaladas)).grid(row=6, column=0,)
+    ttk.Button(lf_maquinas_terminadas, text="Stock Embalado",padding=5, bootstyle="info", command=lambda: mostrar_piezas_tablas(tabla_principal, query_maquinas_enbaladas)).grid(row=6, column=0,)
 
-    ttk.Button(lf_maquinas_terminadas, text="Stock Calcomanias", padding=5, bootstyle="secondary", command=lambda: mostrar_piezas_tablas (tabla_principal, query_calcomanias)).grid(row=6, column=1)
+    ttk.Button(lf_maquinas_terminadas, text="Stock Calcomanias", padding=5, bootstyle="secondary", command=lambda: mostrar_piezas_tablas(tabla_principal, query_calcomanias)).grid(row=6, column=1)
 
     # Creación del Frame ventas
     ventas = ttk.Frame(box2)

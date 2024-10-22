@@ -38,7 +38,7 @@ piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planch
 
 piezas_para_fresar.sort()
 
-piezas_para_soldar =[ "vela_fresada_330","vela_fresada_250", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "caja_soldada_eco", "cuadrado_regulador", "cabezal_inox", "cabezal_pintada", "cabezal_eco"] 
+piezas_para_soldar =[ "vela_fresada_330","vela_fresada_300", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "caja_soldada_eco", "cuadrado_regulador", "cabezal_inox", "cabezal_pintada", "cabezal_eco"] 
 
 piezas_para_soldar.sort()
 
@@ -114,7 +114,6 @@ def mecanizado(ventana):
     tabla_principal.column("Cantidad", width=40)
     tabla_principal.config(height=18)
     tabla_principal.grid(row=2, column=0, sticky="nsew")
-
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal),bootstyle="warning").grid(row=4, column=0, pady=5)
 
     ttk.Label(box1, text="Historial", font=("Arial", 9, "bold"),).grid(row=5, column=0, sticky="w")
