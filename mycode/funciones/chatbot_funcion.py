@@ -183,7 +183,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
             "PIezas: MECANIZADO/plasma/media_luna",
             "Piezas: MECANIZADO/sierra/panchuela_inferior"
             "Piezas: MECANIZADO/sierra/panchuela_interior"
-            "PIEZA_FINAL:  MECANIZADO/soldador/Caja_soldada_eco"],
+            "PIEZA_FINAL:  MECANIZADO/soldador/augeriado/Caja_soldada_eco"],
         
         "cajas_torneadas_250": ["Se encuentra en: ", "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno  PROVEDORES/maxi, carmelo. "],
         

@@ -336,6 +336,9 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
             elif piezas_og in piezas_augeriado_extra_1:
                 cursor.execute("SELECT CANTIDAD FROM PIEZAS_RETOCADA WHERE PIEZAS =?", (piezas_og,))
                 resultado = cursor.fetchone()
+            elif piezas_og == "caja_eco_augeriada":
+                cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS =?", (piezas_og,))
+                resultado = cursor.fetchone()
             else:
                 historial.insert(0, f"La pieza {piezas_og} no está registrada en ninguna categoría válida.")
                 return
@@ -354,6 +357,10 @@ def accion_augeriado(cantidad_ingresada, pieza_seleccionada, treeview, historial
                         cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         historial.insert(0, f"Se completaron {cantidad_og} unidades de {piezas_og}.")
+                    elif piezas_og == "caja_eco_augeriada":
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?",(cantidad_og, piezas_og))
+                        cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'caja_soldada_eco'", (cantidad_og,))
+                        historial.insert(0, f"Se Augeriaron {cantidad_og} de Cajas_Eco")
                     elif piezas_og in piezas_augeriado_extra_1:
                         cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
                         cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, piezas_og))
@@ -600,12 +607,12 @@ def accion_soldar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
                             for pieza in piezas_caja_eco:
                                 cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza))
                             
-                            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'caja_soldada_eco'", (cantidad_og,))
+                            cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'caja_eco_augeriada'", (cantidad_og,))
                             
-                            historial.insert(0, f"Se soldaron {cantidad_og} unidades de caja_soldada_eco.")
+                            historial.insert(0, f"Se soldaron {cantidad_og} unidades de caja_eco_augeriada.")
                         else:
                             piezas_faltantes_str = ", ".join(piezas_faltantes)
-                            historial.insert(0, f"No se puede soldar 'caja_soldada_eco'. Faltan las siguientes piezas: {piezas_faltantes_str}.")
+                            historial.insert(0, f"No se puede soldar 'caja_eco_augeriada'. Faltan las siguientes piezas: {piezas_faltantes_str}.")
 
 
                     elif pieza_og == "cuadrado_regulador":

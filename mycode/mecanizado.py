@@ -22,7 +22,7 @@ piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje"
 
 piezas_balancin.sort()
 
-piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco" ]
+piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco", "caja_eco_augeriada" ]
 
 piezas_para_augeriar.sort()
 
@@ -112,7 +112,7 @@ def mecanizado(ventana):
     tabla_principal.column("#0", width=0,stretch=tk.NO)
     tabla_principal.column("Pieza", width=220)
     tabla_principal.column("Cantidad", width=40)
-    tabla_principal.config(height=18)
+    tabla_principal.config(height=17)
     tabla_principal.grid(row=2, column=0, sticky="nsew")
     ttk.Button(box1, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal),bootstyle="warning").grid(row=4, column=0, pady=5)
 

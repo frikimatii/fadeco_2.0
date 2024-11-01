@@ -5,20 +5,24 @@ from tkinter import messagebox
 def limpiar_tabla(tabla):
     for item in tabla.get_children():
         tabla.delete(item)
-import tkinter as tk
-import sqlite3
 
 def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
+    # Configurar etiquetas de color para el Treeview
+    tabla.tag_configure("exceso_stock", background="#ccffc4", foreground="black")  # Verde si cantidad > stock_deseado
+    tabla.tag_configure("falta_stock", background="#fecdcd", foreground="black")   # Rojo si cantidad < stock_deseado
+    tabla.tag_configure("stock_igual", background="#fffce1", foreground="black")   # Amarillo claro si cantidad == stock_deseado
+
+    # Conectar a la base de datos y obtener datos de las tablas
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
 
-    
+    # Obtener PIEZAS, CANTIDAD y STOCK_DESEADO de ambas tablas en una sola consulta
     query = f"""
-    SELECT PIEZAS, CANTIDAD, 'brutas' AS source 
+    SELECT PIEZAS, CANTIDAD, COALESCE(STOCK_DESEADO, 0) AS STOCK_DESEADO, 'brutas' AS source 
     FROM {tabladb} 
     WHERE TIPO_DE_MATERIAL = ? 
     UNION ALL 
-    SELECT PIEZAS, CANTIDAD, 'terminadas' AS source 
+    SELECT PIEZAS, CANTIDAD, COALESCE(STOCK_DESEADO, 0) AS STOCK_DESEADO, 'terminadas' AS source 
     FROM piezas_terminadas 
     WHERE TIPO_DE_MATERIAL = ?
     """
@@ -26,13 +30,25 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
     datos = cursor.fetchall()
     conn.close()
 
-
+    # Limpiar la tabla antes de insertar nuevos datos
     limpiar_tabla(tabla)
 
-
+    # Insertar los datos en el Treeview y aplicar etiquetas de color según stock
     for dato in datos:
-        tabla.insert("", tk.END, values=dato[:2])  
+        pieza_nombre, cantidad, stock_deseado = dato[:3]
 
+        # Asignar etiqueta de color en función de la cantidad y el stock_deseado
+        if int(cantidad) > int(stock_deseado):
+            tag = "exceso_stock"
+        elif int(cantidad) < int(stock_deseado):
+            tag = "falta_stock"
+        else:
+            tag = "stock_igual"  # Etiqueta amarilla si cantidad == stock_deseado
+
+        # Insertar los datos con la etiqueta de color adecuada
+        tabla.insert("", tk.END, values=(pieza_nombre, cantidad), tags=(tag,))
+
+    # Función para mostrar detalles y la imagen al seleccionar un elemento en el Treeview
     def on_item_selected(event):
         selected_item = tabla.selection()
         if selected_item:
@@ -71,6 +87,7 @@ def mostrar_categoria(tabla, categoria, tabladb, detalles, pieza, imagen_label):
                 imagen_label.image = None
 
     tabla.bind("<<TreeviewSelect>>", on_item_selected)
+
 
 
 def on_item_selected(event, treeview, label, detalles):

@@ -11,6 +11,11 @@ def limpiar_tabla(tabla):
         tabla.delete(item)
 
 def mostrar_piezas_tablas(treeview, query):
+    # Configuración de colores
+    treeview.tag_configure("exceso_stock", background="#8be68b")  # Verde para cantidad > stock_deseado
+    treeview.tag_configure("falta_stock", background="#faa0a0")    # Rojo para cantidad < stock_deseado
+    treeview.tag_configure("stock_exacto", background="#fffce1")   # Amarillo claro para cantidad == stock_deseado
+
     # Conectar con la base de datos y obtener los datos
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
@@ -21,21 +26,34 @@ def mostrar_piezas_tablas(treeview, query):
     # Limpiar la tabla antes de insertar nuevos datos
     limpiar_tabla(treeview)
 
-
     # Insertar los datos en el Treeview y aplicar etiquetas de color
     for dato in datos:
-        pieza, cantidad = dato  # Asegurarse que la consulta traiga estos dos valores
-        if int(cantidad) >= 10:
-            treeview.insert("", tk.END, values=dato)  # Etiqueta para más de 10
+        pieza, cantidad, stock_deseado = dato  # Asegúrate que la consulta traiga estos tres valores
+
+        # Convertir valores a enteros para la comparación
+        cantidad = int(cantidad)
+        stock_deseado = int(stock_deseado)
+
+        # Determinar el tag según la comparación
+        if cantidad > stock_deseado:
+            tag = "exceso_stock"
+        elif cantidad < stock_deseado:
+            tag = "falta_stock"
         else:
-            treeview.insert("", tk.END, values=dato)  # Etiqueta para menos de 10
-    
+            tag = "stock_exacto"  # Nuevo color amarillo claro para cantidad == stock_deseado
+
+        # Insertar la fila en el Treeview con el tag adecuado
+        treeview.insert("", tk.END, values=(pieza, cantidad), tags=(tag,))
+
     # Forzar la actualización visual del Treeview
     treeview.update_idletasks()
-    
-    
 
 def mostrar_piezas_motor(treeview, piezas):
+    # Configuración de colores en el Treeview
+    treeview.tag_configure("exceso_stock", background="#8be68b")  # Verde si cantidad > stock_deseado
+    treeview.tag_configure("falta_stock", background="#faa0a0")    # Rojo si cantidad < stock_deseado
+    treeview.tag_configure("stock_exacto", background="#fffce1")   # Amarillo claro para cantidad == stock_deseado
+
     # Conectar a la base de datos
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
@@ -43,16 +61,29 @@ def mostrar_piezas_motor(treeview, piezas):
     # Limpiar el Treeview antes de insertar nuevos datos
     for row in treeview.get_children():
         treeview.delete(row)
-    # Preparar una consulta SQL
-    query = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?"
+    
+    # Preparar una consulta SQL para obtener también el stock deseado
+    query = "SELECT PIEZAS, CANTIDAD, STOCK_DESEADO FROM piezas_terminadas WHERE PIEZAS = ?"
+
     # Iterar sobre las piezas y ejecutar la consulta para cada una
     for pieza in piezas:
         cursor.execute(query, (pieza,))
         resultados = cursor.fetchall()
         
-        # Insertar los resultados en el Treeview
+        # Insertar los resultados en el Treeview con etiquetas de color según el stock
         for row in resultados:
-            treeview.insert("", "end", values=(row[0], row[1]))
+            pieza, cantidad, stock_deseado = row
+            
+            # Determinar el tag de color según la comparación de cantidad y stock_deseado
+            if int(cantidad) > int(stock_deseado):
+                tag = "exceso_stock"
+            elif int(cantidad) < int(stock_deseado):
+                tag = "falta_stock"
+            else:
+                tag = "stock_exacto"  # Nuevo color amarillo claro para cantidad == stock_deseado
+            
+            # Insertar la fila en el Treeview con el tag adecuado
+            treeview.insert("", "end", values=(pieza, cantidad), tags=(tag,))
     
     # Cerrar la conexión
     conn.close()

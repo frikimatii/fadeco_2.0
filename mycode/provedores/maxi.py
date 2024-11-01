@@ -61,7 +61,7 @@ def ventana_maxi(parent):
     mostrar_piezas.column("#0", width=0, stretch=tk.NO)
     mostrar_piezas.column("Pieza", width=150)
     mostrar_piezas.column("Cantidad", width=60)
-    mostrar_piezas.config(height=20)
+    mostrar_piezas.config(height=18)
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
     ttk.Button(box1, text="Limpiar Tabla", command= lambda: limpiar_tabla(mostrar_piezas),bootstyle="primary").grid(row=2, columnspan=2, pady=5)

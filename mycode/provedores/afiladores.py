@@ -32,7 +32,7 @@ def ventana_afilador(parent):
     mostrar_piezas.column("#0", width=0, stretch=tk.NO)
     mostrar_piezas.column("Pieza", width=250)
     mostrar_piezas.column("Cantidad", width=110)
-    mostrar_piezas.config(height=20)
+    mostrar_piezas.config(height=18)
     mostrar_piezas.grid(row=1, column=0, sticky="nsew")
 
 

@@ -16,23 +16,23 @@ def agregado_piezas(notebook_principal):
     stylo_ventana.configure('Pestania.TNotebook', background= '#192965')
     # Cargar la imagen usando PIL y redimensionarla
     img_original = Image.open(r"C:\Fadeco_stock\img\img_aluminio.png")
-    img_redimensionada = img_original.resize((90, 90))  # Ajustar el tamaño (ancho, alto)
+    img_redimensionada = img_original.resize((80, 80))  # Ajustar el tamaño (ancho, alto)
     img_aluminio_ = ImageTk.PhotoImage(img_redimensionada)
 
     img_original1 = Image.open(r"C:\Fadeco_stock\img\img_chapa.png")
-    img_redimensionada1 = img_original1.resize((90, 90))
+    img_redimensionada1 = img_original1.resize((80, 80))
     img_chapa_ = ImageTk.PhotoImage(img_redimensionada1)
 
     img_original2 = Image.open(r"C:\Fadeco_stock\img\img_plastico.png")
-    img_redimensionada2 = img_original2.resize((90, 90))
+    img_redimensionada2 = img_original2.resize((80, 80))
     img_plastico_ = ImageTk.PhotoImage(img_redimensionada2)
 
     img_original3 = Image.open(r"C:\Fadeco_stock\img\img_shop.png")
-    img_redimensionada3 = img_original3.resize((90, 90))
+    img_redimensionada3 = img_original3.resize((80, 80))
     img_shop_ = ImageTk.PhotoImage(img_redimensionada3)
 
     img_original4 = Image.open(r"C:\Fadeco_stock\img\img_hierro.png")
-    img_redimensionada4 = img_original4.resize((90, 90))
+    img_redimensionada4 = img_original4.resize((80, 80))
     img_hierro_ = ImageTk.PhotoImage(img_redimensionada4)
 
 
@@ -46,8 +46,8 @@ def agregado_piezas(notebook_principal):
 
 
     # Crear un Frame para contener las pestañas verticales
-    vertical_frame = ttk.Frame(pestania_principal, width=200, )
-    vertical_frame.grid(row=0, column=1, sticky="ns", padx=50, pady=20)
+    vertical_frame = ttk.Frame(pestania_principal, width=200,)
+    vertical_frame.grid(row=0, column=1, sticky="ns", padx=20, pady=20)
 
     # Crear botones para las pestañas verticales, incluyendo la imagen redimensionada
     #boton1 = ttk.Button(vertical_frame, text="Acero", command=lambda: mostrar_contenido(contenido_frame, 'acero_dulce'))

@@ -68,12 +68,12 @@ def inicio(ventana):
 
     # Texto para mostrar respuestas de ambas consultas
     global historia  # Definimos historia como global
-    historia = tk.Text(ayuda_frame, width=50, height=17, state='disabled', wrap='word', font=("Helvetica", 12, "bold"))
+    historia = tk.Text(ayuda_frame, width=50, height=15, state='disabled', wrap='word', font=("Helvetica", 12, "bold"))
     historia.grid(row=4, column=0, columnspan=2, padx=5, pady=5)
 
     # Crear un botón para limpiar el Text
-    boton_limpiar = ttk.Button(ayuda_frame, text="Limpiar Texto", command=lambda: limpiar_historia(), bootstyle="secondary-outline", padding= 10 )
-    boton_limpiar.grid(row=5, column=0, columnspan=2, pady=10)
+    boton_limpiar = ttk.Button(ayuda_frame, text="Limpiar Texto", command=lambda: limpiar_historia(), bootstyle="secondary-outline", padding=7 )
+    boton_limpiar.grid(row=5, column=0, columnspan=2, pady=5)
 
     # Modelos de la máquina
     modelos_frame = ttk.Frame(pestania,)

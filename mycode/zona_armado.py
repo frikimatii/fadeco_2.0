@@ -212,12 +212,12 @@ calco_p300 = ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo"
 calco_eco = ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_330_4estrella", "calco_tensor_correa", "calco_verde_eco"]
 
 
-quety_bases_pre_armadas = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'Pre_AR' "
-quety_motores = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'motores'"
-quety_cajas_330 = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE SECTOR = 'armado_caja' AND MODELO = 330"
-quety_cajas_terminadas = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'torno_caja'"
-quety_cajas_para_tornear = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'torno_caja'"
-query_maquinas_teminadas = "SELECT MAQUINAS, CANTIDAD FROM maquinas_mes "
+quety_bases_pre_armadas = "SELECT PIEZAS, CANTIDAD, STOCK_DESEADO FROM piezas_terminadas WHERE ORIGEN = 'Pre_AR' "
+quety_motores = "SELECT PIEZAS, CANTIDAD, STOCK_DESEADO FROM piezas_terminadas WHERE ORIGEN = 'motores'"
+quety_cajas_330 = "SELECT PIEZAS, CANTIDAD, STOCK_DESEADO FROM piezas_terminadas WHERE SECTOR = 'armado_caja' AND MODELO = 330"
+quety_cajas_terminadas = "SELECT PIEZAS, CANTIDAD, STOCK_DESEADO FROM piezas_terminadas WHERE ORIGEN = 'torno_caja'"
+quety_cajas_para_tornear = "SELECT PIEZAS, CANTIDAD , STOCK_DESEADO FROM piezas_brutas WHERE MECANIZADO = 'torno_caja'"
+query_maquinas_teminadas = "SELECT MAQUINAS, CANTIDAD, STOCK_DESEADO FROM maquinas_mes "
 
 maquinas_terminadas = ["inox_330", "inox_300", "inox_250", "pintada_330", "pintada_300", "eco"]
 
@@ -226,26 +226,26 @@ maquinas_terminadas = ["inox_330", "inox_300", "inox_250", "pintada_330", "pinta
 
 
 def zona_armado(ventana):
-    
-    def colores():
-        num = int(spin_num.get())  # Obtener el valor del Spinbox
-        for item in tabla_principal.get_children():
-            # Obtener el valor de la columna "Cantidad" de la fila actual
-            cantidad = int(tabla_principal.item(item, 'values')[1])
-
-            # Comparar la cantidad con el valor del Spinbox
-            if cantidad < num:
-                # Si es menor, poner la fila en rojo
-                tabla_principal.tag_configure('coral', background='coral')
-                tabla_principal.item(item, tags=('coral',))
-            else:
-                # Si es mayor o igual, poner la fila en verde
-                tabla_principal.tag_configure('lightgreen', background='lightgreen')
-                tabla_principal.item(item, tags=('lightgreen',))
-
-        
-        # Repetir la comprobación después de 500ms
-        tabla_principal.after(500, colores)
+    #
+    #def colores():
+    #    num = int(spin_num.get())  # Obtener el valor del Spinbox
+    #    for item in tabla_principal.get_children():
+    #        # Obtener el valor de la columna "Cantidad" de la fila actual
+    #        cantidad = int(tabla_principal.item(item, 'values')[1])
+#
+    #        # Comparar la cantidad con el valor del Spinbox
+    #        if cantidad < num:
+    #            # Si es menor, poner la fila en rojo
+    #            tabla_principal.tag_configure('coral', background='coral')
+    #            tabla_principal.item(item, tags=('coral',))
+    #        else:
+    #            # Si es mayor o igual, poner la fila en verde
+    #            tabla_principal.tag_configure('lightgreen', background='lightgreen')
+    #            tabla_principal.item(item, tags=('lightgreen',))
+#
+    #    
+    #    # Repetir la comprobación después de 500ms
+    #    tabla_principal.after(500, colores)
     
     # Crear la pestaña dentro de la ventana principal
     pestania = ttk.Frame(ventana)
@@ -269,7 +269,7 @@ def zona_armado(ventana):
     tabla_principal.column("#0", width=0, stretch=tk.NO)
     tabla_principal.column("Pieza", width=250)
     tabla_principal.column("Cantidad", width=70)
-    tabla_principal.config(height=17)
+    tabla_principal.config(height=16)
     tabla_principal.grid(row=2, column=0, padx=7)
 
     # Botón para limpiar la tabla
@@ -278,9 +278,9 @@ def zona_armado(ventana):
     ttk.Button(box_limpiar, text="Limpiar", command=lambda: limpiar_tabla(tabla_principal)).grid(row=0, column=0, pady=3)
 
     # Spinbox para seleccionar el límite de cantidad
-    spin_num = ttk.Spinbox(box_limpiar, width=10, from_=0, to=100, state="readonly")
-    spin_num.grid(row=0, column=1, padx=3)
-    spin_num.set(10)  # Asignar un valor inicial al Spinbox
+    #spin_num = ttk.Spinbox(box_limpiar, width=10, from_=0, to=100, state="readonly")
+    #spin_num.grid(row=0, column=1, padx=3)
+    #spin_num.set(10)  # Asignar un valor inicial al Spinbox
 
     # Etiqueta de historial
     ttk.Label(box1, text="Historial").grid(row=6, column=0, sticky="nw", pady=5)
@@ -290,7 +290,7 @@ def zona_armado(ventana):
     historial.grid(row=7, column=0)
 
     # Iniciar la función de colores
-    colores()
+    #colores()
 
 
     box2 = ttk.Frame(index, padding=3)
