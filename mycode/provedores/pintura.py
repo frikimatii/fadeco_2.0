@@ -3,7 +3,7 @@ from tkinter import ttk
 from mycode.funciones.add_funcion import ordenar_por, limpiar_tabla
 from mycode.funciones.provedores_funcion import  mostrar_piezas_tablas, mandar_a_pintar, resivir_de_pintura
 
-modelo_piezas = ["BasePintada_330", "BasePintada_300", "cabezal_pintada","caja_soldada_eco", "teletubi_doblado_eco"]
+modelo_piezas = ["BasePintada_330", "BasePintada_300", "cabezal_pintada","caja_eco_augeriada", "teletubi_doblado_eco"]
 
 quety_pintura_bruto = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PROSESO = 'pintura'"
 quety_pintura_terminada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'pintura'"

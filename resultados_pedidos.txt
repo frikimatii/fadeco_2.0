@@ -1,15 +1,15 @@
 ====================================
           RESULTADOS DE PEDIDO     
-Fecha del Pedido: 22-10-24
+Fecha del Pedido: 09-11-24
 ====================================
 
 Máquinas Pedidas:
 → Ecoinox                  0 unidades
-→ Inox250                  1 unidades
+→ Inox250                  0 unidades
 → Inox300                  0 unidades
-→ Inox330                  0 unidades
+→ Inox330                  2 unidades
 → Pintada300               1 unidades
-→ Pintada330               1 unidades
+→ Pintada330               0 unidades
 
 
 Total De Maquinas = 3
@@ -19,96 +19,13 @@ Piezas Faltantes por Etapa:
 
 Etapa: Armado:
 --------------------------------------------------------
-**->>> Base_pre_armado_i250        Faltan       1 unidades <<<-**
+**->>> Base_pre_armado_i330        Faltan       2 unidades <<<-**
 **->>> Base_pre_armado_p300        Faltan       1 unidades <<<-**
-**->>> Base_pre_armado_p330        Faltan       1 unidades <<<-**
-- Brazo_250                   Faltan       1 unidades
-- Brazo_300                   Faltan       1 unidades
-- Brazo_330                   Faltan       1 unidades
-- Cabezal_250                 Faltan       1 unidades
-- Cabezal_pintada             Faltan       2 unidades
-- Capuchon_250                Faltan       1 unidades
-- Cuadrado_regulador          Faltan       1 unidades
-- Cubre_motor_cuadrado        Faltan       2 unidades
-- Cubre_motor_rectangulo      Faltan       3 unidades
-- Cubrecuchilla_250           Faltan       1 unidades
-- Cubrecuchilla_330           Faltan       1 unidades
-- Cuchilla_250                Faltan       1 unidades
-- Cuchilla_330                Faltan       1 unidades
-- Perilla_afilador            Faltan       3 unidades
-- Perilla_brazo               Faltan       3 unidades
-- Perilla_cubrecuchilla       Faltan       6 unidades
-- Piedra_afilador             Faltan       3 unidades
-- Pinche_frontal              Faltan       2 unidades
-- Pinche_frontal_250          Faltan       1 unidades
-- Pinche_lateral              Faltan       2 unidades
-- Pinche_lateral_250          Faltan       1 unidades
-- Pipas                       Faltan       6 unidades
-- Planchada_final_250         Faltan       1 unidades
-- Planchada_final_300         Faltan       1 unidades
-- Planchada_final_330         Faltan       1 unidades
-- Resorte_brazo               Faltan       3 unidades
-- Tapa_afilador               Faltan       2 unidades
-- Tapa_afilador_250           Faltan       1 unidades
-- Teletu_300                  Faltan       1 unidades
-- Teletubi_250                Faltan       1 unidades
-- Teletubi_330                Faltan       1 unidades
-- Tubo_manija                 Faltan       2 unidades
-- Tubo_manija_250             Faltan       1 unidades
-- Varilla_brazo_250           Faltan       1 unidades
-- Varilla_brazo_300           Faltan       1 unidades
-- Varilla_brazo_330           Faltan       1 unidades
-- Vela_final_250              Faltan       1 unidades
-- Vela_final_300              Faltan       1 unidades
-- Vela_final_330              Faltan       1 unidades
-- Velero                      Faltan       3 unidades
+- Afilador_final              Faltan       2 unidades
 
 Etapa: Pre_armado:
 --------------------------------------------------------
-- Baseinox_250                Faltan       1 unidades
-- Basepintada_300             Faltan       1 unidades
-- Basepintada_330             Faltan       1 unidades
-- Aro_numerador               Faltan       3 unidades
-- Bandeja_300                 Faltan       1 unidades
-- Bandeja_330                 Faltan       1 unidades
-- Cable_220w                  Faltan       3 unidades
-**->>> Caja_250_armada             Faltan       1 unidades <<<-**
+- Baseinox_330                Faltan       1 unidades
 **->>> Caja_300_armada             Faltan       1 unidades <<<-**
-**->>> Caja_330_armada             Faltan       1 unidades <<<-**
-- Capacitores                 Faltan       1 unidades
-- Capacitores_250             Faltan       1 unidades
-- Carros                      Faltan       2 unidades
-- Carros_250                  Faltan       1 unidades
-- Eje_rectificado             Faltan       3 unidades
-- Espiral                     Faltan       3 unidades
-- Movimiento                  Faltan       3 unidades
-- Perilla_numerador           Faltan       3 unidades
-- Resorte_carro               Faltan       4 unidades
-- Resorte_movimiento          Faltan       3 unidades
-- Rueditas                    Faltan      12 unidades
-- Tapita_perilla              Faltan       6 unidades
-- Tornillo_guia               Faltan       3 unidades
-- Varilla_250                 Faltan       1 unidades
-- Varilla_330                 Faltan       2 unidades
-
-Etapa: Motor:
---------------------------------------------------------
-- Cajas_torneadas_250         Faltan       1 unidades
-- Cajas_torneadas_300         Faltan       1 unidades
-- Cajas_torneadas_330         Faltan       1 unidades
-- Corona_300                  Faltan       1 unidades
-- Corona_330                  Faltan       1 unidades
-- Eje                         Faltan       2 unidades
-- Eje_250                     Faltan       1 unidades
-- Manchon                     Faltan       2 unidades
-- Manchon_250                 Faltan       1 unidades
-- Motor250_220v               Faltan       1 unidades
-- Oring                       Faltan       3 unidades
-- Ruleman6000                 Faltan       2 unidades
-- Rulemanr6                   Faltan       1 unidades
-- Ruleman_6004                Faltan       1 unidades
-- Ruleman_6204                Faltan       2 unidades
-- Ruleman_6205                Faltan       4 unidades
-- Seguer                      Faltan       3 unidades
-- Sinfin                      Faltan       3 unidades
+**->>> Caja_330_armada             Faltan       2 unidades <<<-**
 ====================================

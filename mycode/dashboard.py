@@ -10,7 +10,7 @@ from mycode.dashboard_control.piezas_termindas import ventana_piezas_terminadas
 def dashboard(notebook_principal):
     # Frame de la pestaña principal
     pestania_principal = ttk.Frame(notebook_principal)
-    notebook_principal.add(pestania_principal, text="Dashboard")
+    notebook_principal.add(pestania_principal, text="Panel De Control")
     
     # Frame principal donde se mostrarán las piezas
     conteniado_frame = ttk.Frame(pestania_principal)

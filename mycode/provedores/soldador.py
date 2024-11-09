@@ -8,28 +8,29 @@ from mycode.funciones.add_funcion import ordenar_por, limpiar_tabla
 from mycode.funciones.provedores_funcion import limpiar_tabla,  enviar_a_soldar, resibir_bases, mostrar_por_modelo, armar_cabezales, mostrar_piezas_tablas
 
 
-bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300"]
+bases = ["BaseInox_330","BaseInox_300","BaseInox_250","BaseECO","BasePintada_330","BasePintada_300", "caja_soldada_eco"]
 
 
 query_mostrar_piezas_soldador = """
 SELECT PIEZAS, CANTIDAD 
 FROM piezas_brutas 
 WHERE ORIGEN = 'corte' AND PROSESO = 'soldado'
-AND LOWER(TRIM(PIEZAS)) NOT IN ('planchuela_inferior', 'planchuela_interna')
 
-UNION ALL
+UNION
 
 SELECT PIEZAS, CANTIDAD 
 FROM piezas_terminadas 
-WHERE PROVEDOR = 'soldador' ;
+WHERE PROVEDOR = 'soldador'  UNION 
+
+SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MODELO = 'caja_eco';
 """
 query_mostras_bases_ensoldador = "SELECT PIEZAS, CANTIDAD FROM provedores WHERE PROVEDOR = 'soldador' AND PIEZAS NOT IN ('cabezal_Inox', 'cabezal_pintado', 'cabezal_250');"
-
+query_mostrar_piezas_terminadas = "SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE  TIPO_DE_MATERIAL = 'Pieza'"
 query_cabezales_inox = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'inox' AND SECTOR = 'cabezal'"
 query_cabezales_pintada = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = 'pintada' AND SECTOR = 'cabezal'"
 query_cabezales_250 = "SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE MODELO = '250' AND SECTOR = 'cabezal' "
 
-varilla = ["varilla_330", "varilla_300", "varilla_250"]
+varilla = ["varilla_330", "varilla_300", "varilla_250", "media_luna","pieza_caja_eco","planchuela_inferior","planchuela_interna"]
 
 def on_item_selected(event, treeview, label, detalles):
     selected_item = treeview.selection()
@@ -138,8 +139,9 @@ def ventana_soldador(parent):
     stock_frame = ttk.LabelFrame(soldador, text="Stock Soldador", padding=7, relief="groove", style="Bold9.TLabelframe")
     stock_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
     
-    ttk.Button(stock_frame, text="Stock en fábrica", command=lambda: mostrar_categoria(mostrar_piezas, info_pieza, piezas , imagen_piezas, query_mostrar_piezas_soldador), bootstyle="primary-outline", padding=10).grid(row=1, column=0, padx=5, pady=5)
-    ttk.Button(stock_frame, text="Stock en Soldador", command=lambda: mostrar_categoria(mostrar_piezas, info_pieza, piezas, imagen_piezas, query_mostras_bases_ensoldador), bootstyle="primary-outline", padding=10).grid(row=1, column=1, padx=5, pady=5)
+    ttk.Button(stock_frame, text="en fábrica", command=lambda: mostrar_categoria(mostrar_piezas, info_pieza, piezas , imagen_piezas, query_mostrar_piezas_soldador), bootstyle="primary-outline", padding=10).grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+    ttk.Button(stock_frame, text="en Soldador", command=lambda: mostrar_categoria(mostrar_piezas, info_pieza, piezas, imagen_piezas, query_mostras_bases_ensoldador), bootstyle="primary-outline", padding=10).grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
+
     
     # Sección de Envíos y Recepciones
     envios_frame = ttk.LabelFrame(soldador, text="Envíos y Recepciones", padding=10, relief="groove", style="Bold9.TLabelframe")
@@ -171,6 +173,7 @@ def ventana_soldador(parent):
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="Pintada 330", command=lambda: mostrar_por_modelo("pintada_330", mostrar_piezas)).grid  (row=2, column=0, padx=5, pady=5, sticky="nsew")
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="Pintada 300", command=lambda: mostrar_por_modelo("pintada_300", mostrar_piezas)).grid  (row=2, column=1, padx=5, pady=5, sticky="nsew")
     ttk.Button(acciones_frame, bootstyle="warning-outline",padding=10,text="ECO", command=lambda: mostrar_por_modelo("ECO", mostrar_piezas)).grid(row=2, column=2, padx=5, pady=5, sticky="nsew")
+    ttk.Button(acciones_frame, bootstyle="warning-outline", padding=10, text="Caja_eco", command= lambda: mostrar_por_modelo("caja_soldada_eco", mostrar_piezas)).grid(row=3, column=0, columnspan=3, sticky="nsew")
     
 
     box3 = tk.Frame(frame)

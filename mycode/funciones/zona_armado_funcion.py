@@ -143,7 +143,8 @@ def manejar_inventario(modelo, cantidad, historial):
             "correa_eco": 1,
             "capuchon_motor_dodo": 1,
             "buje_eje_eco": 1,
-            "rectangulo_plastico_eco": 1
+            "rectangulo_plastico_eco": 1,
+            "ventilador_motor": 1
         }
     }
     

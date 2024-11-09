@@ -183,7 +183,7 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
             "PIezas: MECANIZADO/plasma/media_luna",
             "Piezas: MECANIZADO/sierra/panchuela_inferior"
             "Piezas: MECANIZADO/sierra/panchuela_interior"
-            "PIEZA_FINAL:  MECANIZADO/soldador/augeriado/Caja_soldada_eco"],
+            "PIEZA_FINAL:  PROVEDOR/soldador, MECANIZADO/augeriado, PROVEDOR/pintura"],
         
         "cajas_torneadas_250": ["Se encuentra en: ", "AGREGADO DE PIEZAS/Aluminio MECANIZADO/torno  PROVEDORES/maxi, carmelo. "],
         
@@ -432,6 +432,10 @@ def chat_proceso_pieza(pieza_combobox, resultado_label):
         "tubo_manija": ["Se obtiene en la pestania: ", "MECANIZADO/sierra  PROVEDORES/niquelado"],
         
         "tubo_manija_250": ["Se obtiene en la pestania: ", "MECANIZADO/sierra  PROVEDORES/niquelado"],
+        
+        "ventilador_motor": ["Se Obtiene en la pestania:", "AGREGADO DE PIEZAS/plastico"],
+        
+        "ventilador_250": ["Se Obtiene en la pestania:", "AGREGADO DE PIEZAS/plastico"],
 
         "varilla_330" : ["varilla Soldada, se obtiene en:", "MECANIZADO/cortar MECANIZADO/soldar"],
         

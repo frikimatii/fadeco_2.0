@@ -50,6 +50,12 @@ bases_dicc = {
         "plachuela":"planchuela_330",
         "varilla":"varilla_330",
         "portaeje":"portaeje",
+    },
+    "caja_soldada_eco":{
+        "planchuela_interna" : "planchuela_interna", 
+        "planchuela_inferior": "planchuela_inferior",
+        "media_luna" :"media_luna", 
+        "pieza_caja_eco": "pieza_caja_eco"
     }
 }
 
@@ -102,6 +108,14 @@ BaseECO = [
     "portaeje"
 ]
 
+Caja_soldada_eco = [
+    "planchuela_interna", 
+    "planchuela_inferior",
+    "media_luna", 
+    "pieza_caja_eco"
+]
+
+
 cabezales_dic = {
     "cabezal_250": {
         "chapa_U_inox_250": "chapa_U_inox_250",
@@ -151,12 +165,18 @@ def mostrar_por_modelo(base_seleccionada, treeview):
     conn = sqlite3.connect("dbfadeco.db")
     cursor = conn.cursor()
     datos = []
+    if base_seleccionada == "caja_soldada_eco":
+        cursor.execute("SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE MODELO = 'caja_eco'")
+        datos = cursor.fetchall()
+    
     for piezas, nombre in bases_dicc[base_seleccionada].items():
         # Verificar si la pieza es una varilla
         if "varilla" in piezas:
             cursor.execute("SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (nombre,))
+        
         else:
             cursor.execute("SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (nombre,))
+        
         resultado = cursor.fetchall()
         if resultado:
             datos.extend(resultado)
@@ -167,6 +187,9 @@ def mostrar_por_modelo(base_seleccionada, treeview):
     
     for pieza, cantidad in datos:
         treeview.insert("", tk.END, values=(pieza, cantidad))
+        
+import sqlite3
+from tkinter import messagebox
 
 def enviar_a_soldar(base_seleccionada, cantidad_ingresada, historial):
     base = base_seleccionada.get()
@@ -182,6 +205,7 @@ def enviar_a_soldar(base_seleccionada, cantidad_ingresada, historial):
         "BasePintada_330": BasePintada_330,
         "BasePintada_300": BasePintada_300,
         "BaseECO": BaseECO,
+        "caja_soldada_eco": Caja_soldada_eco
     }
     
     piezas = bases_dicc.get(base, [])
@@ -190,9 +214,10 @@ def enviar_a_soldar(base_seleccionada, cantidad_ingresada, historial):
         historial.insert(0, f"La base {base} no es válida.")
         return
     
-    # Paso 1: Verificación previa de stock
+    # Paso 1: Verificación del stock
     for x in piezas:
-        if "varilla" in x:  # Maneja todas las varillas
+        if "varilla" in x or x in ["planchuela_interna", "planchuela_inferior", "media_luna", "pieza_caja_eco"]:
+            # Maneja todas las varillas y piezas específicas en `piezas_brutas`
             cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (x,))
         else:
             cursor.execute("SELECT CANTIDAD FROM piezas_terminadas WHERE PIEZAS = ?", (x,))
@@ -216,11 +241,12 @@ def enviar_a_soldar(base_seleccionada, cantidad_ingresada, historial):
     if confirmar:  # Si el usuario confirma, se realiza la acción
         # Paso 2: Si todas las piezas tienen suficiente stock, realizar el descuento
         for x in piezas:
-            if "varilla" in x:
+            if "varilla" in x or x in ["planchuela_interna", "planchuela_inferior", "media_luna", "pieza_caja_eco"]:
                 cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, x))
             else:
                 cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, x))
         
+        # Actualiza en la tabla `provedores` la producción de `caja_soldada_eco`
         cursor.execute("UPDATE provedores SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, base))
         
         conn.commit()
@@ -349,11 +375,17 @@ def resicbir_piezas_de(proveedor, cantidad_ingresada, pieza_seleccionada, treevi
             if resultado is not None:
                 cantidad_actual = resultado[0]
                 if cantidad_actual >= cantidad_og:
+                    
+                    
+                    
                     cursor.execute(f"UPDATE {proveedor} SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
                     cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
                     
                     historial.insert(0, f"Recibió {cantidad_og} unidades de {pieza_og} de {proveedor}.")
                     limpiar_tabla(treeview)
+                    
+                    
+                    
                 else:
                     historial.insert(0, f"No hay suficientes unidades de {pieza_og} en el proveedor.")
             else:
@@ -533,6 +565,8 @@ def mandar_a_pintar(pieza_seleccionada, cantidad_seleccionada, treeview, histori
             cursor.execute("SELECT CANTIDAD FROM piezas_brutas WHERE PIEZAS = ?", (pieza_og,))
             resultado = cursor.fetchone()
 
+            
+            
             if resultado and resultado[0] >= cantidad_og:
                 cursor.execute("UPDATE piezas_brutas SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
                 cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
@@ -569,13 +603,19 @@ def resivir_de_pintura(pieza_seleccionada, cantidad_seleccionada, treeview, hist
             resultado = cursor.fetchone()
 
             if resultado and resultado[0] >= cantidad_og:
+                # Cambiar el nombre si la pieza es 'caja_eco_augeriada'
+                nombre_final = 'caja_soldada_eco' if pieza_og == 'caja_eco_augeriada' else pieza_og
+                
+                # Actualizar la cantidad en PIEZAS_RETOCADA y piezas_terminadas
                 cursor.execute("UPDATE PIEZAS_RETOCADA SET CANTIDAD = CANTIDAD - ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
-                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, pieza_og))
+                cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = ?", (cantidad_og, nombre_final))
+                
+                # Limpiar y actualizar el historial
                 limpiar_tabla(treeview)
                 historial.insert(0, f"Se mandaron a pintar {cantidad_og} unidades de {pieza_og}")
                 conn.commit()
             else:
-                historial.insert(0, f"No hay suficiente cantidad en stock.")
+                historial.insert(0, "No hay suficiente cantidad en stock.")
         
         cantidad_seleccionada.delete(0, "end")
     except sqlite3.Error as e:
@@ -583,6 +623,7 @@ def resivir_de_pintura(pieza_seleccionada, cantidad_seleccionada, treeview, hist
         conn.rollback()
     finally:
         conn.close()
+
 
 def mandar_a_roman(pieza_seleccionada, cantidad_seleccionada, treeview, historial):
     pieza_og = pieza_seleccionada.get()

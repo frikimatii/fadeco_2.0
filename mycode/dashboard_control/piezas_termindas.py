@@ -145,7 +145,7 @@ def ventana_piezas_terminadas(parent):
     # Encabezado
     header_frame = ttk.Frame(frame)
     header_frame.grid(row=0, column=0, sticky="nsew", padx=20, pady=(10, 20), columnspan=2)
-    ttk.Label(header_frame, text="DashBoard - Piezas Terminadas", font=("Arial", 18, "bold")).grid(row=0, column=0, sticky="w")
+    ttk.Label(header_frame, text="Panel De Control - Piezas Terminadas", font=("Arial", 18, "bold")).grid(row=0, column=0, sticky="w")
 
     # Treeview para mostrar piezas
     global treeview

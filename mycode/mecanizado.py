@@ -5,7 +5,7 @@ from mycode.funciones.add_funcion import ordenar_por
 from PIL import Image, ImageTk
 
 
-lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox"]
+lista_piezas_plegadora = ["ChapaBase_330Inox","ChapaBase_300Inox","ChapaBase_330Pintada","ChapaBase_300Pintada","ChapaBase_250Inox","lateral_i330_contecla","lateral_i330_sintecla","lateral_i300_contecla","lateral_i300_sintecla","lateral_i250_contecla","lateral_i250_sintecla","lateral_p330_contecla","lateral_p330_sintecla","lateral_p300_contecla","lateral_p300_sintecla","lateral_i330_eco", "bandeja_cabezal_inox_250", "bandeja_cabezal_pintada" , "bandeja_cabezal_inox", "chapa_U_inox_250", "chapa_U_pintada","chapa_U_inox", "planchada_fresada_300", "planchada_fresada_330", "planchada_fresada_250"]
 
 lista_piezas_plegadora.sort()
 
@@ -22,7 +22,7 @@ piezas_balancin = ["planchuela_250","planchuela_300","planchuela_330","portaeje"
 
 piezas_balancin.sort()
 
-piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco", "caja_eco_augeriada" ]
+piezas_para_augeriar = ["cuadrado_regulador","brazo_330","brazo_300","brazo_250", "carros", "carros_250", "movimiento", "tornillo_teletubi_eco", "caja_soldada_eco" ]
 
 piezas_para_augeriar.sort()
 
@@ -38,7 +38,7 @@ piezas_para_fresar = ["vela_250", "vela_300", "vela_330","planchada_330","planch
 
 piezas_para_fresar.sort()
 
-piezas_para_soldar =[ "vela_fresada_330","vela_fresada_300", "vela_fresada_250", "planchada_fresada_250", "planchada_fresada_330", "planchada_fresada_300", "varilla_330","varilla_300","varilla_250", "caja_soldada_eco", "cuadrado_regulador", "cabezal_inox", "cabezal_pintada", "cabezal_eco"] 
+piezas_para_soldar =[ "vela_fresada_330","vela_fresada_300", "vela_fresada_250", "planchada_doblada_250", "planchada_doblada_330", "planchada_doblada_300", "varilla_330","varilla_300","varilla_250", "cuadrado_regulador", "cabezal_inox", "cabezal_pintada", "cabezal_eco"] 
 
 piezas_para_soldar.sort()
 
@@ -49,7 +49,7 @@ piezas_pulir.sort()
 
 query_mostrar_piezas_parar_doblar = "SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE MECANIZADO = 'plegadora'"
 
-query_mostrar_piezas_dobladas = "SELECT PIEZAS, CANTIDAD FROM plasma WHERE ORIGEN = 'plegado' UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'plegado'"
+query_mostrar_piezas_dobladas = "SELECT PIEZAS, CANTIDAD FROM plasma WHERE ORIGEN = 'plegado' UNION SELECT PIEZAS, CANTIDAD FROM piezas_terminadas WHERE ORIGEN = 'plegado' UNION SELECT PIEZAS, CANTIDAD FROM piezas_brutas WHERE TIPO_DE_MATERIAL = 'Chapa_' AND ORIGEN = 'plegado'"
 
 query_mostar_piezas_para_plasma = "SELECT PIEZAS, CANTIDAD FROM plasma WHERE MECANIZADO = 'plasma' UNION SELECT PIEZAS,CANTIDAD FROM piezas_brutas WHERE ORIGEN = 'plasma'"
 

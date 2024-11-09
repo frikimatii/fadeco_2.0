@@ -17,7 +17,7 @@ caja_300 = ["corona_300", "cajas_torneadas_300", "eje", "manchon", "ruleman_6005
 
 caja_250 = ["corona_250", "cajas_torneadas_250", "eje_250", "manchon_250", "ruleman_6004",  "ruleman_6204", "seguer", "sinfin", "motor250_220v", "oring", "rulemanR6"]
 
-eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitores", "conector_hembra", "cable_corto_eco", "motor_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco"]
+eco = [ "polea_grande", "polea_chica", "tornillo_teletubi_eco", "teclas", "capacitores", "conector_hembra", "cable_corto_eco", "motor_eco", "caja_soldada_eco", "tapa_correa_eco", "correa_eco", "capuchon_motor_dodo", "buje_eje_eco", "rectangulo_plastico_eco", "ventilador_motor"]
 
 
 

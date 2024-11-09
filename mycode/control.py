@@ -51,7 +51,8 @@ calco_pintada_300 = {
     "F_cuadrado": 1,
     "circulo_argentina": 1,
     "etiqueta_cable": 1,
-    "fadeco_300_3estrella": 1
+    "fadeco_300_3estrella": 1,
+    "ventilador_motor":1
 }
 calco_pintada_330 = {
     "garantia": 1,
@@ -61,7 +62,8 @@ calco_pintada_330 = {
     "F_cuadrado": 1,
     "circulo_argentina": 1,
     "etiqueta_cable": 1,
-    "fadeco_330_3estrella": 1
+    "fadeco_330_3estrella": 1,
+    "ventilador_motor":1
 }
 calco_inox_250 = {
     "garantia": 1,
@@ -71,7 +73,8 @@ calco_inox_250 = {
     "F_cuadrado": 1,
     "circulo_argentina": 1,
     "etiqueta_cable": 1,
-    "fadeco_250_2estrella": 1
+    "fadeco_250_2estrella": 1,
+    "ventilador_250":1
 }
 calco_inox_300 = {
     "garantia": 1,
@@ -81,7 +84,8 @@ calco_inox_300 = {
     "F_cuadrado": 1,
     "circulo_argentina": 1,
     "etiqueta_cable": 1,
-    "fadeco_300_4estrella": 1
+    "fadeco_300_4estrella": 1,
+    "ventilador_motor":1
 }
 calco_inox_330 ={
     "garantia": 1,
@@ -91,7 +95,8 @@ calco_inox_330 ={
     "F_cuadrado": 1,
     "circulo_argentina": 1,
     "etiqueta_cable": 1,
-    "fadeco_330_4estrella": 1
+    "fadeco_330_4estrella": 1,
+    "ventilador_motor":1
 }
 
 calco_inox_330 =["garantia","manual_instruciones","etiqueta_peligro","F_circulo","F_cuadrado","circulo_argentina","etiqueta_cable","fadeco_330_4estrella"]

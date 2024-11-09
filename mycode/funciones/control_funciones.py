@@ -29,11 +29,11 @@ def accion_embalar(cantidad_ingresada, pieza_seleccionar, treeview, historial):
 
     # Mapeo de calcomanías por cada tipo de máquina
     calcomanias_por_maquina = {
-        "inox_330": ["garantia","manual_instruciones","etiqueta_peligro","F_circulo","F_cuadrado","circulo_argentina","etiqueta_cable","fadeco_330_4estrella"],
-        "inox_300": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_300_4estrella"],  # Calcomanías de ejemplo para inox_300
-        "inox_250": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_250_2estrella"],  # Calcomanías de ejemplo para inox_250
-        "pintada_330": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_330_3estrella"],  # Calcomanías de ejemplo para pintada_330
-        "pintada_300": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_300_3estrella"],  # Calcomanías de ejemplo para pintada_300
+        "inox_330": ["garantia","manual_instruciones","etiqueta_peligro","F_circulo","F_cuadrado","circulo_argentina","etiqueta_cable","fadeco_330_4estrella", "ventilador_motor"],
+        "inox_300": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_300_4estrella", "ventilador_motor"],  # Calcomanías de ejemplo para inox_300
+        "inox_250": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_250_2estrella", "ventilador_250"],  # Calcomanías de ejemplo para inox_250
+        "pintada_330": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_330_3estrella", "ventilador_motor"],  # Calcomanías de ejemplo para pintada_330
+        "pintada_300": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_300_3estrella", "ventilador_motor"],  # Calcomanías de ejemplo para pintada_300
         "eco": ["garantia", "manual_instruciones", "etiqueta_peligro", "F_circulo", "F_cuadrado", "circulo_argentina", "etiqueta_cable", "fadeco_330_4estrella", "calco_tensor_correa", "calco_verde_eco"]  # Calcomanías de ejemplo para eco
     }
 
