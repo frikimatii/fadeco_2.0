@@ -1,0 +1,23 @@
+====================================
+          RESULTADOS DE PEDIDO     
+Fecha del Pedido: 10-11-24
+====================================
+
+Máquinas Pedidas:
+→ Ecoinox                  0 unidades
+→ Inox250                  0 unidades
+→ Inox300                  1 unidades
+→ Inox330                  1 unidades
+→ Pintada300               0 unidades
+→ Pintada330               0 unidades
+
+
+Total De Maquinas = 2
+
+Piezas Faltantes por Etapa:
+===============================================================
+
+Etapa: Armado:
+--------------------------------------------------------
+- Perilla_brazo               Faltan       1 unidades
+====================================

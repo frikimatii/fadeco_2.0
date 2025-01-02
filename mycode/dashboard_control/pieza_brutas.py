@@ -141,7 +141,6 @@ def ordenar_por(columna):
 
 # Ventana principal
 def ventana_piezas_brutas(parent):
-    """Crea la ventana para mostrar las piezas terminadas."""
     frame = ttk.Frame(parent)
     
     # Encabezado

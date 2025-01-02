@@ -661,8 +661,15 @@ def mandar_a_roman(pieza_seleccionada, cantidad_seleccionada, treeview, historia
         conn.close()
 
 def resibir_afiladores(cantidad_ingresada_, res):
+    import sqlite3
+    from tkinter import messagebox
+
     cantidad_ingresada = cantidad_ingresada_.get()  # Obtener el valor ingresado por el usuario
-    cantidad_ingresada_int = int(cantidad_ingresada)  # Convertirlo a entero si es necesario
+    try:
+        cantidad_ingresada_int = int(cantidad_ingresada)  # Convertirlo a entero si es necesario
+    except ValueError:
+        messagebox.showerror("Error", "Ingrese un número válido.")
+        return
 
     cantidad_piezas = {
         "capuchon_afilador": 2,
@@ -681,36 +688,39 @@ def resibir_afiladores(cantidad_ingresada_, res):
         try:
             piezas_suficientes = True
 
+            # Verificar disponibilidad de todas las piezas
             for pieza, cantidad_pieza in cantidad_piezas.items():
                 cursor.execute("SELECT CANTIDAD FROM AFILADOR WHERE PIEZAS = ?", (pieza,))
                 cantidad_actual = cursor.fetchone()
 
                 if cantidad_actual is None or cantidad_actual[0] < cantidad_ingresada_int * cantidad_pieza:
-                    messagebox.showerror("Error", f"No hay suficiente cantidad de {pieza} en lo de roman")
+                    messagebox.showerror("Error", f"No hay suficiente cantidad de {pieza} en lo de Roman")
                     piezas_suficientes = False
                     break
 
             if piezas_suficientes:
-                confirmacion = messagebox.askyesno("Confirmar", f"¿Estás seguro de que deseas resibir {cantidad_ingresada_int} unidades de afiladores de Roman?")
+                confirmacion = messagebox.askyesno("Confirmar", f"¿Estás seguro de que deseas recibir {cantidad_ingresada_int} unidades de afiladores de Roman?")
                 if confirmacion:
+                    # Actualizar cantidades
                     for pieza, cantidad_pieza in cantidad_piezas.items():
-                        cantidad_restante = cantidad_actual[0] - cantidad_ingresada_int * cantidad_pieza
+                        cursor.execute("SELECT CANTIDAD FROM AFILADOR WHERE PIEZAS = ?", (pieza,))
+                        cantidad_actual = cursor.fetchone()[0]  # Volver a obtener la cantidad actual de cada pieza
+                        cantidad_restante = cantidad_actual - cantidad_ingresada_int * cantidad_pieza
                         cursor.execute("UPDATE AFILADOR SET CANTIDAD = ? WHERE PIEZAS = ?", (cantidad_restante, pieza))
 
+                    # Actualizar la cantidad de afiladores finalizados
                     cursor.execute("UPDATE piezas_terminadas SET CANTIDAD = CANTIDAD + ? WHERE PIEZAS = 'afilador_final'", (cantidad_ingresada_int,))
                     conn.commit()
                     messagebox.showinfo("Éxito", f"Roman armó {cantidad_ingresada_int} unidades de afiladores")
                     res.insert(0, f"Roman armó {cantidad_ingresada_int} unidades de afiladores")
-            
+
             # Limpiar el contenido del Entry después de la acción
             cantidad_ingresada_.delete(0, 'end')
-            
+
         except sqlite3.Error as e:
             messagebox.showerror("Error", f"Error en la base de datos: {e}")
             conn.rollback()
 
-        except ValueError as ve:
-            messagebox.showerror("Error", ve)
 
 def mecanizar_carcaza(cantidad_seleccionada, treeview, historial):
     cantidad_og = cantidad_seleccionada.get()
